@@ -1,0 +1,29 @@
+sequenceDiagram
+  autonumber
+  actor G as Gestionnaire
+  participant UI as Interface web
+  participant API as API
+  participant DB as Base SQLite
+  participant CLF as Classifieur
+  participant RET as Recherche
+  participant LLM as Modèle de langage
+  G->>UI: Choisit la police et décrit le sinistre
+  UI->>API: Demande d'instruction
+  API->>DB: Contrôles 1-2 : police en vigueur, version applicable
+  API->>CLF: Description du sinistre
+  CLF-->>API: Garantie probable (vol 0,47) et règle de rejet
+  API->>DB: Contrôle 3 : garantie souscrite ?
+  API->>RET: Clauses de la garantie, exclusions, définitions
+  RET->>DB: Recherche BM25 dans ce contrat
+  RET-->>API: 16 clauses au plus
+  API-->>UI: Affichage immédiat des clauses et des contrôles factuels
+  loop Contrôles 4 à 6
+    API->>LLM: Question fermée + clauses + faits
+    LLM-->>API: oui / non / incertain, clause et extrait
+    API->>API: Vérification de la citation
+  end
+  API->>DB: Contrôle 7 : plafond et franchise
+  API->>API: Verdict déduit des contrôles
+  API->>DB: Enregistrement de l'analyse
+  API-->>UI: Verdict, indemnité estimée, questions à poser
+  UI-->>G: Instruction expliquée — la décision reste au gestionnaire

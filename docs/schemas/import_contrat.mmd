@@ -1,0 +1,15 @@
+flowchart TB
+  A(["Nouvelle version<br/>de conditions générales"]) --> B["Déposer le PDF et<br/>compléter le catalogue"]
+  B --> C{"PDF avec texte ?"}
+  C -- non --> X(["Refusé : PDF scanné<br/>(OCR hors périmètre)"])
+  C -- oui --> D["Découper en clauses<br/>(colonnes, titres, pages)"]
+  D --> E["Typer les clauses et<br/>rattacher les familles"]
+  E --> F["Indexer (BM25)"]
+  F --> G["Produire le rapport d'import :<br/>clauses par type, sections"]
+  G --> H{"Rapport conforme ?<br/>(contrôle humain)"}
+  H -- non --> I["Corriger le découpage<br/>ou signaler le cas"] --> D
+  H -- oui --> J["Proposer le catalogue des garanties<br/>(en-têtes de garantie)"]
+  J --> K["Valider le catalogue<br/>(expert métier)"]
+  K --> L(["Contrat disponible pour l'instruction<br/>à partir de sa date d'effet"])
+  classDef human fill:#FFFFFF,stroke:#1F4E79
+  class B,H,I,K human

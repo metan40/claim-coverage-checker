@@ -3,6 +3,11 @@
 Une version = une archive `claim-coverage-checker_vN.zip`. Le détail des
 décisions et des mesures est dans `docs/journal_technique.md`.
 
+## Version 2 — 31 octobre 2026
+
+- Schémas dans `docs/schemas/` : processus d'instruction (BPMN 2.0, importable dans Bizagi et Enterprise Architect), architecture, modèle de données, séquence d'une instruction, import d'un contrat, cas d'utilisation.
+- Chaque schéma fourni en source modifiable, SVG et PNG ; mode d'emploi dans `docs/schemas/README.md`.
+
 ## Version 1 — 31 octobre 2026
 
 - Découpage générique des conditions générales PDF en clauses citables (3 contrats : LU, BE, FR).

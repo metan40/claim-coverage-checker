@@ -1,0 +1,92 @@
+erDiagram
+  CONTRATS ||--o{ ARTICLES : contient
+  CONTRATS ||--o{ DEFINITIONS : definit
+  CONTRATS ||--o{ GARANTIES : propose
+  ARTICLES ||--o{ ARTICLE_FAMILLES : "relève de"
+  ARTICLES ||--o| DEFINITIONS : "porte la définition"
+  CONTRATS ||--o{ POLICES : "s'applique à"
+  POLICES ||--o{ POLICE_OPTIONS : souscrit
+  POLICES ||--o{ SINISTRES : déclare
+  SINISTRES ||--o{ ANALYSES : "est instruit par"
+  ANALYSES ||--|{ CONTROLES : comprend
+  CONTROLES }o--o| ARTICLES : cite
+  CONTRATS ||--o{ IMPORTS : trace
+  CONTRATS {
+    int id PK
+    text code "une version"
+    text gamme "le produit"
+    text assureur
+    text pays
+    date date_effet
+    text sha256
+  }
+  ARTICLES {
+    int id PK
+    int contrat_id FK
+    int page
+    int page_fin
+    text section "chemin des titres"
+    text type "definition, exclusion, condition, garantie"
+    text texte
+  }
+  ARTICLE_FAMILLES {
+    int article_id FK
+    text famille
+  }
+  DEFINITIONS {
+    int id PK
+    int contrat_id FK
+    int article_id FK
+    text terme
+  }
+  GARANTIES {
+    int id PK
+    int contrat_id FK
+    text famille
+    text libelle
+    bool optionnelle
+    text formules
+  }
+  POLICES {
+    text numero PK
+    text gamme
+    text formule
+    date date_effet
+    date echeance
+    real plafond
+    real franchise
+  }
+  POLICE_OPTIONS {
+    text numero FK
+    text option
+  }
+  SINISTRES {
+    int id PK
+    text numero_police FK
+    date date_survenance
+    date date_declaration
+    text description
+    real montant_estime
+  }
+  ANALYSES {
+    int id PK
+    int sinistre_id FK
+    int contrat_id FK
+    text verdict
+    real indemnite_estimee
+    text avis_gestionnaire
+  }
+  CONTROLES {
+    int id PK
+    int analyse_id FK
+    int numero "1 à 7"
+    text statut "satisfait, bloquant, à vérifier, sans objet"
+    int article_id FK
+    text question
+  }
+  IMPORTS {
+    int id PK
+    int contrat_id FK
+    datetime date
+    text statut
+  }

@@ -1,0 +1,23 @@
+flowchart LR
+  GES(["👤 Gestionnaire<br/>de sinistres"])
+  EXP(["👤 Expert produit"])
+  ADM(["👤 Administrateur"])
+  subgraph SYS["Outil d'aide à l'instruction"]
+    U1(["Instruire un sinistre"])
+    U2(["Consulter les clauses citées<br/>et leurs pages"])
+    U3(["Comparer plusieurs contrats"])
+    U4(["Exporter l'analyse en PDF"])
+    U5(["Donner son avis sur l'analyse"])
+    U6(["Importer une version<br/>de conditions générales"])
+    U7(["Valider le catalogue<br/>des garanties"])
+    U8(["Suivre les indicateurs<br/>(accord, indéterminés)"])
+  end
+  GES --- U1
+  GES --- U2
+  GES --- U3
+  GES --- U4
+  GES --- U5
+  EXP --- U7
+  EXP --- U3
+  ADM --- U6
+  ADM --- U8

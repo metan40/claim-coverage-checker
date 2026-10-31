@@ -1,0 +1,28 @@
+flowchart TB
+  subgraph PREP["Préparation hors ligne — une fois par contrat"]
+    PDF["Conditions générales<br/>(PDF)"] --> PARSE["pdf_parsing.py<br/>découpage en clauses"]
+    CAT["Catalogue des contrats<br/>(CSV)"] --> DBB["database.py<br/>typage, familles, index"]
+    PARSE --> DBB
+  end
+  subgraph DATA["Données — un seul fichier SQLite"]
+    CG[("Contrats, clauses,<br/>définitions, index BM25")]
+    PF[("Polices, options,<br/>sinistres (synthétiques)")]
+    TR[("Analyses et contrôles<br/>(traçabilité)")]
+  end
+  subgraph APP["Application"]
+    UI["Interface web<br/>déclaration, instruction, comparaison"] --> API["API FastAPI"]
+    API --> INS["Instruction<br/>7 contrôles"]
+    INS --> SQL["Contrôles factuels<br/>(SQL)"]
+    INS --> CLF["classifier.py<br/>garantie concernée"]
+    INS --> RET["retrieval.py<br/>clauses utiles"]
+    INS --> DEC["decision.py<br/>question fermée + vérification"]
+  end
+  LLM["Modèle de langage local<br/>Ollama, llama3.2"]
+  DBB --> CG
+  SQL --> PF
+  SQL --> CG
+  RET --> CG
+  DEC --> LLM
+  INS --> TR
+  classDef planned stroke-dasharray: 5 4
+  class PF,TR,UI,API,INS,SQL planned
