@@ -45,6 +45,10 @@ python evaluation/evaluate_retrieval.py      # évalue la recherche des clauses
 Si la version de scikit-learn installée diffère de celle qui a entraîné le
 modèle, réentraîner le classifieur (`python -m src.classifier`, une seconde).
 
+## Versions
+
+Numéro de version dans `VERSION` ; historique dans `CHANGEMENTS.md`.
+
 ## Données
 
 Uniquement des documents publics et des données synthétiques.
