@@ -1,0 +1,15 @@
+cas,contrat,fragment,section_contient,role
+velo,sogessur_fr,locaux à usage commun des occupants,,exclusion décisive
+velo,sogessur_fr,non attachés à un point fixe,,exclusion décisive
+velo,sogessur_fr,formule Initiale avec option Vol,Vol,garantie souscrite ?
+velo,ethias_be,se trouvant dans les parties communes,,exclusion décisive
+velo,ethias_be,uniquement si mention en est faite,Vol,garantie optionnelle
+velo,baloise_lu,point d’attache fixé au sol,,condition
+velo,baloise_lu,portes d’accès doivent être fermées à clé,,condition
+velo,baloise_lu,Vélos et vélos à assistance électrique,mobilité durable,définition
+bougie,sogessur_fr,fers à repasser et appareils de chauffage,,exclusion décisive
+bougie,ethias_be,La combustion sans flamme,,garantie
+bougie,ethias_be,flammes évoluant en dehors d’un foyer normal,,définition
+bougie,baloise_lu,Détériorations ou brûlures causés au linge,,définition décisive
+bougie,baloise_lu,action subite de la chaleur,,garantie
+bougie,baloise_lu,du mobilier de jardin,,définition
