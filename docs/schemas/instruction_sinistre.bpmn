@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="definitions" targetNamespace="https://github.com/metan40/claim-coverage-checker">
+  <bpmn:collaboration id="collaboration">
+    <bpmn:participant id="pool" name="Instruction d'un sinistre habitation" processRef="process"/>
+  </bpmn:collaboration>
+  <bpmn:process id="process" isExecutable="false">
+    <bpmn:laneSet id="laneset">
+      <bpmn:lane id="lane_assure" name="Assuré">
+        <bpmn:flowNodeRef>debut</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>declarer</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>fournir</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="lane_gestionnaire" name="Gestionnaire de sinistres">
+        <bpmn:flowNodeRef>ouvrir</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>regler</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>refus</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>questions</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>fin_regle</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>fin_refus</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="lane_outil" name="Outil d'aide à la décision">
+        <bpmn:flowNodeRef>c12</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>c3</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>c46</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>c7</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>verdict</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>gw</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="debut" name="Sinistre survenu"><bpmn:outgoing>f1</bpmn:outgoing></bpmn:startEvent>
+    <bpmn:task id="declarer" name="Déclarer le sinistre"><bpmn:incoming>f1</bpmn:incoming><bpmn:outgoing>f2</bpmn:outgoing></bpmn:task>
+    <bpmn:task id="ouvrir" name="Ouvrir ou compléter le dossier"><bpmn:incoming>f2</bpmn:incoming><bpmn:incoming>f15</bpmn:incoming><bpmn:outgoing>f3</bpmn:outgoing></bpmn:task>
+    <bpmn:serviceTask id="c12" name="1-2. Police en vigueur, version applicable (SQL)"><bpmn:incoming>f3</bpmn:incoming><bpmn:outgoing>f4</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:serviceTask id="c3" name="3. Garantie souscrite (classifieur + SQL)"><bpmn:incoming>f4</bpmn:incoming><bpmn:outgoing>f5</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:serviceTask id="c46" name="4-6. Événement, exclusions, conditions (recherche + LLM vérifié)"><bpmn:incoming>f5</bpmn:incoming><bpmn:outgoing>f6</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:serviceTask id="c7" name="7. Montant : plafond, franchise"><bpmn:incoming>f6</bpmn:incoming><bpmn:outgoing>f7</bpmn:outgoing></bpmn:serviceTask>
+    <bpmn:businessRuleTask id="verdict" name="Déduire le verdict des contrôles"><bpmn:incoming>f7</bpmn:incoming><bpmn:outgoing>f8</bpmn:outgoing></bpmn:businessRuleTask>
+    <bpmn:exclusiveGateway id="gw" name="Verdict ?"><bpmn:incoming>f8</bpmn:incoming><bpmn:outgoing>f9</bpmn:outgoing><bpmn:outgoing>f10</bpmn:outgoing><bpmn:outgoing>f11</bpmn:outgoing></bpmn:exclusiveGateway>
+    <bpmn:userTask id="regler" name="Valider et régler"><bpmn:incoming>f9</bpmn:incoming><bpmn:outgoing>f12</bpmn:outgoing></bpmn:userTask>
+    <bpmn:userTask id="refus" name="Notifier un refus motivé"><bpmn:incoming>f10</bpmn:incoming><bpmn:outgoing>f13</bpmn:outgoing></bpmn:userTask>
+    <bpmn:userTask id="questions" name="Demander les informations manquantes"><bpmn:incoming>f11</bpmn:incoming><bpmn:outgoing>f14</bpmn:outgoing></bpmn:userTask>
+    <bpmn:task id="fournir" name="Fournir les informations"><bpmn:incoming>f14</bpmn:incoming><bpmn:outgoing>f15</bpmn:outgoing></bpmn:task>
+    <bpmn:endEvent id="fin_regle" name="Dossier réglé"><bpmn:incoming>f12</bpmn:incoming></bpmn:endEvent>
+    <bpmn:endEvent id="fin_refus" name="Refus notifié"><bpmn:incoming>f13</bpmn:incoming></bpmn:endEvent>
+    <bpmn:sequenceFlow id="f1" sourceRef="debut" targetRef="declarer"/>
+    <bpmn:sequenceFlow id="f2" sourceRef="declarer" targetRef="ouvrir"/>
+    <bpmn:sequenceFlow id="f3" sourceRef="ouvrir" targetRef="c12"/>
+    <bpmn:sequenceFlow id="f4" sourceRef="c12" targetRef="c3"/>
+    <bpmn:sequenceFlow id="f5" sourceRef="c3" targetRef="c46"/>
+    <bpmn:sequenceFlow id="f6" sourceRef="c46" targetRef="c7"/>
+    <bpmn:sequenceFlow id="f7" sourceRef="c7" targetRef="verdict"/>
+    <bpmn:sequenceFlow id="f8" sourceRef="verdict" targetRef="gw"/>
+    <bpmn:sequenceFlow id="f9" sourceRef="gw" targetRef="regler" name="Potentiellement couvert"/>
+    <bpmn:sequenceFlow id="f10" sourceRef="gw" targetRef="refus" name="Potentiellement exclu"/>
+    <bpmn:sequenceFlow id="f11" sourceRef="gw" targetRef="questions" name="Indéterminé"/>
+    <bpmn:sequenceFlow id="f12" sourceRef="regler" targetRef="fin_regle"/>
+    <bpmn:sequenceFlow id="f13" sourceRef="refus" targetRef="fin_refus"/>
+    <bpmn:sequenceFlow id="f14" sourceRef="questions" targetRef="fournir"/>
+    <bpmn:sequenceFlow id="f15" sourceRef="fournir" targetRef="ouvrir" name="Informations reçues"/>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="diagram">
+    <bpmndi:BPMNPlane id="plane" bpmnElement="collaboration">
+      <bpmndi:BPMNShape id="pool_di" bpmnElement="pool" isHorizontal="true"><dc:Bounds x="0" y="0" width="1700" height="570"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="lane_assure_di" bpmnElement="lane_assure" isHorizontal="true"><dc:Bounds x="40" y="0" width="1660" height="170"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="lane_gestionnaire_di" bpmnElement="lane_gestionnaire" isHorizontal="true"><dc:Bounds x="40" y="170" width="1660" height="200"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="lane_outil_di" bpmnElement="lane_outil" isHorizontal="true"><dc:Bounds x="40" y="370" width="1660" height="200"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="debut_di" bpmnElement="debut"><dc:Bounds x="90" y="67" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="declarer_di" bpmnElement="declarer"><dc:Bounds x="160" y="45" width="130" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ouvrir_di" bpmnElement="ouvrir"><dc:Bounds x="330" y="230" width="130" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="c12_di" bpmnElement="c12"><dc:Bounds x="490" y="430" width="130" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="c3_di" bpmnElement="c3"><dc:Bounds x="650" y="430" width="130" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="c46_di" bpmnElement="c46"><dc:Bounds x="810" y="430" width="130" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="c7_di" bpmnElement="c7"><dc:Bounds x="970" y="430" width="130" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="verdict_di" bpmnElement="verdict"><dc:Bounds x="1130" y="430" width="130" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="gw_di" bpmnElement="gw" isMarkerVisible="true"><dc:Bounds x="1300" y="445" width="50" height="50"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="regler_di" bpmnElement="regler"><dc:Bounds x="1420" y="180" width="130" height="55"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="refus_di" bpmnElement="refus"><dc:Bounds x="1420" y="245" width="130" height="55"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="questions_di" bpmnElement="questions"><dc:Bounds x="1420" y="310" width="130" height="55"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="fournir_di" bpmnElement="fournir"><dc:Bounds x="1420" y="45" width="130" height="80"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="fin_regle_di" bpmnElement="fin_regle"><dc:Bounds x="1600" y="189" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="fin_refus_di" bpmnElement="fin_refus"><dc:Bounds x="1600" y="254" width="36" height="36"/></bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="f1_di" bpmnElement="f1"><di:waypoint x="126" y="85"/><di:waypoint x="160" y="85"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="f2_di" bpmnElement="f2"><di:waypoint x="225" y="125"/><di:waypoint x="225" y="270"/><di:waypoint x="330" y="270"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="f3_di" bpmnElement="f3"><di:waypoint x="460" y="270"/><di:waypoint x="555" y="270"/><di:waypoint x="555" y="430"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="f4_di" bpmnElement="f4"><di:waypoint x="620" y="470"/><di:waypoint x="650" y="470"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="f5_di" bpmnElement="f5"><di:waypoint x="780" y="470"/><di:waypoint x="810" y="470"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="f6_di" bpmnElement="f6"><di:waypoint x="940" y="470"/><di:waypoint x="970" y="470"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="f7_di" bpmnElement="f7"><di:waypoint x="1100" y="470"/><di:waypoint x="1130" y="470"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="f8_di" bpmnElement="f8"><di:waypoint x="1260" y="470"/><di:waypoint x="1300" y="470"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="f9_di" bpmnElement="f9"><di:waypoint x="1325" y="445"/><di:waypoint x="1325" y="207"/><di:waypoint x="1420" y="207"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="f10_di" bpmnElement="f10"><di:waypoint x="1350" y="470"/><di:waypoint x="1375" y="470"/><di:waypoint x="1375" y="272"/><di:waypoint x="1420" y="272"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="f11_di" bpmnElement="f11"><di:waypoint x="1325" y="495"/><di:waypoint x="1325" y="540"/><di:waypoint x="1390" y="540"/><di:waypoint x="1390" y="337"/><di:waypoint x="1420" y="337"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="f12_di" bpmnElement="f12"><di:waypoint x="1550" y="207"/><di:waypoint x="1600" y="207"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="f13_di" bpmnElement="f13"><di:waypoint x="1550" y="272"/><di:waypoint x="1600" y="272"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="f14_di" bpmnElement="f14"><di:waypoint x="1550" y="337"/><di:waypoint x="1575" y="337"/><di:waypoint x="1575" y="85"/><di:waypoint x="1550" y="85"/></bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="f15_di" bpmnElement="f15"><di:waypoint x="1420" y="85"/><di:waypoint x="395" y="85"/><di:waypoint x="395" y="230"/></bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
