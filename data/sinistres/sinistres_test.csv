@@ -1,0 +1,61 @@
+id,description,famille,difficulte
+T001,"Mon vélo, que je laisse dans le local commun de la résidence, n'y était plus ce matin. Le local n'était pas fermé à clé.",vol,sujet
+T002,"Pendant nos vacances, une bougie restée allumée sur la terrasse a fait fondre notre table de jardin.",incendie,sujet
+T003,En rentrant du travail j'ai trouvé l'appartement sens dessus dessous et il manque le portable et la console.,vol,normale
+T004,La porte de la cave porte des traces de pied de biche et mes deux skis ont disparu.,vol,normale
+T005,Des jeunes ont rayé et cabossé notre porte de garage à coups de pierre.,vol,difficile
+T006,Ma voisine a vu deux hommes repartir avec notre barbecue et nos chaises longues.,vol,normale
+T007,"Quelqu'un s'est servi dans ma maison, je ne retrouve plus l'argenterie de ma grand-mère.",vol,difficile
+T008,On a essayé d'entrer : la serrure est abîmée mais rien n'a été pris.,vol,normale
+T009,Ma trottinette électrique a été subtilisée dans le couloir de l'immeuble.,vol,normale
+T010,Le cadenas du box a été sectionné et la moto-cross de mon fils n'est plus là.,vol,difficile
+T011,La poêle a flambé et le feu a gagné les placards de la cuisine.,incendie,normale
+T012,"Toute la maison sent la fumée et les murs sont noirs, le feu a démarré dans le garage.",incendie,normale
+T013,Le chargeur de la trottinette a surchauffé et a carbonisé le bureau.,incendie,difficile
+T014,Un orage : la foudre a frappé la cheminée et une partie du toit a brûlé.,incendie,difficile
+T015,Ma fille a posé le fer chaud sur le plaid et il y a maintenant un trou brûlé.,incendie,normale
+T016,Le chauffage d'appoint était trop près du fauteuil qui a roussi.,incendie,normale
+T017,La gazinière a explosé et a soufflé les vitres de la cuisine.,incendie,difficile
+T018,Une étincelle du feu de bois a brûlé le parquet devant l'insert.,incendie,normale
+T019,Le chalumeau de mon mari a enflammé la haie et l'abri en bois.,incendie,normale
+T020,La lampe de chevet est tombée sur la couette et l'a brûlée.,incendie,normale
+T021,Une tache d'humidité s'agrandit au plafond de la chambre depuis une semaine.,degats_des_eaux,normale
+T022,Le flexible de l'évier a lâché et la cuisine baignait dans cinq centimètres d'eau.,degats_des_eaux,normale
+T023,L'appartement du dessus a laissé couler son bain et l'eau traverse mon plafond.,degats_des_eaux,normale
+T024,"Avec le froid, le compteur d'eau dans le garage a éclaté.",degats_des_eaux,difficile
+T025,La machine à laver a fui toute la nuit et le stratifié est gondolé.,degats_des_eaux,normale
+T026,De l'eau suinte le long du mur à chaque grosse pluie depuis que la gouttière est percée.,degats_des_eaux,difficile
+T027,La douche à l'italienne n'est plus étanche : le salon en dessous est taché.,degats_des_eaux,normale
+T028,Le cumulus du grenier s'est vidé et a traversé le plafond du couloir.,degats_des_eaux,normale
+T029,Un raccord de chauffage central a lâché et a mouillé tout le tapis.,degats_des_eaux,normale
+T030,L'eau des toilettes est remontée et a envahi la salle de bain.,degats_des_eaux,normale
+T031,Mon fils a shooté dans le ballon et la fenêtre du salon est en morceaux.,bris_de_glace,normale
+T032,"Le grand miroir de l'entrée s'est décroché du mur, il est en mille morceaux.",bris_de_glace,normale
+T033,Une casserole est tombée sur la table de cuisson en vitrocéramique qui est maintenant fendue.,bris_de_glace,normale
+T034,La porte-fenêtre du balcon présente une longue fissure sans raison apparente.,bris_de_glace,normale
+T035,Un oiseau a percuté la baie vitrée qui est fêlée.,bris_de_glace,normale
+T036,Le verre de la porte du poêle à bois s'est fendu.,bris_de_glace,difficile
+T037,La vitre du velux a éclaté pendant que je le fermais.,bris_de_glace,normale
+T038,Le plateau en verre de la table basse s'est brisé quand le chat a sauté dessus.,bris_de_glace,normale
+T039,La vitrine de la cuisine s'est fendue en la fermant trop fort.,bris_de_glace,normale
+T040,La paroi vitrée de la douche a littéralement explosé ce matin.,bris_de_glace,difficile
+T041,Les bourrasques de la nuit ont fait tomber une partie de la cheminée sur la voiture.,evenements_naturels,difficile
+T042,Des grêlons gros comme des balles de golf ont troué les panneaux solaires.,evenements_naturels,normale
+T043,Le ruisseau est sorti de son lit et il y a trente centimètres d'eau boueuse au rez-de-chaussée.,evenements_naturels,difficile
+T044,La neige accumulée a fait s'effondrer le toit du carport.,evenements_naturels,normale
+T045,Le gros chêne du jardin a été déraciné par le vent et a écrasé la clôture.,evenements_naturels,normale
+T046,"Après la sécheresse de l'été, des fissures sont apparues dans les murs porteurs.",evenements_naturels,normale
+T047,La tempête a soulevé la toiture de l'abri et projeté des tôles chez nous.,evenements_naturels,normale
+T048,Les pluies diluviennes ont fait déborder les égouts et la cave est noyée.,evenements_naturels,difficile
+T049,Un glissement de terrain a fissuré la terrasse.,evenements_naturels,normale
+T050,Un violent orage de grêle a cassé les tuiles et cabossé les volets.,evenements_naturels,normale
+T051,Mon chien s'est échappé et a fait chuter une cycliste qui s'est cassé le poignet.,responsabilite_civile,normale
+T052,"En jouant au foot, mon fils a cassé la fenêtre du voisin.",responsabilite_civile,difficile
+T053,J'ai renversé un verre de vin sur l'ordinateur d'un ami qui ne fonctionne plus.,responsabilite_civile,normale
+T054,Une tuile de mon toit est tombée sur la voiture garée dans la rue.,responsabilite_civile,difficile
+T055,Ma fille a bousculé une camarade à la récréation qui s'est cassé une dent.,responsabilite_civile,normale
+T056,La copine de mon fils s'est tordu la cheville dans notre escalier mal éclairé.,responsabilite_civile,normale
+T057,Le voisin me reproche les dégâts causés à son potager par mes poules.,responsabilite_civile,normale
+T058,En taillant la haie j'ai abîmé la carrosserie de la voiture du voisin.,responsabilite_civile,normale
+T059,Notre chat a renversé et cassé un vase de valeur chez nos amis.,responsabilite_civile,normale
+T060,Un livreur a glissé sur notre allée verglacée et réclame une indemnisation.,responsabilite_civile,normale

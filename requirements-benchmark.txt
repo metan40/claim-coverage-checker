@@ -1,0 +1,12 @@
+# Banc d'essai des classifieurs (à installer sur un PC avec accès à Internet)
+scikit-learn>=1.5
+numpy
+pandas
+joblib
+pdfplumber>=0.11
+sentence-transformers>=3.0
+setfit>=1.1
+transformers>=4.44
+datasets>=2.20
+accelerate>=0.30
+torch

@@ -1,0 +1,781 @@
+id,description,famille
+E0001,"Bonjour, l'eau est remontée par les canalisations au sous-sol pendant mon absence. Merci de me rappeler.",degats_des_eaux
+E0002,Mon assurance habitation fonctionne-t-elle ? le tuyau de la machine s'est détaché au sous-sol hier soir. Merci de me rappeler.,degats_des_eaux
+E0003,"Pour information, le radiateur a roussi les rideaux dans le salon en pleine journée. Merci de me rappeler.",incendie
+E0004,"Madame, Monsieur, le chauffe-eau a lâché au sous-sol ce matin. Merci de me rappeler.",degats_des_eaux
+E0005,Je souhaite savoir si je suis couvert : le coffre a été emporté par les voleurs dans la maison en pleine journée. Mon propriétaire est prévenu.,vol
+E0006,Une coulée de boue a envahi le jardin dans notre commune pendant mon absence. Que dois-je faire ?,evenements_naturels
+E0007,Je souhaite savoir si je suis couvert : la vitre de la fenêtre est cassée à la maison cette nuit. Le préjudice est important.,bris_de_glace
+E0008,Petit problème : l'arbre de mon jardin est tombé chez le voisin pendant une fête il y a trois jours. Que dois-je faire ?,responsabilite_civile
+E0009,Mon assurance habitation fonctionne-t-elle ? la cave est inondée après le débordement du ruisseau chez nous cette nuit. Est-ce pris en charge ?,evenements_naturels
+E0010,Petit problème : le miroir de la salle de bain est brisé dans la chambre le week-end dernier. Merci de me rappeler.,bris_de_glace
+E0011,Je souhaite savoir si je suis couvert : j'ai bousculé quelqu'un à vélo à l'école hier soir. Je n'ai pas encore fait de devis.,responsabilite_civile
+E0012,Je déclare un sinistre : l'eau est remontée par les canalisations dans la chambre cette nuit. Je n'ai pas encore fait de devis.,degats_des_eaux
+E0013,"Bonjour, le panneau vitré du garde-corps est cassé à la maison lundi",bris_de_glace
+E0014,"Bonjour, le lave-vaisselle a inondé la cuisine au sous-sol pendant nos vacances. Le préjudice est important.",degats_des_eaux
+E0015,Le radiateur fuit sur le parquet dans le séjour en pleine journée. Mon propriétaire est prévenu.,degats_des_eaux
+E0016,Urgent : le feu a pris dans la cheminée dans le salon,incendie
+E0017,Mon assurance habitation fonctionne-t-elle ? le velux est cassé dans le salon en pleine journée. Que dois-je faire ?,bris_de_glace
+E0018,Mon chien a renversé un cycliste chez des amis lundi. Mon propriétaire est prévenu.,responsabilite_civile
+E0019,Petit problème : mon enfant a mis le feu au jardin du voisin en jouant au parc pendant nos vacances. Que dois-je faire ?,responsabilite_civile
+E0020,Je déclare un sinistre : la porte vitrée a éclaté dans le salon lundi. Je n'ai pas encore fait de devis.,bris_de_glace
+E0021,Mon assurance habitation fonctionne-t-elle ? ma tondeuse a projeté un caillou sur la voiture d'un passant pendant une fête hier soir. Est-ce pris en charge ?,responsabilite_civile
+E0022,"Madame, Monsieur, le poids de la neige a fait céder l'auvent dans notre commune ce matin. Je n'ai pas encore fait de devis.",evenements_naturels
+E0023,"Bonjour, le miroir de l'armoire est tombé et s'est cassé dans le salon le week-end dernier. Je n'ai pas encore fait de devis.",bris_de_glace
+E0024,Le miroir de la salle de bain est brisé le week-end dernier. Le préjudice est important.,bris_de_glace
+E0025,Petit problème : mon enfant a rayé la voiture du voisin. Est-ce pris en charge ?,responsabilite_civile
+E0026,Urgent : un invité s'est blessé chez moi ce matin. Que dois-je faire ?,responsabilite_civile
+E0027,"Madame, Monsieur, la paroi de douche en verre a explosé dans la chambre en pleine journée. Je n'ai pas encore fait de devis.",bris_de_glace
+E0028,Petit problème : la foudre est tombée sur la maison sur la terrasse il y a trois jours. Mon propriétaire est prévenu.,incendie
+E0029,Je souhaite savoir si je suis couvert : un cambriolage a eu lieu dans l'appartement pendant mon absence,vol
+E0030,Je souhaite savoir si je suis couvert : la rivière a inondé le rez-de-chaussée à la maison il y a trois jours. Le préjudice est important.,evenements_naturels
+E0031,Le miroir de l'armoire est tombé et s'est cassé dans la cuisine ce matin. Le préjudice est important.,bris_de_glace
+E0032,"Bonjour, la boîte aux lettres a été vandalisée dans le local à vélos de l'immeuble. Le préjudice est important.",vol
+E0033,"Madame, Monsieur, un incendie s'est déclaré dans la cuisine dans l'appartement en pleine journée. J'ai pris des photos.",incendie
+E0034,La tempête a emporté l'abri de jardin chez nous. J'ai pris des photos.,evenements_naturels
+E0035,"Pour information, de l'eau s'infiltre par le toit dans le séjour pendant nos vacances. J'ai pris des photos.",degats_des_eaux
+E0036,Un incendie s'est déclaré dans la cuisine au sous-sol ce matin. Mon propriétaire est prévenu.,incendie
+E0037,Je vous écris car le sèche-linge a pris feu dans la chambre pendant nos vacances. Je n'ai pas encore fait de devis.,incendie
+E0038,"Madame, Monsieur, une branche arrachée par la tempête a percé le toit lundi. Merci de me rappeler.",evenements_naturels
+E0039,La grêle a percé la véranda chez nous pendant mon absence.,evenements_naturels
+E0040,Le vitrage de la véranda est fendu à la maison. Que dois-je faire ?,bris_de_glace
+E0041,J'ai endommagé le matériel prêté par un collègue le week-end dernier.,responsabilite_civile
+E0042,Urgent : la vitre de la fenêtre est cassée pendant mon absence. Que dois-je faire ?,bris_de_glace
+E0043,"Bonjour, le salon de jardin a été dérobé dans ma cave hier soir",vol
+E0044,Je souhaite savoir si je suis couvert : on a volé la tondeuse dans l'abri de jardin dans le hall de l'immeuble pendant nos vacances. Que dois-je faire ?,vol
+E0045,Je déclare un sinistre : le panneau vitré du garde-corps est cassé dans la cuisine cette nuit. Je n'ai pas encore fait de devis.,bris_de_glace
+E0046,"Bonjour, la grêle a abîmé la toiture chez nous ce matin. Merci de me rappeler.",evenements_naturels
+E0047,Je souhaite savoir si je suis couvert : un tremblement de terre a fissuré les murs dans le quartier le week-end dernier. Je n'ai pas encore fait de devis.,evenements_naturels
+E0048,Je vous écris car la crue a submergé le garage chez nous le week-end dernier. Mon propriétaire est prévenu.,evenements_naturels
+E0049,Je souhaite savoir si je suis couvert : la grêle a abîmé la toiture hier soir. Que dois-je faire ?,evenements_naturels
+E0050,Petit problème : des rafales ont renversé la clôture chez nous hier soir,evenements_naturels
+E0051,Je souhaite savoir si je suis couvert : mon enfant a mis le feu au jardin du voisin en jouant dans la rue il y a trois jours. Que dois-je faire ?,responsabilite_civile
+E0052,Je vous écris car la baignoire a débordé au sous-sol. Que dois-je faire ?,degats_des_eaux
+E0053,"Pour information, la fumée a noirci les murs du salon dans l'appartement pendant mon absence.",incendie
+E0054,"Bonjour, le miroir de l'armoire est tombé et s'est cassé à l'étage il y a trois jours. Merci de me rappeler.",bris_de_glace
+E0055,Je souhaite savoir si je suis couvert : la vitre de la porte d'entrée est fendue à la maison. Mon propriétaire est prévenu.,bris_de_glace
+E0056,Le coffre a été emporté par les voleurs dans le garage ce matin,vol
+E0057,Une branche arrachée par la tempête a percé le toit à la maison. Je n'ai pas encore fait de devis.,evenements_naturels
+E0058,"Bonjour, le lave-linge a débordé dans l'appartement lundi. Mon propriétaire est prévenu.",degats_des_eaux
+E0059,Mon assurance habitation fonctionne-t-elle ? la friteuse a pris feu dans le salon il y a trois jours. Que dois-je faire ?,incendie
+E0060,Je vous écris car le salon de jardin a été dérobé dans le jardin cette nuit,vol
+E0061,Urgent : mon ordinateur portable a été volé dans le local à vélos de l'immeuble pendant nos vacances. Je n'ai pas encore fait de devis.,vol
+E0062,Je souhaite savoir si je suis couvert : mes outils ont été volés dans la dépendance dans la maison hier soir. J'ai pris des photos.,vol
+E0063,Urgent : l'aquarium a éclaté et l'eau a coulé partout dans le séjour hier soir. Merci de me rappeler.,degats_des_eaux
+E0064,"Bonjour, de l'eau s'infiltre par le toit ce matin",degats_des_eaux
+E0065,Urgent : la boîte aux lettres a été vandalisée dans le hall de l'immeuble pendant nos vacances. J'ai pris des photos.,vol
+E0066,Je vous écris car le velux est cassé pendant mon absence. Le préjudice est important.,bris_de_glace
+E0067,Petit problème : la baignoire a débordé dans la chambre lundi. Mon propriétaire est prévenu.,degats_des_eaux
+E0068,Je souhaite savoir si je suis couvert : le voisin me réclame des dommages pour sa clôture abîmée par mes enfants dans la rue le week-end dernier. Le préjudice est important.,responsabilite_civile
+E0069,"Madame, Monsieur, le voisin du dessus a eu une fuite dans la salle de bain pendant mon absence. Est-ce pris en charge ?",degats_des_eaux
+E0070,Mon assurance habitation fonctionne-t-elle ? mon chien a renversé un cycliste dans la rue. Le préjudice est important.,responsabilite_civile
+E0071,Mon assurance habitation fonctionne-t-elle ? mon chat a griffé l'enfant des voisins dans la rue le week-end dernier. Que dois-je faire ?,responsabilite_civile
+E0072,Un incendie chez le voisin a atteint ma maison dans le salon le week-end dernier. Que dois-je faire ?,incendie
+E0073,"Pour information, ma tondeuse a projeté un caillou sur la voiture d'un passant il y a trois jours.",responsabilite_civile
+E0074,Petit problème : ma fille a cassé les lunettes d'une amie il y a trois jours,responsabilite_civile
+E0075,"Pour information, on a dérobé mes bijoux dans ma cave.",vol
+E0076,"Pour information, un cambriolage a eu lieu dans la maison pendant mon absence. Merci de me rappeler.",vol
+E0077,Je vous écris car des étincelles ont brûlé le mobilier de jardin au sous-sol ce matin.,incendie
+E0078,Urgent : des braises ont brûlé le tapis dans la cuisine ce matin,incendie
+E0079,"Madame, Monsieur, un cambriolage a eu lieu dans le garage ce matin. Le préjudice est important.",vol
+E0080,Je vous écris car la neige a écrasé la serre dans notre commune pendant nos vacances,evenements_naturels
+E0081,Je vous écris car la tempête a emporté l'abri de jardin hier soir. Le préjudice est important.,evenements_naturels
+E0082,Mon assurance habitation fonctionne-t-elle ? ma fille a cassé les lunettes d'une amie pendant une fête hier soir. Est-ce pris en charge ?,responsabilite_civile
+E0083,Petit problème : la vitre de la porte d'entrée est fendue à l'étage en pleine journée. Je n'ai pas encore fait de devis.,bris_de_glace
+E0084,"Madame, Monsieur, la neige a écrasé la serre il y a trois jours. Merci de me rappeler.",evenements_naturels
+E0085,"Pour information, mon ordinateur portable a été volé dans l'appartement. Je n'ai pas encore fait de devis.",vol
+E0086,"Pour information, la table en verre s'est brisée à la maison le week-end dernier. Le préjudice est important.",bris_de_glace
+E0087,Je souhaite savoir si je suis couvert : un pot de fleurs est tombé de mon balcon sur une voiture chez des amis ce matin. Le préjudice est important.,responsabilite_civile
+E0088,"Bonjour, ma cave a été cambriolée dans le jardin lundi. J'ai pris des photos.",vol
+E0089,Mon assurance habitation fonctionne-t-elle ? l'eau du voisin coule dans ma salle de bain dans la cuisine. J'ai pris des photos.,degats_des_eaux
+E0090,Mon assurance habitation fonctionne-t-elle ? la serrure du local a été cassée et mon vélo volé pendant mon absence. Le préjudice est important.,vol
+E0091,"Pour information, des voleurs ont fracturé la fenêtre ce matin. Le préjudice est important.",vol
+E0092,Je souhaite savoir si je suis couvert : des cambrioleurs sont entrés chez moi dans le garage ce matin,vol
+E0093,Urgent : le chauffe-eau a lâché dans le séjour il y a trois jours. Je n'ai pas encore fait de devis.,degats_des_eaux
+E0094,Je souhaite savoir si je suis couvert : le fer à repasser a brûlé la moquette dans l'appartement il y a trois jours. J'ai pris des photos.,incendie
+E0095,"Pour information, la table en plastique a fondu à cause de la chaleur sur la terrasse lundi. Est-ce pris en charge ?",incendie
+E0096,Petit problème : on a dérobé mes bijoux cette nuit. Mon propriétaire est prévenu.,vol
+E0097,Urgent : la vitre de la fenêtre est cassée à l'étage pendant mon absence,bris_de_glace
+E0098,Urgent : un tremblement de terre a fissuré les murs chez nous pendant nos vacances. Le préjudice est important.,evenements_naturels
+E0099,Mon assurance habitation fonctionne-t-elle ? la paroi de douche en verre a explosé dans la chambre. Je n'ai pas encore fait de devis.,bris_de_glace
+E0100,"Pour information, le tuyau de la machine s'est détaché dans le séjour.",degats_des_eaux
+E0101,"Bonjour, une mini-tornade a endommagé la toiture dans le quartier cette nuit. Merci de me rappeler.",evenements_naturels
+E0102,Petit problème : ma cave a été cambriolée dans le local à vélos de l'immeuble le week-end dernier. Je n'ai pas encore fait de devis.,vol
+E0103,Petit problème : la plaque vitrocéramique est fêlée dans la cuisine lundi.,bris_de_glace
+E0104,Urgent : un passant a glissé devant ma maison au parc en pleine journée. Je n'ai pas encore fait de devis.,responsabilite_civile
+E0105,Petit problème : le terrain a glissé sous la terrasse dans notre commune il y a trois jours.,evenements_naturels
+E0106,Je vous écris car la paroi de douche en verre a explosé dans la cuisine ce matin. Je n'ai pas encore fait de devis.,bris_de_glace
+E0107,Je souhaite savoir si je suis couvert : la chasse d'eau fuit depuis des jours dans la cuisine pendant mon absence.,degats_des_eaux
+E0108,"Madame, Monsieur, un passant a glissé devant ma maison chez des amis il y a trois jours",responsabilite_civile
+E0109,Je vous écris car le miroir de l'armoire est tombé et s'est cassé à l'étage il y a trois jours. Mon propriétaire est prévenu.,bris_de_glace
+E0110,Je souhaite savoir si je suis couvert : le joint de la douche fuit dans la chambre il y a trois jours. Le préjudice est important.,degats_des_eaux
+E0111,"Bonjour, la grêle a abîmé la toiture. Merci de me rappeler.",evenements_naturels
+E0112,Petit problème : un incendie s'est déclaré dans la cuisine au sous-sol pendant mon absence. Le préjudice est important.,incendie
+E0113,Petit problème : le miroir de l'armoire est tombé et s'est cassé dans la cuisine. Je n'ai pas encore fait de devis.,bris_de_glace
+E0114,"Madame, Monsieur, la chaleur du poêle a déformé le meuble dans la cuisine il y a trois jours. Mon propriétaire est prévenu.",incendie
+E0115,"Pour information, le voisin me réclame des dommages pour sa clôture abîmée par mes enfants pendant une fête hier soir. Que dois-je faire ?",responsabilite_civile
+E0116,Urgent : le barbecue a mis le feu à la haie sur la terrasse hier soir.,incendie
+E0117,Je déclare un sinistre : les flammes ont détruit le garage dans la cuisine. Le préjudice est important.,incendie
+E0118,Urgent : le fer à repasser a brûlé la moquette au sous-sol il y a trois jours. Que dois-je faire ?,incendie
+E0119,Mon assurance habitation fonctionne-t-elle ? on a dérobé mes bijoux dans le jardin pendant mon absence. Je n'ai pas encore fait de devis.,vol
+E0120,Une coulée de boue a envahi le jardin à la maison pendant mon absence. Le préjudice est important.,evenements_naturels
+E0121,Je vous écris car la chasse d'eau fuit depuis des jours dans l'appartement ce matin. Le préjudice est important.,degats_des_eaux
+E0122,Mon assurance habitation fonctionne-t-elle ? ma tondeuse a projeté un caillou sur la voiture d'un passant dans la rue pendant mon absence. Mon propriétaire est prévenu.,responsabilite_civile
+E0123,Petit problème : l'arbre de mon jardin est tombé chez le voisin dans la rue le week-end dernier. J'ai pris des photos.,responsabilite_civile
+E0124,J'ai abîmé la voiture d'un tiers en déménageant dans la rue cette nuit. Que dois-je faire ?,responsabilite_civile
+E0125,Mon assurance habitation fonctionne-t-elle ? une bougie a fait fondre la table le week-end dernier. J'ai pris des photos.,incendie
+E0126,Mon assurance habitation fonctionne-t-elle ? la table en verre s'est brisée à la maison le week-end dernier. J'ai pris des photos.,bris_de_glace
+E0127,"Madame, Monsieur, on a tenté de forcer la serrure pendant nos vacances. Mon propriétaire est prévenu.",vol
+E0128,Je vous écris car un court-circuit a provoqué un départ de feu sur la terrasse ce matin. Que dois-je faire ?,incendie
+E0129,"Bonjour, le WC a débordé dans l'appartement. Je n'ai pas encore fait de devis.",degats_des_eaux
+E0130,Petit problème : un cambriolage a eu lieu. Merci de me rappeler.,vol
+E0131,"Bonjour, le feu a pris dans la cheminée au sous-sol ce matin. Mon propriétaire est prévenu.",incendie
+E0132,La vitrine du salon est brisée à l'étage pendant mon absence. J'ai pris des photos.,bris_de_glace
+E0133,Urgent : la chaleur du poêle a déformé le meuble en pleine journée. J'ai pris des photos.,incendie
+E0134,Mon assurance habitation fonctionne-t-elle ? une branche arrachée par la tempête a percé le toit il y a trois jours. Mon propriétaire est prévenu.,evenements_naturels
+E0135,Je déclare un sinistre : une conduite enterrée s'est rompue dans la cuisine pendant mon absence. Le préjudice est important.,degats_des_eaux
+E0136,Urgent : le lave-linge a débordé dans le séjour.,degats_des_eaux
+E0137,Petit problème : une branche arrachée par la tempête a percé le toit ce matin. Mon propriétaire est prévenu.,evenements_naturels
+E0138,Petit problème : mes clés ont été volées puis l'appartement visité dans le hall de l'immeuble hier soir. Je n'ai pas encore fait de devis.,vol
+E0139,"Madame, Monsieur, j'ai endommagé le matériel prêté par un collègue ce matin.",responsabilite_civile
+E0140,"Bonjour, le lave-vaisselle a inondé la cuisine dans la chambre lundi.",degats_des_eaux
+E0141,Petit problème : un tremblement de terre a fissuré les murs chez nous pendant mon absence. Le préjudice est important.,evenements_naturels
+E0142,"Pour information, un feu de poubelle s'est propagé à la terrasse dans le jardin lundi. Mon propriétaire est prévenu.",incendie
+E0143,"Bonjour, le vent a arraché l'antenne chez nous lundi.",evenements_naturels
+E0144,Je souhaite savoir si je suis couvert : la vitre de la porte d'entrée est fendue à l'étage pendant mon absence. Que dois-je faire ?,bris_de_glace
+E0145,"Bonjour, le plafond s'est effondré sous le poids de l'eau au sous-sol lundi. Merci de me rappeler.",degats_des_eaux
+E0146,"Madame, Monsieur, un pot de fleurs est tombé de mon balcon sur une voiture chez des amis pendant nos vacances. Le préjudice est important.",responsabilite_civile
+E0147,Mon assurance habitation fonctionne-t-elle ? le poids de la neige a fait céder l'auvent dans notre commune ce matin. Que dois-je faire ?,evenements_naturels
+E0148,Je vous écris car le sèche-linge a pris feu dans l'appartement. J'ai pris des photos.,incendie
+E0149,"Madame, Monsieur, ma tondeuse a projeté un caillou sur la voiture d'un passant au parc le week-end dernier. Que dois-je faire ?",responsabilite_civile
+E0150,Je vous écris car une bougie a fait fondre la table dans le jardin ce matin. Merci de me rappeler.,incendie
+E0151,Je vous écris car la plaque vitrocéramique est fêlée dans le salon en pleine journée. J'ai pris des photos.,bris_de_glace
+E0152,L'orage a provoqué une inondation de la cave chez nous ce matin. J'ai pris des photos.,evenements_naturels
+E0153,Je souhaite savoir si je suis couvert : on a volé les vélos des enfants dans le jardin cette nuit. Mon propriétaire est prévenu.,vol
+E0154,Je vous écris car un passant a glissé devant ma maison dans la rue pendant nos vacances. J'ai pris des photos.,responsabilite_civile
+E0155,De l'eau s'infiltre par le toit,degats_des_eaux
+E0156,"Pour information, le radiateur fuit sur le parquet dans le séjour ce matin. Que dois-je faire ?",degats_des_eaux
+E0157,Petit problème : des cambrioleurs sont entrés chez moi pendant nos vacances. Mon propriétaire est prévenu.,vol
+E0158,Je vous écris car le joint de la douche fuit dans la salle de bain il y a trois jours,degats_des_eaux
+E0159,Je souhaite savoir si je suis couvert : mon enfant a rayé la voiture du voisin pendant une fête,responsabilite_civile
+E0160,Je vous écris car une lampe halogène a brûlé le parquet sur la terrasse cette nuit. Que dois-je faire ?,incendie
+E0161,"Bonjour, des étincelles ont brûlé le mobilier de jardin sur la terrasse lundi. Merci de me rappeler.",incendie
+E0162,L'arbre de mon jardin est tombé chez le voisin chez des amis il y a trois jours. Est-ce pris en charge ?,responsabilite_civile
+E0163,Je déclare un sinistre : mon chien a mordu le facteur pendant une fête pendant mon absence. Je n'ai pas encore fait de devis.,responsabilite_civile
+E0164,"Madame, Monsieur, le ballon d'eau chaude a percé au sous-sol hier soir. Est-ce pris en charge ?",degats_des_eaux
+E0165,"Madame, Monsieur, le plafond est taché par une infiltration dans le séjour pendant mon absence. Je n'ai pas encore fait de devis.",degats_des_eaux
+E0166,Petit problème : le miroir de l'armoire est tombé et s'est cassé dans la cuisine pendant nos vacances. Que dois-je faire ?,bris_de_glace
+E0167,Urgent : on a volé ma télévision dans l'appartement pendant nos vacances. Que dois-je faire ?,vol
+E0168,Ma cave a été cambriolée dans le jardin il y a trois jours.,vol
+E0169,"Bonjour, mon chien a renversé un cycliste pendant une fête ce matin. Est-ce pris en charge ?",responsabilite_civile
+E0170,Mon assurance habitation fonctionne-t-elle ? un pot de fleurs est tombé de mon balcon sur une voiture au parc lundi. J'ai pris des photos.,responsabilite_civile
+E0171,Petit problème : mon fils a blessé un camarade dans la rue ce matin. Je n'ai pas encore fait de devis.,responsabilite_civile
+E0172,Le terrain a glissé sous la terrasse à la maison hier soir,evenements_naturels
+E0173,Le lave-vaisselle a inondé la cuisine cette nuit.,degats_des_eaux
+E0174,"Madame, Monsieur, on m'a volé mon vélo ce matin. Mon propriétaire est prévenu.",vol
+E0175,"Pour information, la foudre est tombée sur la maison dans la chambre hier soir. Le préjudice est important.",incendie
+E0176,"Pour information, mon fils a blessé un camarade au parc cette nuit. Je n'ai pas encore fait de devis.",responsabilite_civile
+E0177,Urgent : un ballon a cassé la fenêtre à la maison cette nuit. Que dois-je faire ?,bris_de_glace
+E0178,Je déclare un sinistre : le radiateur a roussi les rideaux il y a trois jours.,incendie
+E0179,Urgent : une fuite sous l'évier a abîmé le meuble dans la cuisine le week-end dernier. Que dois-je faire ?,degats_des_eaux
+E0180,Je souhaite savoir si je suis couvert : la baie vitrée s'est fissurée à la maison cette nuit. Le préjudice est important.,bris_de_glace
+E0181,Mon assurance habitation fonctionne-t-elle ? un arbre est tombé sur le toit à cause du vent dans le quartier le week-end dernier. Le préjudice est important.,evenements_naturels
+E0182,Urgent : mon fils a blessé un camarade le week-end dernier. Mon propriétaire est prévenu.,responsabilite_civile
+E0183,"Pour information, le radiateur fuit sur le parquet dans le séjour pendant nos vacances. J'ai pris des photos.",degats_des_eaux
+E0184,Petit problème : mon enfant a rayé la voiture du voisin dans la rue en pleine journée.,responsabilite_civile
+E0185,"Pour information, la boîte aux lettres a été vandalisée dans l'appartement lundi. Merci de me rappeler.",vol
+E0186,Je souhaite savoir si je suis couvert : la baignoire a débordé pendant mon absence. Je n'ai pas encore fait de devis.,degats_des_eaux
+E0187,Le terrain a glissé sous la terrasse dans notre commune hier soir. Merci de me rappeler.,evenements_naturels
+E0188,"Pour information, des individus ont tagué la façade dans le jardin hier soir. Merci de me rappeler.",vol
+E0189,Petit problème : la table en verre s'est brisée dans la chambre cette nuit. Je n'ai pas encore fait de devis.,bris_de_glace
+E0190,Je vous écris car le ballon d'eau chaude a percé dans l'appartement. Le préjudice est important.,degats_des_eaux
+E0191,Je déclare un sinistre : un incendie s'est déclaré dans la cuisine dans la cuisine pendant mon absence.,incendie
+E0192,La porte vitrée a éclaté à la maison cette nuit. Mon propriétaire est prévenu.,bris_de_glace
+E0193,Petit problème : ma fille a cassé les lunettes d'une amie ce matin. Le préjudice est important.,responsabilite_civile
+E0194,Je déclare un sinistre : j'ai abîmé le téléphone d'un ami dans la rue le week-end dernier. Je n'ai pas encore fait de devis.,responsabilite_civile
+E0195,Mon assurance habitation fonctionne-t-elle ? le panneau vitré du garde-corps est cassé à la maison hier soir. J'ai pris des photos.,bris_de_glace
+E0196,Je déclare un sinistre : un ballon a cassé la fenêtre à l'étage. Est-ce pris en charge ?,bris_de_glace
+E0197,"Pour information, le velux est cassé en pleine journée. Merci de me rappeler.",bris_de_glace
+E0198,J'ai abîmé la voiture d'un tiers en déménageant dans la rue hier soir.,responsabilite_civile
+E0199,"Madame, Monsieur, une canalisation a fui pendant nos vacances. Mon propriétaire est prévenu.",degats_des_eaux
+E0200,Urgent : la tempête a emporté l'abri de jardin dans notre commune. Je n'ai pas encore fait de devis.,evenements_naturels
+E0201,La toiture laisse passer l'eau au sous-sol pendant nos vacances. Le préjudice est important.,degats_des_eaux
+E0202,"Pour information, on a volé ma télévision dans le local à vélos de l'immeuble en pleine journée. Je n'ai pas encore fait de devis.",vol
+E0203,Petit problème : on a volé les vélos des enfants dans l'appartement pendant mon absence. J'ai pris des photos.,vol
+E0204,Je déclare un sinistre : la serrure du local a été cassée et mon vélo volé dans l'appartement. Le préjudice est important.,vol
+E0205,Une bougie a brûlé la nappe dans l'appartement lundi,incendie
+E0206,"Bonjour, la foudre est tombée sur la maison dans le salon ce matin. Mon propriétaire est prévenu.",incendie
+E0207,Un caillou a fêlé la baie vitrée à l'étage cette nuit. Je n'ai pas encore fait de devis.,bris_de_glace
+E0208,La serrure du local a été cassée et mon vélo volé dans l'appartement cette nuit. Merci de me rappeler.,vol
+E0209,Urgent : un incendie s'est déclaré dans la cuisine hier soir. Le préjudice est important.,incendie
+E0210,"Madame, Monsieur, des voleurs ont fracturé la fenêtre dans le jardin ce matin. J'ai pris des photos.",vol
+E0211,Je déclare un sinistre : le voisin du dessus a eu une fuite dans l'appartement en pleine journée. Je n'ai pas encore fait de devis.,degats_des_eaux
+E0212,"Bonjour, le parquet a gonflé à cause d'une fuite dans l'appartement le week-end dernier.",degats_des_eaux
+E0213,Mon chat a griffé l'enfant des voisins à l'école il y a trois jours. Que dois-je faire ?,responsabilite_civile
+E0214,"Pour information, l'arbre de mon jardin est tombé chez le voisin pendant une fête ce matin. Merci de me rappeler.",responsabilite_civile
+E0215,Urgent : la baignoire a débordé dans la salle de bain. Le préjudice est important.,degats_des_eaux
+E0216,Petit problème : la rivière a inondé le rez-de-chaussée à la maison il y a trois jours. Que dois-je faire ?,evenements_naturels
+E0217,"Bonjour, l'arbre de mon jardin est tombé chez le voisin pendant une fête le week-end dernier",responsabilite_civile
+E0218,Petit problème : la rivière a inondé le rez-de-chaussée pendant mon absence. Que dois-je faire ?,evenements_naturels
+E0219,Je déclare un sinistre : ma tondeuse a projeté un caillou sur la voiture d'un passant au parc pendant nos vacances.,responsabilite_civile
+E0220,Petit problème : un incendie chez le voisin a atteint ma maison dans la cuisine. Je n'ai pas encore fait de devis.,incendie
+E0221,Mon assurance habitation fonctionne-t-elle ? on a volé ma télévision dans ma cave pendant mon absence. J'ai pris des photos.,vol
+E0222,Je souhaite savoir si je suis couvert : la table en verre s'est brisée dans la chambre en pleine journée. Merci de me rappeler.,bris_de_glace
+E0223,"Madame, Monsieur, la multiprise a fondu et a brûlé le bureau dans l'appartement ce matin. Merci de me rappeler.",incendie
+E0224,Petit problème : la multiprise a fondu et a brûlé le bureau dans la cuisine pendant mon absence.,incendie
+E0225,"Pour information, des moisissures apparaissent après une fuite dans l'appartement lundi. Mon propriétaire est prévenu.",degats_des_eaux
+E0226,Mon chien a mordu le facteur à l'école en pleine journée. J'ai pris des photos.,responsabilite_civile
+E0227,"Pour information, le radiateur fuit sur le parquet dans le séjour pendant mon absence. Merci de me rappeler.",degats_des_eaux
+E0228,"Madame, Monsieur, la vitre de la porte d'entrée est fendue cette nuit.",bris_de_glace
+E0229,Le verre de la crédence est fissuré à la maison le week-end dernier. Merci de me rappeler.,bris_de_glace
+E0230,Urgent : un pot de fleurs est tombé de mon balcon sur une voiture chez des amis pendant nos vacances. Est-ce pris en charge ?,responsabilite_civile
+E0231,"Madame, Monsieur, le WC a débordé dans la chambre ce matin. Je n'ai pas encore fait de devis.",degats_des_eaux
+E0232,"Madame, Monsieur, le chauffe-eau a lâché dans l'appartement ce matin",degats_des_eaux
+E0233,Mon assurance habitation fonctionne-t-elle ? des individus ont tagué la façade dans ma cave hier soir. J'ai pris des photos.,vol
+E0234,Je déclare un sinistre : mon chien a mordu le facteur dans la rue cette nuit. J'ai pris des photos.,responsabilite_civile
+E0235,"Pour information, l'aquarium a éclaté et l'eau a coulé partout au sous-sol il y a trois jours. Merci de me rappeler.",degats_des_eaux
+E0236,Le voisin me réclame des dommages pour sa clôture abîmée par mes enfants le week-end dernier,responsabilite_civile
+E0237,Je déclare un sinistre : on a dérobé mes bijoux dans l'appartement lundi. Je n'ai pas encore fait de devis.,vol
+E0238,Je déclare un sinistre : les flammes ont détruit le garage sur la terrasse ce matin,incendie
+E0239,Je vous écris car l'aquarium a éclaté et l'eau a coulé partout dans la salle de bain,degats_des_eaux
+E0240,Je souhaite savoir si je suis couvert : la vitre du four est fendue dans la cuisine pendant nos vacances. Mon propriétaire est prévenu.,bris_de_glace
+E0241,Je déclare un sinistre : le verre de la crédence est fissuré pendant nos vacances. Merci de me rappeler.,bris_de_glace
+E0242,Petit problème : la crue a submergé le garage à la maison ce matin. Est-ce pris en charge ?,evenements_naturels
+E0243,"Bonjour, la grêle a percé la véranda dans notre commune cette nuit. Le préjudice est important.",evenements_naturels
+E0244,Je vous écris car la fenêtre de la chambre est brisée dans la chambre en pleine journée. Que dois-je faire ?,bris_de_glace
+E0245,"Pour information, le vitrage de la véranda est fendu dans le salon il y a trois jours.",bris_de_glace
+E0246,Urgent : le lave-linge a débordé dans la salle de bain. J'ai pris des photos.,degats_des_eaux
+E0247,Le velux est cassé dans la chambre hier soir. Est-ce pris en charge ?,bris_de_glace
+E0248,L'aquarium a éclaté et l'eau a coulé partout dans l'appartement hier soir. Que dois-je faire ?,degats_des_eaux
+E0249,Mon assurance habitation fonctionne-t-elle ? mes clés ont été volées puis l'appartement visité dans le hall de l'immeuble pendant mon absence,vol
+E0250,Je déclare un sinistre : l'orage a provoqué une inondation de la cave à la maison lundi. J'ai pris des photos.,evenements_naturels
+E0251,Urgent : le terrain a glissé sous la terrasse chez nous hier soir. J'ai pris des photos.,evenements_naturels
+E0252,Je vous écris car mon ordinateur portable a été volé dans la maison en pleine journée. Le préjudice est important.,vol
+E0253,"Madame, Monsieur, la porte d'entrée a été forcée dans le hall de l'immeuble lundi. Merci de me rappeler.",vol
+E0254,Je déclare un sinistre : une fuite sous l'évier a abîmé le meuble dans la chambre il y a trois jours. Est-ce pris en charge ?,degats_des_eaux
+E0255,"Madame, Monsieur, la chaudière a explosé dans le jardin pendant nos vacances. Mon propriétaire est prévenu.",incendie
+E0256,Urgent : l'eau est remontée par les canalisations dans l'appartement. Merci de me rappeler.,degats_des_eaux
+E0257,Je vous écris car des vandales ont crevé la porte du garage hier soir. Que dois-je faire ?,vol
+E0258,"Bonjour, un feu de poubelle s'est propagé à la terrasse dans le salon. Est-ce pris en charge ?",incendie
+E0259,Petit problème : des braises ont brûlé le tapis dans la cuisine le week-end dernier. J'ai pris des photos.,incendie
+E0260,J'ai abîmé le téléphone d'un ami au parc hier soir. Je n'ai pas encore fait de devis.,responsabilite_civile
+E0261,"Pour information, une bougie a brûlé la nappe dans le salon lundi. Je n'ai pas encore fait de devis.",incendie
+E0262,Petit problème : des cambrioleurs sont entrés chez moi dans le hall de l'immeuble. J'ai pris des photos.,vol
+E0263,Je déclare un sinistre : la multiprise a fondu et a brûlé le bureau dans le jardin lundi. Merci de me rappeler.,incendie
+E0264,Un feu de poubelle s'est propagé à la terrasse au sous-sol lundi. J'ai pris des photos.,incendie
+E0265,Mon assurance habitation fonctionne-t-elle ? un feu de poubelle s'est propagé à la terrasse au sous-sol cette nuit.,incendie
+E0266,"Madame, Monsieur, le salon de jardin a été dérobé dans la maison lundi. Merci de me rappeler.",vol
+E0267,Je souhaite savoir si je suis couvert : on a dérobé mes bijoux dans la maison. Le préjudice est important.,vol
+E0268,Mon assurance habitation fonctionne-t-elle ? la crue a submergé le garage dans le quartier pendant nos vacances. Mon propriétaire est prévenu.,evenements_naturels
+E0269,"Bonjour, le lave-linge a débordé dans l'appartement. Je n'ai pas encore fait de devis.",degats_des_eaux
+E0270,Urgent : des objets de valeur ont disparu après une effraction dans le garage hier soir. Merci de me rappeler.,vol
+E0271,Mon assurance habitation fonctionne-t-elle ? l'arbre de mon jardin est tombé chez le voisin hier soir,responsabilite_civile
+E0272,Je souhaite savoir si je suis couvert : un pot de fleurs est tombé de mon balcon sur une voiture à l'école. Le préjudice est important.,responsabilite_civile
+E0273,"Pour information, de l'eau s'infiltre par le toit dans l'appartement pendant nos vacances. Mon propriétaire est prévenu.",degats_des_eaux
+E0274,Je souhaite savoir si je suis couvert : le panneau vitré du garde-corps est cassé dans la chambre il y a trois jours.,bris_de_glace
+E0275,Mon assurance habitation fonctionne-t-elle ? une fuite sous l'évier a abîmé le meuble dans la salle de bain le week-end dernier. Est-ce pris en charge ?,degats_des_eaux
+E0276,"Bonjour, la friteuse a pris feu dans la cuisine pendant nos vacances. Je n'ai pas encore fait de devis.",incendie
+E0277,Mon assurance habitation fonctionne-t-elle ? la table en plastique a fondu à cause de la chaleur dans l'appartement hier soir.,incendie
+E0278,Je déclare un sinistre : des moisissures apparaissent après une fuite dans le séjour en pleine journée.,degats_des_eaux
+E0279,"Madame, Monsieur, la paroi de douche en verre a explosé à l'étage il y a trois jours.",bris_de_glace
+E0280,Je vous écris car la gouttière bouchée a fait couler l'eau dans le mur dans le séjour lundi.,degats_des_eaux
+E0281,Mon assurance habitation fonctionne-t-elle ? la fenêtre de la chambre est brisée dans la cuisine le week-end dernier. Que dois-je faire ?,bris_de_glace
+E0282,Petit problème : la baignoire a débordé dans la chambre le week-end dernier. Merci de me rappeler.,degats_des_eaux
+E0283,"Bonjour, un tuyau a gelé et éclaté pendant nos vacances. Merci de me rappeler.",degats_des_eaux
+E0284,Je souhaite savoir si je suis couvert : mon chat a griffé l'enfant des voisins pendant nos vacances. Que dois-je faire ?,responsabilite_civile
+E0285,Petit problème : la porte vitrée a éclaté cette nuit.,bris_de_glace
+E0286,Je déclare un sinistre : des vandales ont crevé la porte du garage dans le garage il y a trois jours. Que dois-je faire ?,vol
+E0287,Urgent : une bouteille de gaz a explosé dans la chambre. Merci de me rappeler.,incendie
+E0288,Petit problème : mon ordinateur portable a été volé dans la maison il y a trois jours. Merci de me rappeler.,vol
+E0289,Urgent : l'eau du voisin coule dans ma salle de bain dans le séjour hier soir. Merci de me rappeler.,degats_des_eaux
+E0290,Une branche arrachée par la tempête a percé le toit pendant nos vacances.,evenements_naturels
+E0291,Urgent : le plafond s'est effondré sous le poids de l'eau pendant nos vacances. Que dois-je faire ?,degats_des_eaux
+E0292,"Bonjour, le double vitrage est fissuré à l'étage ce matin. J'ai pris des photos.",bris_de_glace
+E0293,Je vous écris car le vitrage de la véranda est fendu dans le salon hier soir. Que dois-je faire ?,bris_de_glace
+E0294,Je vous écris car la baignoire a débordé dans le séjour ce matin. Le préjudice est important.,degats_des_eaux
+E0295,Mon assurance habitation fonctionne-t-elle ? un invité s'est blessé chez moi il y a trois jours.,responsabilite_civile
+E0296,Urgent : des rafales ont renversé la clôture à la maison pendant nos vacances. Mon propriétaire est prévenu.,evenements_naturels
+E0297,"Bonjour, on a tenté de forcer la serrure dans le local à vélos de l'immeuble pendant nos vacances. Merci de me rappeler.",vol
+E0298,Je vous écris car des vandales ont crevé la porte du garage dans l'appartement cette nuit. Est-ce pris en charge ?,vol
+E0299,Je déclare un sinistre : la foudre est tombée sur la maison sur la terrasse lundi. Est-ce pris en charge ?,incendie
+E0300,Je vous écris car la boîte aux lettres a été vandalisée dans l'appartement cette nuit. Le préjudice est important.,vol
+E0301,"Madame, Monsieur, le vitrage de la véranda est fendu dans le salon pendant nos vacances.",bris_de_glace
+E0302,Je déclare un sinistre : des braises ont brûlé le tapis dans le jardin,incendie
+E0303,Urgent : le vent a arraché l'antenne à la maison lundi. Je n'ai pas encore fait de devis.,evenements_naturels
+E0304,Je déclare un sinistre : le poids de la neige a fait céder l'auvent dans le quartier pendant mon absence,evenements_naturels
+E0305,Je déclare un sinistre : le verre de la crédence est fissuré dans la chambre le week-end dernier.,bris_de_glace
+E0306,"Madame, Monsieur, une lampe halogène a brûlé le parquet dans le salon cette nuit. Mon propriétaire est prévenu.",incendie
+E0307,Mon assurance habitation fonctionne-t-elle ? un tuyau a gelé et éclaté lundi. Que dois-je faire ?,degats_des_eaux
+E0308,Mon assurance habitation fonctionne-t-elle ? le lave-vaisselle a inondé la cuisine dans la salle de bain le week-end dernier. Je n'ai pas encore fait de devis.,degats_des_eaux
+E0309,"Bonjour, mon chien a mordu le facteur à l'école le week-end dernier",responsabilite_civile
+E0310,La cave est inondée après le débordement du ruisseau lundi. Je n'ai pas encore fait de devis.,evenements_naturels
+E0311,Urgent : le lave-linge a débordé dans la chambre. J'ai pris des photos.,degats_des_eaux
+E0312,Urgent : le parquet a gonflé à cause d'une fuite au sous-sol. Le préjudice est important.,degats_des_eaux
+E0313,Urgent : j'ai bousculé quelqu'un à vélo à l'école cette nuit. Mon propriétaire est prévenu.,responsabilite_civile
+E0314,"Pour information, mon fils a blessé un camarade dans la rue pendant nos vacances. Le préjudice est important.",responsabilite_civile
+E0315,"Madame, Monsieur, on a volé les vélos des enfants dans le hall de l'immeuble le week-end dernier. Est-ce pris en charge ?",vol
+E0316,Je déclare un sinistre : la tempête a arraché des tuiles chez nous ce matin. Je n'ai pas encore fait de devis.,evenements_naturels
+E0317,Je vous écris car le poids de la neige a fait céder l'auvent dans notre commune lundi. Que dois-je faire ?,evenements_naturels
+E0318,Urgent : le terrain a glissé sous la terrasse chez nous cette nuit.,evenements_naturels
+E0319,Je souhaite savoir si je suis couvert : mes outils ont été volés dans la dépendance dans le local à vélos de l'immeuble cette nuit.,vol
+E0320,"Bonjour, on a volé ma télévision dans la maison lundi. Merci de me rappeler.",vol
+E0321,Mon assurance habitation fonctionne-t-elle ? mon fils a blessé un camarade il y a trois jours. Le préjudice est important.,responsabilite_civile
+E0322,Je vous écris car des braises ont brûlé le tapis dans la chambre cette nuit,incendie
+E0323,Petit problème : l'orage a provoqué une inondation de la cave à la maison hier soir. Je n'ai pas encore fait de devis.,evenements_naturels
+E0324,Petit problème : mon fils a cassé la console d'un copain pendant une fête,responsabilite_civile
+E0325,Urgent : on a tenté de forcer la serrure dans l'appartement il y a trois jours. Le préjudice est important.,vol
+E0326,"Madame, Monsieur, le verre de la crédence est fissuré dans la chambre pendant mon absence",bris_de_glace
+E0327,"Bonjour, la vitre de la fenêtre est cassée.",bris_de_glace
+E0328,Mon assurance habitation fonctionne-t-elle ? la multiprise a fondu et a brûlé le bureau dans le jardin cette nuit. Je n'ai pas encore fait de devis.,incendie
+E0329,Petit problème : la paroi de douche en verre a explosé à la maison ce matin. J'ai pris des photos.,bris_de_glace
+E0330,De l'eau s'infiltre par le toit dans la salle de bain pendant mon absence. Mon propriétaire est prévenu.,degats_des_eaux
+E0331,Urgent : le grille-pain a pris feu dans la cuisine pendant mon absence. Mon propriétaire est prévenu.,incendie
+E0332,"Bonjour, une bouteille de gaz a explosé dans le salon hier soir.",incendie
+E0333,"Madame, Monsieur, le plafond s'est effondré sous le poids de l'eau dans la cuisine pendant nos vacances. Le préjudice est important.",degats_des_eaux
+E0334,"Pour information, la table en plastique a fondu à cause de la chaleur au sous-sol il y a trois jours. Le préjudice est important.",incendie
+E0335,Je déclare un sinistre : un arbre est tombé sur le toit à cause du vent chez nous cette nuit,evenements_naturels
+E0336,Je souhaite savoir si je suis couvert : la grêle a abîmé la toiture chez nous pendant nos vacances. J'ai pris des photos.,evenements_naturels
+E0337,Mon assurance habitation fonctionne-t-elle ? une coulée de boue a envahi le jardin dans le quartier lundi.,evenements_naturels
+E0338,"Bonjour, mon chien a renversé un cycliste à l'école hier soir. Est-ce pris en charge ?",responsabilite_civile
+E0339,Je souhaite savoir si je suis couvert : le voisin me réclame des dommages pour sa clôture abîmée par mes enfants chez des amis pendant nos vacances. Je n'ai pas encore fait de devis.,responsabilite_civile
+E0340,Je vous écris car le miroir de l'armoire est tombé et s'est cassé il y a trois jours. Je n'ai pas encore fait de devis.,bris_de_glace
+E0341,J'ai fait tomber un invité dans mon escalier dans la rue. Mon propriétaire est prévenu.,responsabilite_civile
+E0342,Petit problème : un caillou a fêlé la baie vitrée à la maison ce matin. Le préjudice est important.,bris_de_glace
+E0343,Je souhaite savoir si je suis couvert : la boîte aux lettres a été vandalisée dans ma cave lundi.,vol
+E0344,Urgent : on a volé ma télévision dans la maison lundi. J'ai pris des photos.,vol
+E0345,Urgent : le vent a arraché l'antenne pendant nos vacances. J'ai pris des photos.,evenements_naturels
+E0346,Petit problème : des moisissures apparaissent après une fuite dans la cuisine pendant nos vacances. J'ai pris des photos.,degats_des_eaux
+E0347,Je déclare un sinistre : le vent a arraché l'antenne cette nuit. Merci de me rappeler.,evenements_naturels
+E0348,Petit problème : la sécheresse a fissuré la façade dans notre commune il y a trois jours. Le préjudice est important.,evenements_naturels
+E0349,Mon assurance habitation fonctionne-t-elle ? la tempête a emporté l'abri de jardin dans notre commune le week-end dernier. J'ai pris des photos.,evenements_naturels
+E0350,Mon assurance habitation fonctionne-t-elle ? j'ai abîmé le téléphone d'un ami pendant une fête hier soir,responsabilite_civile
+E0351,"Madame, Monsieur, le voisin du dessus a eu une fuite dans la cuisine pendant mon absence.",degats_des_eaux
+E0352,Urgent : le verre de la crédence est fissuré dans la cuisine pendant mon absence. Je n'ai pas encore fait de devis.,bris_de_glace
+E0353,Mon assurance habitation fonctionne-t-elle ? mon chien a détruit le jardin du voisin dans la rue lundi. Le préjudice est important.,responsabilite_civile
+E0354,Petit problème : le vitrage de la véranda est fendu pendant mon absence. Que dois-je faire ?,bris_de_glace
+E0355,"Pour information, la multiprise a fondu et a brûlé le bureau au sous-sol pendant mon absence. J'ai pris des photos.",incendie
+E0356,Petit problème : mes outils ont été volés dans la dépendance dans ma cave hier soir. Merci de me rappeler.,vol
+E0357,Je déclare un sinistre : mon vélo électrique a disparu le week-end dernier. Je n'ai pas encore fait de devis.,vol
+E0358,Je déclare un sinistre : l'orage a provoqué une inondation de la cave ce matin. J'ai pris des photos.,evenements_naturels
+E0359,Urgent : quelqu'un est entré par effraction dans le local à vélos de l'immeuble lundi. Merci de me rappeler.,vol
+E0360,Je déclare un sinistre : une bougie a brûlé la nappe dans le jardin le week-end dernier. J'ai pris des photos.,incendie
+E0361,Je souhaite savoir si je suis couvert : des vandales ont crevé la porte du garage dans le hall de l'immeuble hier soir. Je n'ai pas encore fait de devis.,vol
+E0362,"Madame, Monsieur, ma fille a cassé les lunettes d'une amie à l'école hier soir",responsabilite_civile
+E0363,"Madame, Monsieur, les flammes ont détruit le garage dans la chambre il y a trois jours. J'ai pris des photos.",incendie
+E0364,Un caillou a fêlé la baie vitrée à la maison le week-end dernier. Le préjudice est important.,bris_de_glace
+E0365,"Madame, Monsieur, le verre de la crédence est fissuré dans la chambre il y a trois jours. Je n'ai pas encore fait de devis.",bris_de_glace
+E0366,Une cigarette a brûlé le canapé il y a trois jours. J'ai pris des photos.,incendie
+E0367,"Bonjour, la paroi de douche en verre a explosé dans le salon pendant nos vacances. Mon propriétaire est prévenu.",bris_de_glace
+E0368,"Madame, Monsieur, la tempête a arraché des tuiles chez nous pendant nos vacances",evenements_naturels
+E0369,Je souhaite savoir si je suis couvert : le radiateur a roussi les rideaux dans la cuisine il y a trois jours. Que dois-je faire ?,incendie
+E0370,"Pour information, un incendie s'est déclaré dans la cuisine dans le jardin pendant nos vacances. Merci de me rappeler.",incendie
+E0371,"Madame, Monsieur, la toiture laisse passer l'eau dans le séjour pendant mon absence. Merci de me rappeler.",degats_des_eaux
+E0372,Urgent : une branche arrachée par la tempête a percé le toit dans notre commune pendant nos vacances. Je n'ai pas encore fait de devis.,evenements_naturels
+E0373,Petit problème : ma fille a cassé les lunettes d'une amie pendant une fête hier soir. J'ai pris des photos.,responsabilite_civile
+E0374,Je vous écris car ma fille a cassé les lunettes d'une amie pendant une fête pendant mon absence. Je n'ai pas encore fait de devis.,responsabilite_civile
+E0375,Je souhaite savoir si je suis couvert : le sèche-linge a pris feu dans la cuisine en pleine journée. Est-ce pris en charge ?,incendie
+E0376,Urgent : le miroir de la salle de bain est brisé dans la cuisine. Que dois-je faire ?,bris_de_glace
+E0377,Je déclare un sinistre : un incendie s'est déclaré dans la cuisine sur la terrasse en pleine journée. J'ai pris des photos.,incendie
+E0378,Je déclare un sinistre : on a tenté de forcer la serrure dans la maison il y a trois jours.,vol
+E0379,"Bonjour, la foudre est tombée sur la maison au sous-sol il y a trois jours.",incendie
+E0380,Je souhaite savoir si je suis couvert : le voisin du dessus a eu une fuite dans la cuisine lundi.,degats_des_eaux
+E0381,Urgent : de l'eau s'infiltre par le toit dans l'appartement en pleine journée. Que dois-je faire ?,degats_des_eaux
+E0382,"Pour information, la baie vitrée s'est fissurée dans la chambre il y a trois jours. Mon propriétaire est prévenu.",bris_de_glace
+E0383,"Pour information, mon enfant a rayé la voiture du voisin dans la rue. Mon propriétaire est prévenu.",responsabilite_civile
+E0384,Je vous écris car le panneau vitré du garde-corps est cassé à l'étage pendant mon absence.,bris_de_glace
+E0385,Petit problème : un caillou a fêlé la baie vitrée le week-end dernier,bris_de_glace
+E0386,Je vous écris car les pluies torrentielles ont inondé la maison dans notre commune il y a trois jours. J'ai pris des photos.,evenements_naturels
+E0387,"Pour information, la multiprise a fondu et a brûlé le bureau dans le jardin il y a trois jours.",incendie
+E0388,"Bonjour, un incendie chez le voisin a atteint ma maison sur la terrasse en pleine journée. Merci de me rappeler.",incendie
+E0389,Urgent : la cave est inondée après le débordement du ruisseau dans notre commune le week-end dernier. Je n'ai pas encore fait de devis.,evenements_naturels
+E0390,L'aquarium a éclaté et l'eau a coulé partout dans le séjour ce matin. Est-ce pris en charge ?,degats_des_eaux
+E0391,"Madame, Monsieur, la vitre du four est fendue à la maison. Que dois-je faire ?",bris_de_glace
+E0392,"Madame, Monsieur, des braises ont brûlé le tapis dans la chambre le week-end dernier. Le préjudice est important.",incendie
+E0393,La chaudière a explosé dans la chambre pendant mon absence. Le préjudice est important.,incendie
+E0394,La plaque vitrocéramique est fêlée dans le salon pendant nos vacances.,bris_de_glace
+E0395,Petit problème : le panneau vitré du garde-corps est cassé dans la cuisine cette nuit,bris_de_glace
+E0396,"Madame, Monsieur, le verre de la crédence est fissuré pendant nos vacances. Est-ce pris en charge ?",bris_de_glace
+E0397,Mon assurance habitation fonctionne-t-elle ? mon chien a mordu le facteur à l'école pendant mon absence. Est-ce pris en charge ?,responsabilite_civile
+E0398,"Bonjour, la tempête a arraché des tuiles chez nous lundi.",evenements_naturels
+E0399,Mon assurance habitation fonctionne-t-elle ? la sécheresse a fissuré la façade dans notre commune cette nuit. Mon propriétaire est prévenu.,evenements_naturels
+E0400,Petit problème : le radiateur a roussi les rideaux il y a trois jours. Merci de me rappeler.,incendie
+E0401,Mon assurance habitation fonctionne-t-elle ? le vent a arraché l'antenne chez nous ce matin. Merci de me rappeler.,evenements_naturels
+E0402,Je déclare un sinistre : mon ordinateur portable a été volé dans le garage hier soir. J'ai pris des photos.,vol
+E0403,Des braises ont brûlé le tapis sur la terrasse le week-end dernier. J'ai pris des photos.,incendie
+E0404,Je souhaite savoir si je suis couvert : la grêle a abîmé la toiture à la maison pendant mon absence. Merci de me rappeler.,evenements_naturels
+E0405,Petit problème : un invité s'est blessé chez moi dans la rue cette nuit. Merci de me rappeler.,responsabilite_civile
+E0406,"Pour information, un passant a glissé devant ma maison chez des amis pendant mon absence. J'ai pris des photos.",responsabilite_civile
+E0407,Je vous écris car le WC a débordé dans la salle de bain lundi,degats_des_eaux
+E0408,Urgent : l'eau du voisin coule dans ma salle de bain en pleine journée,degats_des_eaux
+E0409,"Pour information, la rivière a inondé le rez-de-chaussée lundi. Est-ce pris en charge ?",evenements_naturels
+E0410,Je déclare un sinistre : de l'eau s'infiltre par le toit au sous-sol ce matin. Est-ce pris en charge ?,degats_des_eaux
+E0411,De l'eau s'infiltre par le toit au sous-sol en pleine journée. Je n'ai pas encore fait de devis.,degats_des_eaux
+E0412,"Madame, Monsieur, on a dérobé mes bijoux dans l'appartement pendant nos vacances. Le préjudice est important.",vol
+E0413,Petit problème : mon ordinateur portable a été volé dans le jardin en pleine journée. Mon propriétaire est prévenu.,vol
+E0414,"Madame, Monsieur, un cambriolage a eu lieu dans la maison pendant nos vacances. Le préjudice est important.",vol
+E0415,"Bonjour, la chaudière a explosé dans la chambre. Est-ce pris en charge ?",incendie
+E0416,Petit problème : des étincelles ont brûlé le mobilier de jardin sur la terrasse hier soir. Que dois-je faire ?,incendie
+E0417,Petit problème : mon chien a renversé un cycliste hier soir. Le préjudice est important.,responsabilite_civile
+E0418,"Bonjour, la fenêtre de la chambre est brisée dans le salon le week-end dernier.",bris_de_glace
+E0419,"Madame, Monsieur, mon fils a cassé la console d'un copain dans la rue pendant mon absence. Que dois-je faire ?",responsabilite_civile
+E0420,"Bonjour, le terrain a glissé sous la terrasse à la maison ce matin. Le préjudice est important.",evenements_naturels
+E0421,Petit problème : une bougie a brûlé la nappe dans la chambre lundi. Est-ce pris en charge ?,incendie
+E0422,Petit problème : un ballon a cassé la fenêtre à la maison cette nuit. Merci de me rappeler.,bris_de_glace
+E0423,Urgent : de l'eau s'infiltre par le toit au sous-sol il y a trois jours.,degats_des_eaux
+E0424,Mon assurance habitation fonctionne-t-elle ? mon enfant a rayé la voiture du voisin le week-end dernier. Que dois-je faire ?,responsabilite_civile
+E0425,Mon assurance habitation fonctionne-t-elle ? la paroi de douche en verre a explosé dans le salon pendant mon absence. Je n'ai pas encore fait de devis.,bris_de_glace
+E0426,Je souhaite savoir si je suis couvert : la baignoire a débordé dans la cuisine il y a trois jours. Merci de me rappeler.,degats_des_eaux
+E0427,Je souhaite savoir si je suis couvert : le miroir de l'armoire est tombé et s'est cassé dans la chambre il y a trois jours. Que dois-je faire ?,bris_de_glace
+E0428,"Pour information, des vandales ont crevé la porte du garage dans l'appartement le week-end dernier. Mon propriétaire est prévenu.",vol
+E0429,Urgent : le WC a débordé le week-end dernier. Que dois-je faire ?,degats_des_eaux
+E0430,Mon assurance habitation fonctionne-t-elle ? le radiateur a roussi les rideaux dans l'appartement lundi,incendie
+E0431,Petit problème : quelqu'un est entré par effraction dans le local à vélos de l'immeuble hier soir. Je n'ai pas encore fait de devis.,vol
+E0432,Petit problème : le lave-linge a débordé pendant nos vacances. Le préjudice est important.,degats_des_eaux
+E0433,Le terrain a glissé sous la terrasse dans le quartier en pleine journée. Mon propriétaire est prévenu.,evenements_naturels
+E0434,De l'eau s'infiltre par le toit dans la cuisine pendant mon absence.,degats_des_eaux
+E0435,Urgent : mon fils a cassé la console d'un copain à l'école hier soir. Je n'ai pas encore fait de devis.,responsabilite_civile
+E0436,"Madame, Monsieur, la vitre du four est fendue à l'étage cette nuit. Est-ce pris en charge ?",bris_de_glace
+E0437,La grêle a abîmé la toiture ce matin.,evenements_naturels
+E0438,Je souhaite savoir si je suis couvert : la vitre du four est fendue à l'étage ce matin. Est-ce pris en charge ?,bris_de_glace
+E0439,"Bonjour, la plaque vitrocéramique est fêlée dans le salon le week-end dernier. Est-ce pris en charge ?",bris_de_glace
+E0440,Je souhaite savoir si je suis couvert : la chaleur du poêle a déformé le meuble sur la terrasse il y a trois jours. Je n'ai pas encore fait de devis.,incendie
+E0441,Mon assurance habitation fonctionne-t-elle ? une bougie a fait fondre la table dans la chambre hier soir. Merci de me rappeler.,incendie
+E0442,Mon assurance habitation fonctionne-t-elle ? des vandales ont crevé la porte du garage dans la maison hier soir. Je n'ai pas encore fait de devis.,vol
+E0443,Mon assurance habitation fonctionne-t-elle ? mon enfant a rayé la voiture du voisin au parc cette nuit.,responsabilite_civile
+E0444,Petit problème : le WC a débordé dans la salle de bain,degats_des_eaux
+E0445,"Madame, Monsieur, la porte vitrée a éclaté dans la cuisine pendant mon absence. Merci de me rappeler.",bris_de_glace
+E0446,"Madame, Monsieur, la grêle a percé la véranda ce matin. Le préjudice est important.",evenements_naturels
+E0447,"Bonjour, mon chien a mordu le facteur dans la rue ce matin. J'ai pris des photos.",responsabilite_civile
+E0448,"Pour information, le plafond est taché par une infiltration dans la salle de bain cette nuit. J'ai pris des photos.",degats_des_eaux
+E0449,"Bonjour, le joint de la douche fuit au sous-sol lundi. Je n'ai pas encore fait de devis.",degats_des_eaux
+E0450,Petit problème : des braises ont brûlé le tapis dans la cuisine il y a trois jours. Je n'ai pas encore fait de devis.,incendie
+E0451,"Madame, Monsieur, la neige a écrasé la serre à la maison le week-end dernier. J'ai pris des photos.",evenements_naturels
+E0452,"Bonjour, le panneau vitré du garde-corps est cassé à l'étage en pleine journée",bris_de_glace
+E0453,"Madame, Monsieur, des rafales ont renversé la clôture à la maison il y a trois jours. Je n'ai pas encore fait de devis.",evenements_naturels
+E0454,Je déclare un sinistre : des vandales ont crevé la porte du garage lundi. Merci de me rappeler.,vol
+E0455,Petit problème : on a dérobé mes bijoux dans le local à vélos de l'immeuble ce matin. Merci de me rappeler.,vol
+E0456,Mon assurance habitation fonctionne-t-elle ? le radiateur a roussi les rideaux dans la cuisine cette nuit. Je n'ai pas encore fait de devis.,incendie
+E0457,Mon assurance habitation fonctionne-t-elle ? la serrure du local a été cassée et mon vélo volé dans la maison pendant mon absence. Le préjudice est important.,vol
+E0458,Mon assurance habitation fonctionne-t-elle ? mon enfant a mis le feu au jardin du voisin en jouant au parc pendant nos vacances. Que dois-je faire ?,responsabilite_civile
+E0459,Je déclare un sinistre : on a volé ma télévision dans ma cave pendant mon absence. J'ai pris des photos.,vol
+E0460,Mon assurance habitation fonctionne-t-elle ? le poids de la neige a fait céder l'auvent chez nous pendant nos vacances. Que dois-je faire ?,evenements_naturels
+E0461,Je déclare un sinistre : mes clés ont été volées puis l'appartement visité hier soir,vol
+E0462,Mon assurance habitation fonctionne-t-elle ? des rafales ont renversé la clôture dans notre commune lundi. Mon propriétaire est prévenu.,evenements_naturels
+E0463,Je vous écris car ma tondeuse a projeté un caillou sur la voiture d'un passant pendant mon absence. Je n'ai pas encore fait de devis.,responsabilite_civile
+E0464,Je souhaite savoir si je suis couvert : la baie vitrée s'est fissurée dans la cuisine. Le préjudice est important.,bris_de_glace
+E0465,"Pour information, un passant a glissé devant ma maison dans la rue lundi. Je n'ai pas encore fait de devis.",responsabilite_civile
+E0466,Je déclare un sinistre : la chaudière a explosé dans la cuisine le week-end dernier. Merci de me rappeler.,incendie
+E0467,Je déclare un sinistre : la table en plastique a fondu à cause de la chaleur dans la chambre le week-end dernier,incendie
+E0468,"Pour information, le garage a été visité par des voleurs dans le jardin pendant mon absence. Le préjudice est important.",vol
+E0469,La sécheresse a fissuré la façade à la maison. Merci de me rappeler.,evenements_naturels
+E0470,Petit problème : la toiture laisse passer l'eau dans la cuisine pendant mon absence. J'ai pris des photos.,degats_des_eaux
+E0471,Je vous écris car la plaque vitrocéramique est fêlée dans la cuisine pendant nos vacances. Le préjudice est important.,bris_de_glace
+E0472,Mon assurance habitation fonctionne-t-elle ? mon chien a mordu le facteur dans la rue cette nuit. Que dois-je faire ?,responsabilite_civile
+E0473,"Bonjour, la tempête a emporté l'abri de jardin à la maison hier soir. Je n'ai pas encore fait de devis.",evenements_naturels
+E0474,Le joint de la douche fuit dans le séjour il y a trois jours. Le préjudice est important.,degats_des_eaux
+E0475,Je vous écris car le garage a été visité par des voleurs dans le jardin cette nuit. Je n'ai pas encore fait de devis.,vol
+E0476,"Bonjour, j'ai endommagé le matériel prêté par un collègue pendant une fête pendant nos vacances. Merci de me rappeler.",responsabilite_civile
+E0477,"Madame, Monsieur, le double vitrage est fissuré à la maison lundi",bris_de_glace
+E0478,Je déclare un sinistre : le ballon d'eau chaude a percé dans le séjour lundi,degats_des_eaux
+E0479,Petit problème : une fuite sous l'évier a abîmé le meuble dans la cuisine lundi. Le préjudice est important.,degats_des_eaux
+E0480,Mon assurance habitation fonctionne-t-elle ? des objets de valeur ont disparu après une effraction dans le garage ce matin.,vol
+E0481,Je déclare un sinistre : l'arbre de mon jardin est tombé chez le voisin il y a trois jours. Que dois-je faire ?,responsabilite_civile
+E0482,Le miroir de l'armoire est tombé et s'est cassé à l'étage lundi. Que dois-je faire ?,bris_de_glace
+E0483,"Madame, Monsieur, des objets de valeur ont disparu après une effraction dans l'appartement hier soir. Le préjudice est important.",vol
+E0484,"Bonjour, la grêle a abîmé la toiture à la maison pendant nos vacances. Que dois-je faire ?",evenements_naturels
+E0485,"Bonjour, j'ai fait tomber un invité dans mon escalier au parc",responsabilite_civile
+E0486,"Pour information, la vitre de la porte d'entrée est fendue à la maison hier soir. Est-ce pris en charge ?",bris_de_glace
+E0487,Je souhaite savoir si je suis couvert : un feu de poubelle s'est propagé à la terrasse lundi. Le préjudice est important.,incendie
+E0488,Je déclare un sinistre : un court-circuit a provoqué un départ de feu dans le jardin lundi. Le préjudice est important.,incendie
+E0489,Je souhaite savoir si je suis couvert : une bouteille de gaz a explosé sur la terrasse pendant nos vacances. Est-ce pris en charge ?,incendie
+E0490,Je souhaite savoir si je suis couvert : le panneau vitré du garde-corps est cassé hier soir. Le préjudice est important.,bris_de_glace
+E0491,"Pour information, on a volé les vélos des enfants dans l'appartement hier soir. Est-ce pris en charge ?",vol
+E0492,Mon assurance habitation fonctionne-t-elle ? le ballon d'eau chaude a percé au sous-sol. Le préjudice est important.,degats_des_eaux
+E0493,"Madame, Monsieur, mon enfant a rayé la voiture du voisin à l'école pendant nos vacances. Merci de me rappeler.",responsabilite_civile
+E0494,Je déclare un sinistre : mon chien a détruit le jardin du voisin dans la rue le week-end dernier,responsabilite_civile
+E0495,Petit problème : une bougie a brûlé la nappe dans la chambre lundi. Merci de me rappeler.,incendie
+E0496,Une fuite sous l'évier a abîmé le meuble dans la salle de bain. Le préjudice est important.,degats_des_eaux
+E0497,"Bonjour, les pluies torrentielles ont inondé la maison dans le quartier il y a trois jours. Est-ce pris en charge ?",evenements_naturels
+E0498,Petit problème : des individus ont tagué la façade dans le local à vélos de l'immeuble le week-end dernier. Le préjudice est important.,vol
+E0499,"Pour information, la tempête a arraché des tuiles chez nous il y a trois jours. Merci de me rappeler.",evenements_naturels
+E0500,"Pour information, des rafales ont renversé la clôture dans le quartier hier soir. J'ai pris des photos.",evenements_naturels
+E0501,Je vous écris car une cigarette a brûlé le canapé dans l'appartement lundi. Mon propriétaire est prévenu.,incendie
+E0502,"Madame, Monsieur, une conduite enterrée s'est rompue pendant mon absence. Mon propriétaire est prévenu.",degats_des_eaux
+E0503,La porte vitrée a éclaté à l'étage le week-end dernier. Merci de me rappeler.,bris_de_glace
+E0504,Mon vélo électrique a disparu dans le garage. J'ai pris des photos.,vol
+E0505,Urgent : la vitre du four est fendue.,bris_de_glace
+E0506,"Madame, Monsieur, ma cave a été cambriolée en pleine journée. Est-ce pris en charge ?",vol
+E0507,Petit problème : la sécheresse a fissuré la façade chez nous pendant nos vacances. Mon propriétaire est prévenu.,evenements_naturels
+E0508,Je vous écris car la chasse d'eau fuit depuis des jours au sous-sol hier soir. Mon propriétaire est prévenu.,degats_des_eaux
+E0509,Petit problème : mon enfant a rayé la voiture du voisin au parc il y a trois jours. Le préjudice est important.,responsabilite_civile
+E0510,Urgent : on a dérobé mes bijoux il y a trois jours. Le préjudice est important.,vol
+E0511,Petit problème : le voisin me réclame des dommages pour sa clôture abîmée par mes enfants pendant une fête le week-end dernier.,responsabilite_civile
+E0512,Urgent : une bouteille de gaz a explosé au sous-sol ce matin. Merci de me rappeler.,incendie
+E0513,"Madame, Monsieur, mon fils a cassé la console d'un copain dans la rue en pleine journée. Est-ce pris en charge ?",responsabilite_civile
+E0514,Je déclare un sinistre : le voisin du dessus a eu une fuite dans le séjour pendant mon absence. Est-ce pris en charge ?,degats_des_eaux
+E0515,Je souhaite savoir si je suis couvert : la foudre est tombée sur la maison dans le jardin en pleine journée. Merci de me rappeler.,incendie
+E0516,"Pour information, un invité s'est blessé chez moi au parc pendant nos vacances. J'ai pris des photos.",responsabilite_civile
+E0517,"Bonjour, la crue a submergé le garage il y a trois jours. Merci de me rappeler.",evenements_naturels
+E0518,"Bonjour, une mini-tornade a endommagé la toiture dans le quartier hier soir. J'ai pris des photos.",evenements_naturels
+E0519,Je souhaite savoir si je suis couvert : une coulée de boue a envahi le jardin chez nous en pleine journée. Que dois-je faire ?,evenements_naturels
+E0520,Mon assurance habitation fonctionne-t-elle ? le miroir de l'armoire est tombé et s'est cassé dans la chambre,bris_de_glace
+E0521,Je vous écris car le lave-vaisselle a inondé la cuisine dans la chambre pendant mon absence. Mon propriétaire est prévenu.,degats_des_eaux
+E0522,"Bonjour, j'ai abîmé la voiture d'un tiers en déménageant pendant une fête cette nuit. Est-ce pris en charge ?",responsabilite_civile
+E0523,Mon assurance habitation fonctionne-t-elle ? des braises ont brûlé le tapis dans le salon il y a trois jours,incendie
+E0524,Je souhaite savoir si je suis couvert : le feu a pris dans la cheminée dans l'appartement pendant mon absence. Le préjudice est important.,incendie
+E0525,Le feu a pris dans la cheminée hier soir. Merci de me rappeler.,incendie
+E0526,"Bonjour, un invité s'est blessé chez moi au parc pendant mon absence. J'ai pris des photos.",responsabilite_civile
+E0527,Je souhaite savoir si je suis couvert : un incendie chez le voisin a atteint ma maison dans la chambre il y a trois jours. Le préjudice est important.,incendie
+E0528,Mon assurance habitation fonctionne-t-elle ? le garage a été visité par des voleurs dans l'appartement hier soir. Je n'ai pas encore fait de devis.,vol
+E0529,Je souhaite savoir si je suis couvert : une mini-tornade a endommagé la toiture dans le quartier hier soir. Mon propriétaire est prévenu.,evenements_naturels
+E0530,Je déclare un sinistre : mon enfant a mis le feu au jardin du voisin en jouant dans la rue pendant nos vacances. Le préjudice est important.,responsabilite_civile
+E0531,"Bonjour, l'orage a provoqué une inondation de la cave à la maison il y a trois jours. J'ai pris des photos.",evenements_naturels
+E0532,"Bonjour, ma fille a cassé les lunettes d'une amie dans la rue pendant nos vacances. Le préjudice est important.",responsabilite_civile
+E0533,Le poids de la neige a fait céder l'auvent dans notre commune en pleine journée. Je n'ai pas encore fait de devis.,evenements_naturels
+E0534,Je souhaite savoir si je suis couvert : un pot de fleurs est tombé de mon balcon sur une voiture chez des amis il y a trois jours. Je n'ai pas encore fait de devis.,responsabilite_civile
+E0535,"Bonjour, la porte d'entrée a été forcée dans le local à vélos de l'immeuble il y a trois jours. J'ai pris des photos.",vol
+E0536,Mon assurance habitation fonctionne-t-elle ? un invité s'est blessé chez moi chez des amis. Merci de me rappeler.,responsabilite_civile
+E0537,Je vous écris car le voisin me réclame des dommages pour sa clôture abîmée par mes enfants hier soir. J'ai pris des photos.,responsabilite_civile
+E0538,Petit problème : ma cave a été cambriolée dans le garage lundi. Que dois-je faire ?,vol
+E0539,Je souhaite savoir si je suis couvert : la grêle a abîmé la toiture chez nous hier soir. Merci de me rappeler.,evenements_naturels
+E0540,"Bonjour, les pluies torrentielles ont inondé la maison dans le quartier pendant nos vacances. Le préjudice est important.",evenements_naturels
+E0541,Mon assurance habitation fonctionne-t-elle ? le radiateur a roussi les rideaux dans l'appartement ce matin. Je n'ai pas encore fait de devis.,incendie
+E0542,Mon assurance habitation fonctionne-t-elle ? la table en verre s'est brisée pendant mon absence. Merci de me rappeler.,bris_de_glace
+E0543,Urgent : la grêle a abîmé la toiture à la maison pendant mon absence.,evenements_naturels
+E0544,Je souhaite savoir si je suis couvert : une branche arrachée par la tempête a percé le toit chez nous lundi. Est-ce pris en charge ?,evenements_naturels
+E0545,"Bonjour, mon vélo électrique a disparu dans le jardin cette nuit. Mon propriétaire est prévenu.",vol
+E0546,"Pour information, la sécheresse a fissuré la façade chez nous cette nuit. J'ai pris des photos.",evenements_naturels
+E0547,Un tuyau a gelé et éclaté dans la salle de bain pendant nos vacances. Merci de me rappeler.,degats_des_eaux
+E0548,"Bonjour, un court-circuit a provoqué un départ de feu dans le salon cette nuit. Mon propriétaire est prévenu.",incendie
+E0549,"Bonjour, la fumée a noirci les murs du salon dans la cuisine le week-end dernier. Est-ce pris en charge ?",incendie
+E0550,Je souhaite savoir si je suis couvert : le terrain a glissé sous la terrasse chez nous cette nuit. Que dois-je faire ?,evenements_naturels
+E0551,Je souhaite savoir si je suis couvert : on a tenté de forcer la serrure dans ma cave pendant nos vacances. Mon propriétaire est prévenu.,vol
+E0552,Je vous écris car le WC a débordé au sous-sol lundi. Que dois-je faire ?,degats_des_eaux
+E0553,Urgent : la fenêtre de la chambre est brisée dans le salon. Je n'ai pas encore fait de devis.,bris_de_glace
+E0554,Urgent : le grille-pain a pris feu au sous-sol en pleine journée. Je n'ai pas encore fait de devis.,incendie
+E0555,Le radiateur fuit sur le parquet dans la chambre hier soir. J'ai pris des photos.,degats_des_eaux
+E0556,"Pour information, la sécheresse a fissuré la façade à la maison. J'ai pris des photos.",evenements_naturels
+E0557,"Madame, Monsieur, la vitre du four est fendue à l'étage en pleine journée. Je n'ai pas encore fait de devis.",bris_de_glace
+E0558,"Bonjour, j'ai abîmé le téléphone d'un ami à l'école hier soir.",responsabilite_civile
+E0559,"Bonjour, j'ai fait tomber un invité dans mon escalier cette nuit.",responsabilite_civile
+E0560,Je vous écris car on m'a volé mon vélo dans le local à vélos de l'immeuble il y a trois jours. Le préjudice est important.,vol
+E0561,Urgent : le velux est cassé dans la chambre il y a trois jours. Merci de me rappeler.,bris_de_glace
+E0562,Je déclare un sinistre : des rafales ont renversé la clôture dans notre commune cette nuit. Je n'ai pas encore fait de devis.,evenements_naturels
+E0563,Urgent : un passant a glissé devant ma maison ce matin. Mon propriétaire est prévenu.,responsabilite_civile
+E0564,Je vous écris car mon fils a cassé la console d'un copain à l'école le week-end dernier. Est-ce pris en charge ?,responsabilite_civile
+E0565,"Madame, Monsieur, la vitre de la porte d'entrée est fendue lundi",bris_de_glace
+E0566,"Pour information, le vitrage de la véranda est fendu dans la chambre lundi.",bris_de_glace
+E0567,Je déclare un sinistre : la table en plastique a fondu à cause de la chaleur dans le salon hier soir. Je n'ai pas encore fait de devis.,incendie
+E0568,Des individus ont tagué la façade dans la maison pendant mon absence. J'ai pris des photos.,vol
+E0569,Je souhaite savoir si je suis couvert : une bougie a fait fondre la table dans l'appartement pendant nos vacances. Que dois-je faire ?,incendie
+E0570,"Pour information, le garage a été visité par des voleurs dans le hall de l'immeuble. Que dois-je faire ?",vol
+E0571,Petit problème : la fumée a noirci les murs du salon dans la cuisine en pleine journée. Merci de me rappeler.,incendie
+E0572,"Bonjour, le vent a arraché l'antenne dans le quartier il y a trois jours",evenements_naturels
+E0573,Petit problème : le tuyau de la machine s'est détaché dans l'appartement en pleine journée. Est-ce pris en charge ?,degats_des_eaux
+E0574,Je souhaite savoir si je suis couvert : le poids de la neige a fait céder l'auvent dans le quartier ce matin. Que dois-je faire ?,evenements_naturels
+E0575,Je vous écris car le radiateur a roussi les rideaux dans le salon lundi. Le préjudice est important.,incendie
+E0576,Je déclare un sinistre : l'aquarium a éclaté et l'eau a coulé partout dans le séjour ce matin,degats_des_eaux
+E0577,"Pour information, une bouteille de gaz a explosé au sous-sol. Merci de me rappeler.",incendie
+E0578,Mon assurance habitation fonctionne-t-elle ? la table en verre s'est brisée à la maison en pleine journée. Je n'ai pas encore fait de devis.,bris_de_glace
+E0579,La tempête a emporté l'abri de jardin chez nous hier soir. Merci de me rappeler.,evenements_naturels
+E0580,Mon assurance habitation fonctionne-t-elle ? mon vélo électrique a disparu dans le local à vélos de l'immeuble. Que dois-je faire ?,vol
+E0581,"Bonjour, le parquet a gonflé à cause d'une fuite dans l'appartement cette nuit.",degats_des_eaux
+E0582,Je déclare un sinistre : des moisissures apparaissent après une fuite dans la cuisine il y a trois jours. J'ai pris des photos.,degats_des_eaux
+E0583,"Pour information, quelqu'un est entré par effraction dans le jardin pendant nos vacances. J'ai pris des photos.",vol
+E0584,Mon assurance habitation fonctionne-t-elle ? le lave-vaisselle a inondé la cuisine dans le séjour lundi,degats_des_eaux
+E0585,Urgent : le coffre a été emporté par les voleurs dans le local à vélos de l'immeuble en pleine journée. Est-ce pris en charge ?,vol
+E0586,Urgent : la foudre est tombée sur la maison sur la terrasse lundi. J'ai pris des photos.,incendie
+E0587,Petit problème : un feu de poubelle s'est propagé à la terrasse sur la terrasse lundi.,incendie
+E0588,"Madame, Monsieur, une conduite enterrée s'est rompue cette nuit. Je n'ai pas encore fait de devis.",degats_des_eaux
+E0589,Une bouteille de gaz a explosé dans le salon le week-end dernier. Je n'ai pas encore fait de devis.,incendie
+E0590,"Bonjour, mes clés ont été volées puis l'appartement visité il y a trois jours. Le préjudice est important.",vol
+E0591,"Bonjour, j'ai bousculé quelqu'un à vélo au parc le week-end dernier. Je n'ai pas encore fait de devis.",responsabilite_civile
+E0592,Un pot de fleurs est tombé de mon balcon sur une voiture dans la rue pendant nos vacances. Mon propriétaire est prévenu.,responsabilite_civile
+E0593,Je vous écris car le lave-linge a débordé au sous-sol le week-end dernier. Que dois-je faire ?,degats_des_eaux
+E0594,Petit problème : on a volé la tondeuse dans l'abri de jardin dans la maison pendant nos vacances. Que dois-je faire ?,vol
+E0595,"Bonjour, j'ai fait tomber un invité dans mon escalier à l'école le week-end dernier. Je n'ai pas encore fait de devis.",responsabilite_civile
+E0596,Je vous écris car la sécheresse a fissuré la façade dans notre commune hier soir. Que dois-je faire ?,evenements_naturels
+E0597,Je déclare un sinistre : la baie vitrée s'est fissurée à l'étage lundi. Mon propriétaire est prévenu.,bris_de_glace
+E0598,Je déclare un sinistre : la fenêtre de la chambre est brisée dans le salon ce matin,bris_de_glace
+E0599,Mon chien a détruit le jardin du voisin pendant une fête le week-end dernier.,responsabilite_civile
+E0600,Mon assurance habitation fonctionne-t-elle ? la boîte aux lettres a été vandalisée dans le garage ce matin. Mon propriétaire est prévenu.,vol
+E0601,"Bonjour, la crue a submergé le garage chez nous il y a trois jours. Que dois-je faire ?",evenements_naturels
+E0602,"Bonjour, le parquet a gonflé à cause d'une fuite hier soir.",degats_des_eaux
+E0603,Je souhaite savoir si je suis couvert : la paroi de douche en verre a explosé ce matin. Que dois-je faire ?,bris_de_glace
+E0604,"Madame, Monsieur, le tuyau de la machine s'est détaché dans l'appartement hier soir. Que dois-je faire ?",degats_des_eaux
+E0605,Je souhaite savoir si je suis couvert : des vandales ont crevé la porte du garage dans ma cave. Le préjudice est important.,vol
+E0606,"Pour information, des cambrioleurs sont entrés chez moi dans la maison pendant nos vacances. Mon propriétaire est prévenu.",vol
+E0607,Petit problème : mon chien a détruit le jardin du voisin pendant une fête il y a trois jours. Le préjudice est important.,responsabilite_civile
+E0608,Je souhaite savoir si je suis couvert : des individus ont tagué la façade dans ma cave pendant nos vacances,vol
+E0609,Je déclare un sinistre : un incendie s'est déclaré dans la cuisine dans le jardin ce matin. Je n'ai pas encore fait de devis.,incendie
+E0610,Je vous écris car mon chien a renversé un cycliste en pleine journée. Merci de me rappeler.,responsabilite_civile
+E0611,"Madame, Monsieur, quelqu'un est entré par effraction dans le jardin le week-end dernier",vol
+E0612,"Madame, Monsieur, l'orage a provoqué une inondation de la cave dans notre commune pendant mon absence. Est-ce pris en charge ?",evenements_naturels
+E0613,Je souhaite savoir si je suis couvert : la friteuse a pris feu dans la cuisine pendant nos vacances. Merci de me rappeler.,incendie
+E0614,Je déclare un sinistre : le barbecue a mis le feu à la haie sur la terrasse lundi,incendie
+E0615,Urgent : les pluies torrentielles ont inondé la maison chez nous le week-end dernier. Mon propriétaire est prévenu.,evenements_naturels
+E0616,Petit problème : le fer à repasser a brûlé la moquette dans la chambre en pleine journée,incendie
+E0617,Je souhaite savoir si je suis couvert : la foudre est tombée sur la maison au sous-sol le week-end dernier,incendie
+E0618,Le panneau vitré du garde-corps est cassé à l'étage il y a trois jours. Merci de me rappeler.,bris_de_glace
+E0619,Je vous écris car on m'a volé mon vélo dans le local à vélos de l'immeuble hier soir. J'ai pris des photos.,vol
+E0620,"Madame, Monsieur, une canalisation a fui dans l'appartement pendant nos vacances",degats_des_eaux
+E0621,Je déclare un sinistre : ma cave a été cambriolée dans l'appartement lundi. J'ai pris des photos.,vol
+E0622,Un passant a glissé devant ma maison à l'école le week-end dernier.,responsabilite_civile
+E0623,"Pour information, mon chien a renversé un cycliste au parc en pleine journée. Que dois-je faire ?",responsabilite_civile
+E0624,Je souhaite savoir si je suis couvert : de l'eau s'infiltre par le toit dans la cuisine pendant mon absence.,degats_des_eaux
+E0625,Je déclare un sinistre : le joint de la douche fuit dans le séjour le week-end dernier. Je n'ai pas encore fait de devis.,degats_des_eaux
+E0626,"Pour information, ma fille a cassé les lunettes d'une amie lundi. J'ai pris des photos.",responsabilite_civile
+E0627,Je souhaite savoir si je suis couvert : la fenêtre de la chambre est brisée à l'étage il y a trois jours. Merci de me rappeler.,bris_de_glace
+E0628,Urgent : le tuyau de la machine s'est détaché hier soir. Est-ce pris en charge ?,degats_des_eaux
+E0629,Je déclare un sinistre : le coffre a été emporté par les voleurs dans le garage pendant mon absence. Le préjudice est important.,vol
+E0630,"Pour information, un caillou a fêlé la baie vitrée pendant nos vacances. J'ai pris des photos.",bris_de_glace
+E0631,Petit problème : une bougie a brûlé la nappe sur la terrasse hier soir. Merci de me rappeler.,incendie
+E0632,Mon assurance habitation fonctionne-t-elle ? la chasse d'eau fuit depuis des jours dans l'appartement pendant mon absence,degats_des_eaux
+E0633,Je déclare un sinistre : le velux est cassé ce matin.,bris_de_glace
+E0634,La chaleur du poêle a déformé le meuble dans l'appartement pendant mon absence.,incendie
+E0635,Petit problème : un passant a glissé devant ma maison pendant une fête pendant nos vacances. Que dois-je faire ?,responsabilite_civile
+E0636,"Bonjour, la fenêtre de la chambre est brisée dans la chambre pendant nos vacances. J'ai pris des photos.",bris_de_glace
+E0637,"Bonjour, la plaque vitrocéramique est fêlée. Merci de me rappeler.",bris_de_glace
+E0638,Je vous écris car la grêle a abîmé la toiture. Mon propriétaire est prévenu.,evenements_naturels
+E0639,Petit problème : un ballon a cassé la fenêtre à la maison hier soir. Que dois-je faire ?,bris_de_glace
+E0640,Je vous écris car des rafales ont renversé la clôture chez nous en pleine journée.,evenements_naturels
+E0641,Je déclare un sinistre : un arbre est tombé sur le toit à cause du vent à la maison cette nuit,evenements_naturels
+E0642,Urgent : une bouteille de gaz a explosé dans la cuisine en pleine journée. Mon propriétaire est prévenu.,incendie
+E0643,"Bonjour, des braises ont brûlé le tapis dans la chambre ce matin.",incendie
+E0644,"Pour information, le WC a débordé dans la chambre. J'ai pris des photos.",degats_des_eaux
+E0645,Mon assurance habitation fonctionne-t-elle ? une lampe halogène a brûlé le parquet ce matin. Le préjudice est important.,incendie
+E0646,"Madame, Monsieur, la vitre de l'insert est cassée à la maison. Mon propriétaire est prévenu.",bris_de_glace
+E0647,Mon assurance habitation fonctionne-t-elle ? des étincelles ont brûlé le mobilier de jardin dans le jardin cette nuit,incendie
+E0648,Urgent : mon enfant a mis le feu au jardin du voisin en jouant dans la rue cette nuit. Que dois-je faire ?,responsabilite_civile
+E0649,Je vous écris car le garage a été visité par des voleurs dans l'appartement en pleine journée,vol
+E0650,Urgent : le verre de la crédence est fissuré dans la cuisine lundi. Est-ce pris en charge ?,bris_de_glace
+E0651,Urgent : un court-circuit a provoqué un départ de feu dans le jardin pendant nos vacances. Merci de me rappeler.,incendie
+E0652,Urgent : une lampe halogène a brûlé le parquet il y a trois jours. Mon propriétaire est prévenu.,incendie
+E0653,"Bonjour, quelqu'un est entré par effraction dans la maison en pleine journée. Que dois-je faire ?",vol
+E0654,"Pour information, mon enfant a rayé la voiture du voisin à l'école il y a trois jours. Je n'ai pas encore fait de devis.",responsabilite_civile
+E0655,"Pour information, le garage a été visité par des voleurs dans l'appartement ce matin. Le préjudice est important.",vol
+E0656,"Madame, Monsieur, la toiture laisse passer l'eau dans la cuisine lundi. Mon propriétaire est prévenu.",degats_des_eaux
+E0657,"Bonjour, l'arbre de mon jardin est tombé chez le voisin au parc cette nuit. Mon propriétaire est prévenu.",responsabilite_civile
+E0658,Le miroir de la salle de bain est brisé à l'étage hier soir. Mon propriétaire est prévenu.,bris_de_glace
+E0659,Je souhaite savoir si je suis couvert : une mini-tornade a endommagé la toiture pendant mon absence. Que dois-je faire ?,evenements_naturels
+E0660,"Madame, Monsieur, la paroi de douche en verre a explosé dans la chambre en pleine journée. J'ai pris des photos.",bris_de_glace
+E0661,Je déclare un sinistre : des individus ont tagué la façade dans l'appartement hier soir,vol
+E0662,"Madame, Monsieur, la fenêtre de la chambre est brisée dans le salon pendant mon absence. Mon propriétaire est prévenu.",bris_de_glace
+E0663,"Madame, Monsieur, une bougie a brûlé la nappe dans la cuisine le week-end dernier. Que dois-je faire ?",incendie
+E0664,Je vous écris car le radiateur a roussi les rideaux sur la terrasse en pleine journée. Le préjudice est important.,incendie
+E0665,Je souhaite savoir si je suis couvert : on a dérobé mes bijoux dans le garage pendant mon absence,vol
+E0666,Urgent : le vent a arraché l'antenne dans notre commune pendant mon absence. Mon propriétaire est prévenu.,evenements_naturels
+E0667,Je déclare un sinistre : j'ai endommagé le matériel prêté par un collègue pendant une fête cette nuit. J'ai pris des photos.,responsabilite_civile
+E0668,Mon assurance habitation fonctionne-t-elle ? le grille-pain a pris feu dans le jardin pendant nos vacances. Merci de me rappeler.,incendie
+E0669,Le voisin me réclame des dommages pour sa clôture abîmée par mes enfants à l'école. Est-ce pris en charge ?,responsabilite_civile
+E0670,Petit problème : la vitre du four est fendue dans la cuisine en pleine journée. Merci de me rappeler.,bris_de_glace
+E0671,L'eau est remontée par les canalisations hier soir. Merci de me rappeler.,degats_des_eaux
+E0672,Petit problème : le coffre a été emporté par les voleurs lundi. Le préjudice est important.,vol
+E0673,Mon assurance habitation fonctionne-t-elle ? le chauffe-eau a lâché dans la salle de bain cette nuit. Que dois-je faire ?,degats_des_eaux
+E0674,Une bouteille de gaz a explosé dans la cuisine il y a trois jours. Merci de me rappeler.,incendie
+E0675,Petit problème : j'ai fait tomber un invité dans mon escalier au parc pendant mon absence. J'ai pris des photos.,responsabilite_civile
+E0676,La vitre de l'insert est cassée dans la chambre ce matin,bris_de_glace
+E0677,Urgent : la rivière a inondé le rez-de-chaussée chez nous il y a trois jours. Est-ce pris en charge ?,evenements_naturels
+E0678,Je déclare un sinistre : ma tondeuse a projeté un caillou sur la voiture d'un passant pendant une fête lundi.,responsabilite_civile
+E0679,Petit problème : on m'a volé mon vélo pendant nos vacances.,vol
+E0680,"Bonjour, un pot de fleurs est tombé de mon balcon sur une voiture hier soir. Je n'ai pas encore fait de devis.",responsabilite_civile
+E0681,Mon assurance habitation fonctionne-t-elle ? ma trottinette a été volée dans la maison pendant mon absence.,vol
+E0682,"Madame, Monsieur, le plafond s'est effondré sous le poids de l'eau dans le séjour hier soir. Que dois-je faire ?",degats_des_eaux
+E0683,Urgent : mes clés ont été volées puis l'appartement visité dans la maison pendant mon absence. Merci de me rappeler.,vol
+E0684,"Madame, Monsieur, le vitrage de la véranda est fendu pendant mon absence.",bris_de_glace
+E0685,Je vous écris car la tempête a arraché des tuiles chez nous en pleine journée,evenements_naturels
+E0686,La grêle a abîmé la toiture chez nous. Que dois-je faire ?,evenements_naturels
+E0687,"Bonjour, mon fils a blessé un camarade au parc pendant nos vacances. Le préjudice est important.",responsabilite_civile
+E0688,Petit problème : ma fille a cassé les lunettes d'une amie à l'école pendant mon absence. Le préjudice est important.,responsabilite_civile
+E0689,"Bonjour, la baie vitrée s'est fissurée à la maison ce matin. Le préjudice est important.",bris_de_glace
+E0690,Urgent : le ballon d'eau chaude a percé dans l'appartement ce matin,degats_des_eaux
+E0691,"Madame, Monsieur, la multiprise a fondu et a brûlé le bureau dans la chambre hier soir. Est-ce pris en charge ?",incendie
+E0692,Petit problème : un caillou a fêlé la baie vitrée dans la cuisine pendant nos vacances. Est-ce pris en charge ?,bris_de_glace
+E0693,"Madame, Monsieur, l'orage a provoqué une inondation de la cave chez nous hier soir. Mon propriétaire est prévenu.",evenements_naturels
+E0694,"Bonjour, la multiprise a fondu et a brûlé le bureau dans la cuisine cette nuit. Que dois-je faire ?",incendie
+E0695,Mon assurance habitation fonctionne-t-elle ? la serrure du local a été cassée et mon vélo volé dans le hall de l'immeuble il y a trois jours. Mon propriétaire est prévenu.,vol
+E0696,Petit problème : l'orage a provoqué une inondation de la cave dans le quartier lundi. Que dois-je faire ?,evenements_naturels
+E0697,"Madame, Monsieur, un feu de poubelle s'est propagé à la terrasse sur la terrasse le week-end dernier. Merci de me rappeler.",incendie
+E0698,Je souhaite savoir si je suis couvert : le plafond s'est effondré sous le poids de l'eau dans la chambre. Merci de me rappeler.,degats_des_eaux
+E0699,"Bonjour, la tempête a emporté l'abri de jardin dans le quartier pendant mon absence. Je n'ai pas encore fait de devis.",evenements_naturels
+E0700,Je vous écris car le vitrage de la véranda est fendu à la maison pendant mon absence. Mon propriétaire est prévenu.,bris_de_glace
+E0701,Je déclare un sinistre : la chaleur du poêle a déformé le meuble sur la terrasse pendant mon absence. Mon propriétaire est prévenu.,incendie
+E0702,"Pour information, une bougie a brûlé la nappe dans la cuisine en pleine journée",incendie
+E0703,Petit problème : mon vélo électrique a disparu dans le jardin le week-end dernier. Mon propriétaire est prévenu.,vol
+E0704,Je déclare un sinistre : la sécheresse a fissuré la façade ce matin. Le préjudice est important.,evenements_naturels
+E0705,Petit problème : le radiateur a roussi les rideaux dans la chambre en pleine journée. Mon propriétaire est prévenu.,incendie
+E0706,"Madame, Monsieur, la foudre est tombée sur la maison dans la cuisine pendant mon absence. Est-ce pris en charge ?",incendie
+E0707,Je souhaite savoir si je suis couvert : le double vitrage est fissuré pendant nos vacances. Que dois-je faire ?,bris_de_glace
+E0708,Urgent : la gouttière bouchée a fait couler l'eau dans le mur dans l'appartement ce matin. Que dois-je faire ?,degats_des_eaux
+E0709,Mon assurance habitation fonctionne-t-elle ? des rafales ont renversé la clôture dans le quartier pendant nos vacances. Que dois-je faire ?,evenements_naturels
+E0710,Je déclare un sinistre : le garage a été visité par des voleurs dans le local à vélos de l'immeuble. Merci de me rappeler.,vol
+E0711,Mon assurance habitation fonctionne-t-elle ? la vitre de la fenêtre est cassée à l'étage ce matin. Est-ce pris en charge ?,bris_de_glace
+E0712,Je souhaite savoir si je suis couvert : j'ai endommagé le matériel prêté par un collègue cette nuit. Que dois-je faire ?,responsabilite_civile
+E0713,Petit problème : un tuyau a gelé et éclaté au sous-sol ce matin. Est-ce pris en charge ?,degats_des_eaux
+E0714,Je vous écris car la crue a submergé le garage chez nous ce matin. Je n'ai pas encore fait de devis.,evenements_naturels
+E0715,"Bonjour, la toiture laisse passer l'eau dans l'appartement pendant mon absence.",degats_des_eaux
+E0716,La paroi de douche en verre a explosé à l'étage pendant mon absence. Le préjudice est important.,bris_de_glace
+E0717,Mon assurance habitation fonctionne-t-elle ? ma tondeuse a projeté un caillou sur la voiture d'un passant dans la rue le week-end dernier. Je n'ai pas encore fait de devis.,responsabilite_civile
+E0718,La grêle a percé la véranda à la maison en pleine journée. Mon propriétaire est prévenu.,evenements_naturels
+E0719,Un tuyau a gelé et éclaté au sous-sol hier soir. Le préjudice est important.,degats_des_eaux
+E0720,Petit problème : un caillou a fêlé la baie vitrée à l'étage pendant nos vacances. Que dois-je faire ?,bris_de_glace
+E0721,J'ai fait tomber un invité dans mon escalier dans la rue en pleine journée. Je n'ai pas encore fait de devis.,responsabilite_civile
+E0722,"Madame, Monsieur, le voisin du dessus a eu une fuite au sous-sol ce matin. Je n'ai pas encore fait de devis.",degats_des_eaux
+E0723,Urgent : le garage a été visité par des voleurs dans l'appartement il y a trois jours. Que dois-je faire ?,vol
+E0724,On a dérobé mes bijoux dans le garage lundi. Que dois-je faire ?,vol
+E0725,"Pour information, on a volé ma télévision cette nuit.",vol
+E0726,Petit problème : le radiateur fuit sur le parquet dans la salle de bain en pleine journée. Est-ce pris en charge ?,degats_des_eaux
+E0727,"Bonjour, la crue a submergé le garage à la maison pendant mon absence. Mon propriétaire est prévenu.",evenements_naturels
+E0728,Mon assurance habitation fonctionne-t-elle ? le verre de la crédence est fissuré à l'étage hier soir. Mon propriétaire est prévenu.,bris_de_glace
+E0729,Je déclare un sinistre : le vent a arraché l'antenne dans le quartier cette nuit. Le préjudice est important.,evenements_naturels
+E0730,"Bonjour, on a dérobé mes bijoux dans le hall de l'immeuble cette nuit. Merci de me rappeler.",vol
+E0731,Je vous écris car la neige a écrasé la serre il y a trois jours. Que dois-je faire ?,evenements_naturels
+E0732,"Madame, Monsieur, une mini-tornade a endommagé la toiture dans le quartier il y a trois jours. Merci de me rappeler.",evenements_naturels
+E0733,Petit problème : un arbre est tombé sur le toit à cause du vent dans le quartier il y a trois jours. Mon propriétaire est prévenu.,evenements_naturels
+E0734,Je déclare un sinistre : la baignoire a débordé dans la chambre le week-end dernier.,degats_des_eaux
+E0735,La vitre de la porte d'entrée est fendue dans la cuisine cette nuit. Merci de me rappeler.,bris_de_glace
+E0736,Urgent : quelqu'un est entré par effraction dans le hall de l'immeuble le week-end dernier. Mon propriétaire est prévenu.,vol
+E0737,"Bonjour, les flammes ont détruit le garage au sous-sol lundi.",incendie
+E0738,Je vous écris car mon vélo électrique a disparu lundi. J'ai pris des photos.,vol
+E0739,Petit problème : j'ai abîmé le téléphone d'un ami pendant une fête il y a trois jours,responsabilite_civile
+E0740,Urgent : une mini-tornade a endommagé la toiture chez nous le week-end dernier. Est-ce pris en charge ?,evenements_naturels
+E0741,"Bonjour, la paroi de douche en verre a explosé cette nuit. Est-ce pris en charge ?",bris_de_glace
+E0742,"Madame, Monsieur, la sécheresse a fissuré la façade lundi. Mon propriétaire est prévenu.",evenements_naturels
+E0743,Petit problème : l'eau est remontée par les canalisations il y a trois jours,degats_des_eaux
+E0744,Je déclare un sinistre : la grêle a percé la véranda à la maison hier soir. J'ai pris des photos.,evenements_naturels
+E0745,Je déclare un sinistre : le double vitrage est fissuré dans la cuisine pendant nos vacances.,bris_de_glace
+E0746,J'ai abîmé le téléphone d'un ami dans la rue pendant mon absence. Le préjudice est important.,responsabilite_civile
+E0747,Petit problème : on a dérobé mes bijoux dans le hall de l'immeuble pendant nos vacances,vol
+E0748,Urgent : le voisin me réclame des dommages pour sa clôture abîmée par mes enfants. Je n'ai pas encore fait de devis.,responsabilite_civile
+E0749,Je déclare un sinistre : la crue a submergé le garage dans notre commune pendant nos vacances. Que dois-je faire ?,evenements_naturels
+E0750,La vitre de l'insert est cassée à l'étage pendant mon absence. Que dois-je faire ?,bris_de_glace
+E0751,Je déclare un sinistre : l'arbre de mon jardin est tombé chez le voisin dans la rue cette nuit. Je n'ai pas encore fait de devis.,responsabilite_civile
+E0752,Urgent : la grêle a percé la véranda à la maison pendant mon absence. Merci de me rappeler.,evenements_naturels
+E0753,Je souhaite savoir si je suis couvert : mes outils ont été volés dans la dépendance dans ma cave. J'ai pris des photos.,vol
+E0754,Je vous écris car la vitre de l'insert est cassée il y a trois jours.,bris_de_glace
+E0755,Je déclare un sinistre : la vitrine du salon est brisée à la maison il y a trois jours. J'ai pris des photos.,bris_de_glace
+E0756,Mon assurance habitation fonctionne-t-elle ? une bougie a brûlé la nappe dans le salon en pleine journée.,incendie
+E0757,"Pour information, un cambriolage a eu lieu dans le garage en pleine journée. J'ai pris des photos.",vol
+E0758,"Bonjour, le plafond est taché par une infiltration dans la salle de bain. Le préjudice est important.",degats_des_eaux
+E0759,Je souhaite savoir si je suis couvert : le plafond s'est effondré sous le poids de l'eau dans l'appartement en pleine journée. Je n'ai pas encore fait de devis.,degats_des_eaux
+E0760,Petit problème : le verre de la crédence est fissuré dans la cuisine. Le préjudice est important.,bris_de_glace
+E0761,"Madame, Monsieur, une canalisation a fui dans la salle de bain pendant nos vacances",degats_des_eaux
+E0762,"Bonjour, un pot de fleurs est tombé de mon balcon sur une voiture lundi. Mon propriétaire est prévenu.",responsabilite_civile
+E0763,"Madame, Monsieur, le poids de la neige a fait céder l'auvent chez nous le week-end dernier. Mon propriétaire est prévenu.",evenements_naturels
+E0764,Mon assurance habitation fonctionne-t-elle ? un pot de fleurs est tombé de mon balcon sur une voiture hier soir. Mon propriétaire est prévenu.,responsabilite_civile
+E0765,Urgent : mon chien a détruit le jardin du voisin ce matin. Je n'ai pas encore fait de devis.,responsabilite_civile
+E0766,Petit problème : la paroi de douche en verre a explosé dans le salon le week-end dernier. Mon propriétaire est prévenu.,bris_de_glace
+E0767,Urgent : une mini-tornade a endommagé la toiture dans notre commune cette nuit. Est-ce pris en charge ?,evenements_naturels
+E0768,"Madame, Monsieur, une mini-tornade a endommagé la toiture dans le quartier lundi. Est-ce pris en charge ?",evenements_naturels
+E0769,"Pour information, la vitre de la fenêtre est cassée dans la cuisine le week-end dernier.",bris_de_glace
+E0770,Le lave-vaisselle a inondé la cuisine dans la salle de bain pendant mon absence. Est-ce pris en charge ?,degats_des_eaux
+E0771,"Pour information, un pot de fleurs est tombé de mon balcon sur une voiture au parc pendant mon absence. Le préjudice est important.",responsabilite_civile
+E0772,Je déclare un sinistre : des vandales ont crevé la porte du garage dans le local à vélos de l'immeuble le week-end dernier. J'ai pris des photos.,vol
+E0773,Urgent : le lave-linge a débordé dans la cuisine le week-end dernier.,degats_des_eaux
+E0774,Les flammes ont détruit le garage dans le salon pendant nos vacances. Je n'ai pas encore fait de devis.,incendie
+E0775,Des voleurs ont fracturé la fenêtre dans le garage il y a trois jours. Le préjudice est important.,vol
+E0776,Un invité s'est blessé chez moi pendant une fête ce matin. J'ai pris des photos.,responsabilite_civile
+E0777,On a volé la tondeuse dans l'abri de jardin dans ma cave pendant mon absence. Le préjudice est important.,vol
+E0778,Urgent : on a dérobé mes bijoux dans la maison pendant nos vacances.,vol
+E0779,Je déclare un sinistre : l'orage a provoqué une inondation de la cave dans notre commune pendant mon absence. Que dois-je faire ?,evenements_naturels
+E0780,Mon assurance habitation fonctionne-t-elle ? une mini-tornade a endommagé la toiture chez nous. Est-ce pris en charge ?,evenements_naturels
