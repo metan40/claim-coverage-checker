@@ -21,11 +21,12 @@ from src.retrieval import QUOTAS, retrieve  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 OUT = HERE / "resultats_recherche.md"
+# Les deux cas de l'énoncé, mot pour mot.
 CASES = {
-    "velo": "Mon vélo, que je laisse dans le local commun de la résidence, n'y était plus "
-            "ce matin. Le local n'était pas fermé à clé.",
-    "bougie": "Pendant nos vacances, une bougie restée allumée sur la terrasse a fait fondre "
-              "notre table de jardin.",
+    "velo": "Je me fais voler mon vélo dans le local commun de l'immeuble, qui n'était pas "
+            "fermé à clé.",
+    "bougie": "Un assuré laisse une bougie sur la table de son jardin pendant ses vacances. "
+              "Avec la chaleur, la bougie fond et abîme la table.",
 }
 TOTAL = sum(QUOTAS.values())
 CONFIGURATIONS = {

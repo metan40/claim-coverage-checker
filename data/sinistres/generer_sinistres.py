@@ -50,7 +50,7 @@ EVENTS = {
         "mes outils ont été volés dans la dépendance", "un cambriolage a eu lieu",
     ],
     "incendie": [
-        "un incendie s'est déclaré dans la cuisine", "une bougie a fait fondre la table",
+        "un incendie s'est déclaré dans la cuisine", "le four a pris feu",
         "le feu a pris dans la cheminée", "la friteuse a pris feu", "un court-circuit a provoqué un départ de feu",
         "la fumée a noirci les murs du salon", "une bouteille de gaz a explosé",
         "la foudre est tombée sur la maison", "le fer à repasser a brûlé la moquette",

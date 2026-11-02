@@ -1,6 +1,6 @@
 id,description,famille,difficulte
-T001,"Mon vélo, que je laisse dans le local commun de la résidence, n'y était plus ce matin. Le local n'était pas fermé à clé.",vol,sujet
-T002,"Pendant nos vacances, une bougie restée allumée sur la terrasse a fait fondre notre table de jardin.",incendie,sujet
+T001,"Je me fais voler mon vélo dans le local commun de l'immeuble, qui n'était pas fermé à clé.",vol,sujet
+T002,"Un assuré laisse une bougie sur la table de son jardin pendant ses vacances. Avec la chaleur, la bougie fond et abîme la table.",incendie,sujet
 T003,En rentrant du travail j'ai trouvé l'appartement sens dessus dessous et il manque le portable et la console.,vol,normale
 T004,La porte de la cave porte des traces de pied de biche et mes deux skis ont disparu.,vol,normale
 T005,Des jeunes ont rayé et cabossé notre porte de garage à coups de pierre.,vol,difficile

@@ -59,3 +59,14 @@ Résultat : 323, 232 et 444 clauses ; 3 à 8 s par contrat.
   1. En 2D, la SVD ne conserve que 2,7 % de la variance des descriptions : une image en 2D d'un texte est illustrative, pas une mesure.
   2. **Décalage de distribution visible** : les descriptions de test écrites à la main se regroupent à part des descriptions générées. La première composante est portée par les formules répétées des gabarits (« Bonjour », « Que dois-je faire ? »). La figure explique pourquoi la validation croisée donnait 1,00 et le test 90 %.
   3. Le regroupement non supervisé (k-means) ne retrouve pas les familles (ARI 0,03 pour les sinistres comme pour les clauses) ; les clauses se regroupent davantage par assureur (ARI 0,17) que par garantie : le style de rédaction domine le sujet. D'où un classifieur supervisé pour les sinistres et un catalogue des garanties validé par un expert pour aligner les contrats entre eux.
+
+## 2 novembre 2026
+
+- Reproductibilité : installation sur un second poste (Windows, Python 3.14, scikit-learn 1.9.1). 51 tests réussis ; classifieur et recherche des clauses donnent des résultats identiques.
+- Cas de la bougie corrigé : les deux cas de l'énoncé sont désormais repris mot pour mot dans le jeu de test et dans l'évaluation de la recherche. La bougie n'est pas allumée ; la chaleur la fait fondre.
+- Fuite corrigée : le gabarit d'entraînement « une bougie a fait fondre la table » reproduisait presque le cas de test ; remplacé par « le four a pris feu », données régénérées, modèle réentraîné. Exactitude inchangée (90 %, F1 macro 0,893) ; la bougie reste classée « incendie » (0,85), famille qui contient les dommages de chaleur ; le vélo est classé « vol » (0,95).
+- Test de McNemar exact ajouté à l'évaluation du classifieur. Mots et caractères contre mots seuls : 5 désaccords favorables contre 1, p = 0,22. **Le gain de 7 points n'est pas significatif sur 60 cas** ; environ 200 à 300 cas réels seraient nécessaires pour départager des modèles proches. Régression logistique et SVM calibré : aucun désaccord (p = 1,00) ; le choix entre eux relève d'autres critères (calibration, explicabilité), d'où l'analyse multicritère prévue.
+- R² de McFadden du modèle retenu sur le test : 0,76 (ln L = −25,3 ; modèle nul : −107,4).
+- Recherche des clauses : la garantie optionnelle « Jardin » de Baloise (mobilier de jardin) ajoutée aux clauses attendues ; elle conditionne le contrôle 3 pour la bougie. Rappel : 13/15 ; exclusions décisives : 4/4.
+- Questions du gestionnaire pour les dommages de chaleur : origine de la chaleur, bien situé à l'extérieur.
+- Contrôle 6 : règles des droits luxembourgeois, belge, français et suisse sur les obligations après sinistre ; une déclaration tardive n'est jamais bloquante à elle seule. Voir `conception.md`.

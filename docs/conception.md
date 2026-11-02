@@ -56,9 +56,33 @@ découle par une règle explicite :
 
 | Contrôle | Sogessur (FR) | Ethias (BE) | Baloise (LU) |
 |---|---|---|---|
-| 4 Événement garanti | pas d'incendie | incendie = flammes et embrasement : **hors champ** | « dommages ménagers » : excès de chaleur sans embrasement, mais « action subite » ; mobilier de jardin non cité |
+| 3 Garantie souscrite | — | — | mobilier de jardin : garantie optionnelle « Jardin » → selon la police |
+| 4 Événement garanti | pas d'incendie | incendie = flammes et embrasement : **hors champ** | « dommages ménagers » : excès de chaleur sans embrasement, mais « action subite » |
 | 5 Exclusions | **chaleur sans incendie : bloquant** | — | — |
-| Verdict | **potentiellement exclu** (exclusion) | **non couvert** (hors champ) | **indéterminé** : la chaleur de l'été est-elle « subite » ? une table de jardin est-elle un « objet d'ameublement » ? |
+| Verdict | **potentiellement exclu** (exclusion) | **non couvert** (hors champ) | **indéterminé** : garantie Jardin souscrite ? la chaleur de l'été est-elle « subite » ? une table de jardin est-elle un « objet d'ameublement » ? |
+
+### Contrôle 6 : obligations après sinistre selon le droit applicable
+
+Le non-respect d'une obligation après sinistre (déclaration tardive, par
+exemple) n'entraîne pas de plein droit la perte de la garantie. Dans les
+quatre droits francophones examinés, la sanction est proportionnée au
+préjudice de l'assureur ; le refus total suppose une intention frauduleuse
+ou un retard délibéré.
+
+| Pays | Texte | Sanction de principe | Refus total |
+|---|---|---|---|
+| Luxembourg | Loi du 27 juillet 1997 sur le contrat d'assurance, art. 26 à 28 ; art. 18 | Réduction de la prestation à concurrence du préjudice subi (art. 28 §1) | Intention frauduleuse (art. 28 §2) ; toute déchéance contractuelle exige un lien causal avec le sinistre (art. 18) |
+| Belgique | Loi du 4 avril 2014 relative aux assurances, art. 74 à 76 | Réduction à concurrence du préjudice (art. 76 §1) | Intention frauduleuse (art. 76 §2) |
+| France | Code des assurances, art. L113-2 | Délai minimal de 5 jours ouvrés, 2 jours ouvrés en cas de vol | Déchéance opposable seulement si prévue au contrat et si l'assureur prouve un préjudice ; jamais en cas de force majeure |
+| Suisse | Loi sur le contrat d'assurance (LCA), art. 38 et 45 | Réduction de l'indemnité à ce qu'elle aurait été avec un avis en temps utile, en cas de faute (art. 38 al. 2) | Retard intentionnel destiné à empêcher la vérification (art. 38 al. 3) ; aucune sanction si la violation n'est pas imputable ou sans incidence (art. 45) |
+
+Règle appliquée par l'outil : un délai dépassé donne le statut **à
+vérifier**, accompagné des questions « le retard a-t-il causé un préjudice à
+l'assureur ? » et « une raison explique-t-elle le retard ? ». Le statut
+**bloquant** n'est jamais déduit d'une date seule ; il relève du constat du
+gestionnaire. La loi luxembourgeoise impose en outre que toute limitation ou
+exclusion de garantie soit mise en évidence (art. 16 §2) : l'outil cite
+chaque exclusion séparément, avec sa page.
 
 ## 4. Le modèle de données
 

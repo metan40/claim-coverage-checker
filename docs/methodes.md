@@ -16,7 +16,7 @@ d'exotique : des outils éprouvés, appliqués au bon endroit.
 | 8 | Conclure à partir des contrôles | Agrégation non compensatoire avec veto | exclu si un contrôle est bloquant ; couvert si tous sont satisfaits ; sinon indéterminé | le droit des assurances est non compensatoire : rien ne rachète une exclusion |
 | 9 | Estimer l'indemnité | Calcul actuariel simple | I = min(max(D − F, 0), P), avec D le dommage (valeur à neuf ou après vétusté), F la franchise, P le plafond | donne au gestionnaire un ordre de grandeur, pas seulement un oui ou un non |
 | 10 | Chiffrer le coût des erreurs | Coût attendu | E[C] = c_payer-à-tort · n₁ + c_refuser-à-tort · n₂ + c_renvoi · n₃ | relie le seuil de décision à l'argent et au risque client |
-| 11 | Mesurer honnêtement | Précision, rappel, F1 macro, rappel@k ; intervalles de confiance par bootstrap | P = VP/(VP+FP), R = VP/(VP+FN) ; IC à 95 % par 2 000 tirages | des chiffres vérifiables, avec leur incertitude |
+| 11 | Mesurer honnêtement | Précision, rappel, F1 macro, rappel@k ; intervalles de confiance par bootstrap ; test de McNemar | P = VP/(VP+FP), R = VP/(VP+FN) ; IC à 95 % par 2 000 tirages ; désaccords b, c ~ Binomiale(b + c, ½) sous H₀ | des chiffres vérifiables, avec leur incertitude ; un écart entre deux modèles n'est retenu que s'il est significatif |
 | 12 | Choisir le modèle sur plusieurs critères | Dominance de Pareto puis PROMETHEE II | φ(a) = Σ_j w_j φ_j(a) (flux net) ; sensibilité aux poids | justifie un choix entre justesse, calibration, vitesse et explicabilité |
 
 ## Ce que l'on n'utilise pas, volontairement

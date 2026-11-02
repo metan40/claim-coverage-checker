@@ -15,7 +15,7 @@ def test_all_families_known(model):
 
 def test_subject_cases(model):
     assert "vol" in predict(model, "Mon vélo a disparu du local commun, le local n'était pas fermé à clé.").families
-    candle = predict(model, "Une bougie a fait fondre notre table de jardin pendant les vacances.")
+    candle = predict(model, "Une bougie laissée sur la table du jardin a fondu avec la chaleur et abîmé la table.")
     assert candle.families[0] == "incendie"
 
 

@@ -6,6 +6,9 @@
 - Mesures : exactitude, F1 macro, exactitude top-2 (la bonne famille parmi
   les deux plus probables), log-loss et score de Brier (qualité des
   probabilités, utilisées pour décider de garder une deuxième famille).
+- Test de McNemar exact : chaque modèle est comparé au modèle retenu sur les
+  mêmes cas de test ; seuls les désaccords comptent. Un écart d'exactitude
+  n'est retenu comme réel que si la p-value est faible.
 
 Usage : ``python evaluation/evaluate_classifier.py`` (écrit
 ``evaluation/resultats_classifieur.md``).
@@ -15,6 +18,7 @@ from pathlib import Path
 
 import numpy as np
 from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, log_loss
+from scipy.stats import binomtest
 from sklearn.model_selection import StratifiedKFold, cross_val_score
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -29,6 +33,18 @@ SHORT = {"vol": "vol", "incendie": "inc", "degats_des_eaux": "eau", "bris_de_gla
 def brier(probabilities: np.ndarray, labels: list[str], classes) -> float:
     truth = np.array([[label == c for c in classes] for label in labels], dtype=float)
     return float(np.mean(np.sum((probabilities - truth) ** 2, axis=1)))
+
+
+def mcnemar(truth: list[str], a, b) -> tuple[int, int, float]:
+    """Désaccords (a juste et b faux, a faux et b juste) et p-value exacte :
+    sous l'hypothèse « aucun modèle n'est meilleur », chaque désaccord tombe
+    d'un côté ou de l'autre avec probabilité 1/2 (loi binomiale)."""
+    right_a = np.array(a) == np.array(truth)
+    right_b = np.array(b) == np.array(truth)
+    only_a, only_b = int(np.sum(right_a & ~right_b)), int(np.sum(~right_a & right_b))
+    if only_a + only_b == 0:
+        return only_a, only_b, 1.0
+    return only_a, only_b, float(binomtest(only_a, only_a + only_b, 0.5).pvalue)
 
 
 def main() -> None:
@@ -59,6 +75,15 @@ def main() -> None:
 
     model = fitted[SELECTED]
     predicted = model.predict(test_texts)
+    lines += ["", f"## Comparaison appariée avec `{SELECTED}` (test de McNemar exact)", "",
+              "| Modèle | Juste seul | Retenu juste seul | p-value |", "|---|---|---|---|"]
+    for name, other in fitted.items():
+        if name != SELECTED:
+            only_other, only_selected, p_value = mcnemar(
+                test_labels, other.predict(test_texts), predicted)
+            lines.append(f"| {name} | {only_other} | {only_selected} | {p_value:.2f} |")
+    lines += ["", "Une p-value élevée signifie que l'écart observé peut être dû au hasard "
+              f"sur {len(test_texts)} cas."]
     lines += ["", f"## Modèle retenu : `{SELECTED}`", "",
               "Matrice de confusion sur le test (lignes : vraie famille ; colonnes : prédite) :", "",
               "| | " + " | ".join(SHORT[f] for f in FAMILIES) + " |",

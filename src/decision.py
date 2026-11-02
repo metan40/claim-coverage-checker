@@ -89,6 +89,8 @@ CHECKLIST = {
             "Le local ou la pièce était-il fermé à clé ?",
             "Une facture ou une preuve de possession du bien peut-elle être fournie ?"],
     "incendie": ["Y a-t-il eu des flammes (embrasement) ou seulement de la chaleur ?",
+                 "D'où venait la chaleur (soleil, appareil de chauffage ou d'éclairage, feu) ?",
+                 "Le bien endommagé se trouvait-il à l'extérieur (mobilier de jardin) ?",
                  "Quelle est la nature et la valeur du bien endommagé (facture) ?"],
     "degats_des_eaux": ["Quelle est l'origine exacte de l'eau (conduite, appareil, toiture, voisin) ?",
                         "La fuite a-t-elle été réparée ?"],

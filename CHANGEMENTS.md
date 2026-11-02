@@ -3,6 +3,15 @@
 Une version = une archive `claim-coverage-checker_vN.zip`. Le détail des
 décisions et des mesures est dans `docs/journal_technique.md`.
 
+## Version 3 — 2 novembre 2026
+
+- Cas du sujet repris mot pour mot dans les jeux de test ; la bougie fond sous l'effet de la chaleur, sans flamme.
+- Données d'entraînement : suppression d'un gabarit trop proche du cas de test de la bougie ; modèle réentraîné.
+- Évaluation du classifieur : test de McNemar exact contre le modèle retenu.
+- Recherche des clauses : garantie optionnelle « Jardin » (Baloise) ajoutée aux clauses attendues ; rappel 13/15.
+- Questions du gestionnaire pour les dommages de chaleur.
+- Conception : contrôle 6 selon les droits luxembourgeois, belge, français et suisse.
+
 ## Version 2 — 31 octobre 2026
 
 - Schémas dans `docs/schemas/` : processus d'instruction (BPMN 2.0, importable dans Bizagi et Enterprise Architect), architecture, modèle de données, séquence d'une instruction, import d'un contrat, cas d'utilisation.

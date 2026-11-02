@@ -7,7 +7,8 @@ from src.database import DB_PATH
 from src.retrieval import QUOTAS, fts_query, query_terms, retrieve, stem
 
 VELO = "Mon vélo a disparu du local commun de la résidence, qui n'était pas fermé à clé."
-BOUGIE = "Une bougie restée allumée sur la terrasse a fait fondre notre table de jardin."
+BOUGIE = ("Un assuré laisse une bougie sur la table de son jardin pendant ses vacances. "
+          "Avec la chaleur, la bougie fond et abîme la table.")
 
 
 def test_stem_keeps_short_words():

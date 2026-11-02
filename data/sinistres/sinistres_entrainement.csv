@@ -123,7 +123,7 @@ E0121,Je vous écris car la chasse d'eau fuit depuis des jours dans l'appartemen
 E0122,Mon assurance habitation fonctionne-t-elle ? ma tondeuse a projeté un caillou sur la voiture d'un passant dans la rue pendant mon absence. Mon propriétaire est prévenu.,responsabilite_civile
 E0123,Petit problème : l'arbre de mon jardin est tombé chez le voisin dans la rue le week-end dernier. J'ai pris des photos.,responsabilite_civile
 E0124,J'ai abîmé la voiture d'un tiers en déménageant dans la rue cette nuit. Que dois-je faire ?,responsabilite_civile
-E0125,Mon assurance habitation fonctionne-t-elle ? une bougie a fait fondre la table le week-end dernier. J'ai pris des photos.,incendie
+E0125,Mon assurance habitation fonctionne-t-elle ? le four a pris feu le week-end dernier. J'ai pris des photos.,incendie
 E0126,Mon assurance habitation fonctionne-t-elle ? la table en verre s'est brisée à la maison le week-end dernier. J'ai pris des photos.,bris_de_glace
 E0127,"Madame, Monsieur, on a tenté de forcer la serrure pendant nos vacances. Mon propriétaire est prévenu.",vol
 E0128,Je vous écris car un court-circuit a provoqué un départ de feu sur la terrasse ce matin. Que dois-je faire ?,incendie
@@ -148,7 +148,7 @@ E0146,"Madame, Monsieur, un pot de fleurs est tombé de mon balcon sur une voitu
 E0147,Mon assurance habitation fonctionne-t-elle ? le poids de la neige a fait céder l'auvent dans notre commune ce matin. Que dois-je faire ?,evenements_naturels
 E0148,Je vous écris car le sèche-linge a pris feu dans l'appartement. J'ai pris des photos.,incendie
 E0149,"Madame, Monsieur, ma tondeuse a projeté un caillou sur la voiture d'un passant au parc le week-end dernier. Que dois-je faire ?",responsabilite_civile
-E0150,Je vous écris car une bougie a fait fondre la table dans le jardin ce matin. Merci de me rappeler.,incendie
+E0150,Je vous écris car le four a pris feu dans le jardin ce matin. Merci de me rappeler.,incendie
 E0151,Je vous écris car la plaque vitrocéramique est fêlée dans le salon en pleine journée. J'ai pris des photos.,bris_de_glace
 E0152,L'orage a provoqué une inondation de la cave chez nous ce matin. J'ai pris des photos.,evenements_naturels
 E0153,Je souhaite savoir si je suis couvert : on a volé les vélos des enfants dans le jardin cette nuit. Mon propriétaire est prévenu.,vol
@@ -439,7 +439,7 @@ E0437,La grêle a abîmé la toiture ce matin.,evenements_naturels
 E0438,Je souhaite savoir si je suis couvert : la vitre du four est fendue à l'étage ce matin. Est-ce pris en charge ?,bris_de_glace
 E0439,"Bonjour, la plaque vitrocéramique est fêlée dans le salon le week-end dernier. Est-ce pris en charge ?",bris_de_glace
 E0440,Je souhaite savoir si je suis couvert : la chaleur du poêle a déformé le meuble sur la terrasse il y a trois jours. Je n'ai pas encore fait de devis.,incendie
-E0441,Mon assurance habitation fonctionne-t-elle ? une bougie a fait fondre la table dans la chambre hier soir. Merci de me rappeler.,incendie
+E0441,Mon assurance habitation fonctionne-t-elle ? le four a pris feu dans la chambre hier soir. Merci de me rappeler.,incendie
 E0442,Mon assurance habitation fonctionne-t-elle ? des vandales ont crevé la porte du garage dans la maison hier soir. Je n'ai pas encore fait de devis.,vol
 E0443,Mon assurance habitation fonctionne-t-elle ? mon enfant a rayé la voiture du voisin au parc cette nuit.,responsabilite_civile
 E0444,Petit problème : le WC a débordé dans la salle de bain,degats_des_eaux
@@ -567,7 +567,7 @@ E0565,"Madame, Monsieur, la vitre de la porte d'entrée est fendue lundi",bris_d
 E0566,"Pour information, le vitrage de la véranda est fendu dans la chambre lundi.",bris_de_glace
 E0567,Je déclare un sinistre : la table en plastique a fondu à cause de la chaleur dans le salon hier soir. Je n'ai pas encore fait de devis.,incendie
 E0568,Des individus ont tagué la façade dans la maison pendant mon absence. J'ai pris des photos.,vol
-E0569,Je souhaite savoir si je suis couvert : une bougie a fait fondre la table dans l'appartement pendant nos vacances. Que dois-je faire ?,incendie
+E0569,Je souhaite savoir si je suis couvert : le four a pris feu dans l'appartement pendant nos vacances. Que dois-je faire ?,incendie
 E0570,"Pour information, le garage a été visité par des voleurs dans le hall de l'immeuble. Que dois-je faire ?",vol
 E0571,Petit problème : la fumée a noirci les murs du salon dans la cuisine en pleine journée. Merci de me rappeler.,incendie
 E0572,"Bonjour, le vent a arraché l'antenne dans le quartier il y a trois jours",evenements_naturels
