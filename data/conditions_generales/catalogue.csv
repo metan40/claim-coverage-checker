@@ -1,4 +1,4 @@
-fichier,code,gamme,assureur,pays,produit,reference,version,date_effet,source
-baloise_lu_home_2023-11.pdf,baloise_lu,baloise_lu_home,Baloise Assurances Luxembourg,LU,Home,CG-HOME(2)-LUFR-11-23,2023-11,2023-11-01,https://www.baloise.lu
-ethias_be_habitation_2025-03.pdf,ethias_be,ethias_be_habitation,Ethias,BE,Assurance Habitation,1252-050,2025-03,2025-03-01,https://www.ethias.be
-sogessur_fr_habitation_2025-04.pdf,sogessur_fr,sogessur_fr_habitation,Sogessur (Société Générale Assurances),FR,Assurance Habitation,F 190 315,2025-04,2025-04-01,https://www.sogessur.fr
+fichier,code,gamme,assureur,pays,produit,reference,version,date_effet,source,delai_declaration,delai_vol,unite_delai,page_delais
+baloise_lu_home_2023-11.pdf,baloise_lu,baloise_lu_home,Baloise Assurances Luxembourg,LU,Home,CG-HOME(2)-LUFR-11-23,2023-11,2023-11-01,https://www.baloise.lu,8,8,jours,39
+ethias_be_habitation_2025-03.pdf,ethias_be,ethias_be_habitation,Ethias,BE,Assurance Habitation,1252-050,2025-03,2025-03-01,https://www.ethias.be,10,10,jours,20
+sogessur_fr_habitation_2025-04.pdf,sogessur_fr,sogessur_fr_habitation,Sogessur (Société Générale Assurances),FR,Assurance Habitation,F 190 315,2025-04,2025-04-01,https://www.sogessur.fr,5,2,jours_ouvres,31

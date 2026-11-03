@@ -1,0 +1,8 @@
+numero,gamme,formule,date_effet,date_fin,plafond_contenu,franchise,options,commentaire
+LU-DEMO-01,baloise_lu_home,HOME,2024-01-15,,50000,250,VOL|PACK_JARDIN,Vol et pack jardin souscrits
+LU-DEMO-02,baloise_lu_home,HOME,2024-03-01,,40000,250,,Garanties de base seulement
+BE-DEMO-01,ethias_be_habitation,HABITATION,2025-03-15,,45000,300,VOL,Option vol souscrite
+BE-DEMO-02,ethias_be_habitation,HABITATION,2025-04-01,,45000,300,,Sans option vol
+FR-DEMO-01,sogessur_fr_habitation,CONFORT,2025-05-01,,30000,150,PACK_JARDIN,Formule Confort (vol inclus) et pack jardin
+FR-DEMO-02,sogessur_fr_habitation,INITIALE,2025-05-01,,20000,150,,Formule Initiale sans option vol
+FR-DEMO-03,sogessur_fr_habitation,OPTIMALE,2025-06-01,2026-06-01,60000,150,,Contrat résilié au 1er juin 2026

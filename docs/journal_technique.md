@@ -70,3 +70,11 @@ Résultat : 323, 232 et 444 clauses ; 3 à 8 s par contrat.
 - Recherche des clauses : la garantie optionnelle « Jardin » de Baloise (mobilier de jardin) ajoutée aux clauses attendues ; elle conditionne le contrôle 3 pour la bougie. Rappel : 13/15 ; exclusions décisives : 4/4.
 - Questions du gestionnaire pour les dommages de chaleur : origine de la chaleur, bien situé à l'extérieur.
 - Contrôle 6 : règles des droits luxembourgeois, belge, français et suisse sur les obligations après sinistre ; une déclaration tardive n'est jamais bloquante à elle seule. Voir `conception.md`.
+
+## 3 novembre 2026
+
+- Modèle de données étendu (version 4) : tables `garanties`, `polices`, `police_options`, `sinistres`, `analyses`, `controles`, `imports` ; clés étrangères activées à la création.
+- Catalogue des garanties construit à partir des conditions générales : Sogessur (vol inclus dans les formules Confort et Optimale, option pour Initiale p.16 ; bris de glaces Confort et Optimale p.17 ; pack jardin plafonné à 5 000 € p.29), Ethias (garanties de base de l'article 3 ; vol en option, article 4 p.14), Baloise (incendie et dommages ménagers de base p.12 ; vol en option p.15 ; pack jardin pour le mobilier de jardin p.20). Chaque ligne cite un fragment vérifié à l'import.
+- Délais de déclaration relevés : Baloise 8 jours (p.39), Ethias 10 jours (p.20), Sogessur 5 jours ouvrés, 2 jours ouvrés pour le vol (p.31). Le délai court à partir de la connaissance du sinistre.
+- Contrôles factuels et règle de verdict codés et testés (18 tests). Un délai dépassé donne « à vérifier », jamais « bloquant ».
+- Test de charge : 100 000 polices synthétiques (54 452 options), base de 17 Mo ; contrôles factuels en 0,11 ms médians par sinistre sur 1 000 déclarations.

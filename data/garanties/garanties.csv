@@ -1,0 +1,19 @@
+contrat,code,libelle,famille,statut,formules,option,biens,plafond,page,fragment
+sogessur_fr,INCENDIE,Incendie et événements assimilés,incendie,base,,,,,5,Incendie et événements assimilés ■ ■ ■
+sogessur_fr,DEGATS_EAUX,Dégâts des eaux et gel,degats_des_eaux,base,,,,,5,Dégâts des eaux et gel ■ ■ ■
+sogessur_fr,CLIMATIQUES,Événements climatiques,evenements_naturels,base,,,,,5,Événements climatiques ■ ■ ■
+sogessur_fr,RC,Responsabilité civile,responsabilite_civile,base,,,,,5,Responsabilité civile ■ ■ ■
+sogessur_fr,VOL,Vol,vol,formule,CONFORT|OPTIMALE,VOL,,,16,"formule Initiale avec option Vol, une formule Confort ou une formule Optimale"
+sogessur_fr,BRIS_GLACES,Bris de glaces,bris_de_glace,formule,CONFORT|OPTIMALE,,,,17,"formule Confort, Optimale ou Investisseur"
+sogessur_fr,PACK_JARDIN,Pack Jardin,,extension_bien,,PACK_JARDIN,mobilier_jardin,5000,29,aux mobiliers de jardin
+ethias_be,INCENDIE,Incendie,incendie,base,,,,,6,3.1. L’ incendie
+ethias_be,COMBUSTION,Combustion sans flamme,incendie,base,,,,,6,La combustion sans flamme
+ethias_be,DEGATS_EAUX,Dégât des eaux,degats_des_eaux,base,,,,,7,3.5. Le dégât des eaux
+ethias_be,VITRAGES,Bris et fêlure des vitrages,bris_de_glace,base,,,,,9,3.12. Le bris et la fêlure des vitrages
+ethias_be,TEMPETE,"Tempête, grêle, pression de la neige ou de la glace",evenements_naturels,base,,,,,10,"3.16. La tempête , la grêle"
+ethias_be,RC,Responsabilité civile des biens assurés,responsabilite_civile,base,,,,,10,3.15. La responsabilité civile des biens assurés
+ethias_be,VOL,Vol et vandalisme,vol,option,,VOL,,,14,uniquement si mention en est faite
+baloise_lu,INCENDIE,Incendie et événements assimilés,incendie,base,,,,,12,l’action subite de la chaleur
+baloise_lu,RC,Responsabilités civiles de base,responsabilite_civile,base,,,,,26,Quelles sont vos garanties responsabilité civile de base
+baloise_lu,VOL,Vol / Vandalisme,vol,option,,VOL,,,15,Seules les garanties optionnelles souscrites
+baloise_lu,PACK_JARDIN,Pack jardin / piscine,,extension_bien,,PACK_JARDIN,mobilier_jardin,,20,Le mobilier de jardin

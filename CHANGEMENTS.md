@@ -3,6 +3,17 @@
 Une version = une archive `claim-coverage-checker_vN.zip`. Le détail des
 décisions et des mesures est dans `docs/journal_technique.md`.
 
+## Version 4 — 3 novembre 2026
+
+- Modèle de données étendu : garanties, polices, options, sinistres, analyses, contrôles, imports ; clés étrangères.
+- Catalogue des garanties des trois contrats, chaque garantie reliée à sa clause et à sa page.
+- Délais de déclaration de chaque contrat.
+- Polices et sinistres de démonstration (11 cas) ; générateur de portefeuille synthétique.
+- Instruction factuelle (`src/instruction.py`) : contrat en vigueur, version applicable, garantie souscrite, délai de déclaration, montant ; verdict non compensatoire.
+- Test de charge : 100 000 polices, 0,1 ms par sinistre.
+- 69 tests automatisés.
+- Bibliothèques inchangées : aucune réinstallation nécessaire.
+
 ## Version 3 — 2 novembre 2026
 
 - Cas du sujet repris mot pour mot dans les jeux de test ; la bougie fond sous l'effet de la chaleur, sans flamme.

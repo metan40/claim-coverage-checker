@@ -1,0 +1,12 @@
+id,police,date_survenance,date_connaissance,date_declaration,description,bien,montant_estime,commentaire
+S-01,FR-DEMO-01,2026-09-11,2026-09-11,2026-09-14,"Je me fais voler mon vélo dans le local commun de l'immeuble, qui n'était pas fermé à clé.",velo,900,"Vélo, formule Confort, déclaré dans les délais"
+S-02,BE-DEMO-01,2026-09-11,2026-09-11,2026-09-14,"Je me fais voler mon vélo dans le local commun de l'immeuble, qui n'était pas fermé à clé.",velo,900,"Vélo, option vol souscrite"
+S-03,LU-DEMO-01,2026-09-11,2026-09-11,2026-09-14,"Je me fais voler mon vélo dans le local commun de l'immeuble, qui n'était pas fermé à clé.",velo,900,"Vélo, option vol souscrite"
+S-04,LU-DEMO-02,2026-09-11,2026-09-11,2026-09-14,"Je me fais voler mon vélo dans le local commun de l'immeuble, qui n'était pas fermé à clé.",velo,900,"Vélo, option vol non souscrite"
+S-05,FR-DEMO-02,2026-09-11,2026-09-11,2026-09-14,"Je me fais voler mon vélo dans le local commun de l'immeuble, qui n'était pas fermé à clé.",velo,900,"Vélo, formule Initiale sans option vol"
+S-06,FR-DEMO-03,2026-09-11,2026-09-11,2026-09-14,"Je me fais voler mon vélo dans le local commun de l'immeuble, qui n'était pas fermé à clé.",velo,900,"Vélo, contrat résilié avant le sinistre"
+S-07,FR-DEMO-01,2026-09-11,2026-09-11,2026-09-16,"Je me fais voler mon vélo dans le local commun de l'immeuble, qui n'était pas fermé à clé.",velo,900,"Vélo, déclaré après 3 jours ouvrés"
+S-08,FR-DEMO-01,2026-07-20,2026-08-08,2026-08-10,"Un assuré laisse une bougie sur la table de son jardin pendant ses vacances. Avec la chaleur, la bougie fond et abîme la table.",mobilier_jardin,350,"Bougie, pack jardin souscrit"
+S-09,BE-DEMO-01,2026-07-20,2026-08-08,2026-08-10,"Un assuré laisse une bougie sur la table de son jardin pendant ses vacances. Avec la chaleur, la bougie fond et abîme la table.",mobilier_jardin,350,Bougie
+S-10,LU-DEMO-01,2026-07-20,2026-08-08,2026-08-10,"Un assuré laisse une bougie sur la table de son jardin pendant ses vacances. Avec la chaleur, la bougie fond et abîme la table.",mobilier_jardin,350,"Bougie, pack jardin souscrit"
+S-11,LU-DEMO-02,2026-07-20,2026-08-08,2026-08-10,"Un assuré laisse une bougie sur la table de son jardin pendant ses vacances. Avec la chaleur, la bougie fond et abîme la table.",mobilier_jardin,350,"Bougie, pack jardin non souscrit"

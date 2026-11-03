@@ -11,6 +11,17 @@ Ajouter un contrat revient à déposer son PDF, ajouter une ligne au
 catalogue (``data/conditions_generales/catalogue.csv``) et relancer
 l'ingestion : aucun code n'est propre à un assureur.
 
+La base contient aussi les données structurées de l'instruction :
+
+- le catalogue des garanties de chaque contrat (``data/garanties/garanties.csv``),
+  relié à la clause qui le fonde ;
+- un portefeuille de polices et leurs options, et des déclarations de
+  sinistres (données de démonstration, ``data/portefeuille`` et
+  ``data/sinistres/sinistres_demo.csv`` ; un portefeuille synthétique de
+  grande taille s'ajoute avec ``python -m src.portefeuille``) ;
+- les analyses et le détail de leurs contrôles (traçabilité) ;
+- le journal des imports de contrats.
+
 Usage : ``python -m src.database`` (reconstruit ``db/contrats.sqlite``).
 """
 from __future__ import annotations
@@ -25,6 +36,9 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 PDF_DIR = ROOT / "data" / "conditions_generales"
 CATALOGUE = PDF_DIR / "catalogue.csv"
+GARANTIES = ROOT / "data" / "garanties" / "garanties.csv"
+POLICES_DEMO = ROOT / "data" / "portefeuille" / "polices_demo.csv"
+SINISTRES_DEMO = ROOT / "data" / "sinistres" / "sinistres_demo.csv"
 DB_PATH = ROOT / "db" / "contrats.sqlite"
 
 ARTICLE_TYPES = ("definition", "exclusion", "condition", "garantie")
@@ -43,7 +57,11 @@ CREATE TABLE contrats (
     source      TEXT,
     fichier     TEXT NOT NULL,
     sha256      TEXT NOT NULL,
-    pages       INTEGER
+    pages       INTEGER,
+    delai_declaration INTEGER,           -- délai contractuel de déclaration
+    delai_vol   INTEGER,                 -- délai propre au vol
+    unite_delai TEXT CHECK (unite_delai IN ('jours','jours_ouvres')),
+    page_delais INTEGER
 );
 CREATE TABLE articles (
     id          INTEGER PRIMARY KEY,
@@ -78,7 +96,91 @@ CREATE TABLE decisions (
     modele            TEXT,
     duree_secondes    REAL
 );
+-- Catalogue des garanties : ce que propose chaque contrat, et à quelle condition.
+CREATE TABLE garanties (
+    id          INTEGER PRIMARY KEY,
+    contrat_id  INTEGER NOT NULL REFERENCES contrats(id),
+    code        TEXT NOT NULL,
+    libelle     TEXT NOT NULL,
+    famille     TEXT,                    -- famille d'événement (vide pour une extension de bien)
+    statut      TEXT NOT NULL CHECK (statut IN ('base','formule','option','extension_bien')),
+    formules    TEXT,                    -- formules qui l'incluent, séparées par |
+    option      TEXT,                    -- option qui l'ajoute
+    biens       TEXT,                    -- biens couverts par une extension, séparés par |
+    plafond     REAL,                    -- plafond propre à la garantie (euros)
+    page        INTEGER NOT NULL,
+    article_id  INTEGER REFERENCES articles(id),   -- clause qui fonde la garantie
+    validation  TEXT NOT NULL DEFAULT 'proposé',
+    UNIQUE (contrat_id, code)
+);
+-- Portefeuille (conditions particulières).
+CREATE TABLE polices (
+    numero          TEXT PRIMARY KEY,
+    gamme           TEXT NOT NULL,       -- produit ; la version applicable dépend de la date
+    formule         TEXT NOT NULL,
+    date_effet      TEXT NOT NULL,
+    date_fin        TEXT,                -- vide tant que le contrat court
+    plafond_contenu REAL NOT NULL,
+    franchise       REAL NOT NULL,
+    origine         TEXT NOT NULL DEFAULT 'demo' CHECK (origine IN ('demo','synthetique'))
+);
+CREATE TABLE police_options (
+    numero      TEXT NOT NULL REFERENCES polices(numero),
+    option      TEXT NOT NULL,
+    PRIMARY KEY (numero, option)
+);
+-- Déclarations de sinistres.
+CREATE TABLE sinistres (
+    id                TEXT PRIMARY KEY,
+    numero_police     TEXT NOT NULL REFERENCES polices(numero),
+    date_survenance   TEXT NOT NULL,
+    date_connaissance TEXT,              -- date à laquelle l'assuré a constaté le sinistre
+    date_declaration  TEXT,
+    description       TEXT NOT NULL,
+    bien              TEXT,              -- catégorie du bien touché (velo, mobilier_jardin...)
+    montant_estime    REAL
+);
+-- Instructions et détail des contrôles.
+CREATE TABLE analyses (
+    id              INTEGER PRIMARY KEY,
+    cree_le         TEXT NOT NULL DEFAULT (datetime('now')),
+    sinistre_id     TEXT NOT NULL REFERENCES sinistres(id),
+    contrat_id      INTEGER REFERENCES contrats(id),
+    familles        TEXT,                -- JSON : famille -> probabilité
+    verdict         TEXT CHECK (verdict IN ('potentiellement_couvert','potentiellement_exclu','indetermine')),
+    nature          TEXT,
+    indemnite_estimee REAL,
+    modele          TEXT,
+    duree_secondes  REAL,
+    avis_gestionnaire TEXT
+);
+CREATE TABLE controles (
+    id          INTEGER PRIMARY KEY,
+    analyse_id  INTEGER NOT NULL REFERENCES analyses(id),
+    numero      INTEGER NOT NULL CHECK (numero BETWEEN 1 AND 7),
+    nom         TEXT NOT NULL,
+    statut      TEXT NOT NULL CHECK (statut IN ('satisfait','bloquant','a_verifier','sans_objet')),
+    constat     TEXT NOT NULL,
+    source      TEXT NOT NULL,
+    article_id  INTEGER REFERENCES articles(id),
+    question    TEXT
+);
+-- Journal des imports de contrats.
+CREATE TABLE imports (
+    id          INTEGER PRIMARY KEY,
+    contrat_id  INTEGER NOT NULL REFERENCES contrats(id),
+    date        TEXT NOT NULL DEFAULT (datetime('now')),
+    duree_secondes REAL,
+    clauses     INTEGER,
+    definitions INTEGER,
+    exclusions  INTEGER,
+    conditions  INTEGER,
+    garanties   INTEGER,
+    statut      TEXT NOT NULL
+);
 CREATE INDEX idx_articles_contrat ON articles(contrat_id, type);
+CREATE INDEX idx_polices_gamme ON polices(gamme);
+CREATE INDEX idx_sinistres_police ON sinistres(numero_police);
 CREATE INDEX idx_familles ON article_familles(famille);
 CREATE VIRTUAL TABLE articles_fts USING fts5(
     section, texte, content='articles', content_rowid='id',
@@ -175,6 +277,7 @@ def create_database(db_path: Path = DB_PATH) -> sqlite3.Connection:
     if db_path.exists():
         db_path.unlink()
     connection = sqlite3.connect(db_path)
+    connection.execute("PRAGMA foreign_keys = ON")
     connection.executescript(SCHEMA)
     return connection
 
@@ -183,10 +286,13 @@ def insert_contract(connection: sqlite3.Connection, entry: dict, passages, pages
                     sha256: str) -> int:
     cursor = connection.execute(
         "INSERT INTO contrats (code, gamme, assureur, pays, produit, reference, version,"
-        " date_effet, source, fichier, sha256, pages) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+        " date_effet, source, fichier, sha256, pages, delai_declaration, delai_vol, unite_delai,"
+        " page_delais) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
         (entry["code"], entry["gamme"], entry["assureur"], entry["pays"], entry["produit"],
          entry.get("reference"), entry.get("version"), entry["date_effet"], entry.get("source"),
-         entry["fichier"], sha256, pages))
+         entry["fichier"], sha256, pages, _int(entry.get("delai_declaration")),
+         _int(entry.get("delai_vol")), entry.get("unite_delai") or None,
+         _int(entry.get("page_delais"))))
     contract_id = cursor.lastrowid
     previous = None
     for rank, passage in enumerate(passages):
@@ -215,8 +321,86 @@ def insert_contract(connection: sqlite3.Connection, entry: dict, passages, pages
     return contract_id
 
 
+def _int(value) -> int | None:
+    return int(value) if value not in (None, "") else None
+
+
+def _float(value) -> float | None:
+    return float(value) if value not in (None, "") else None
+
+
+def record_import(connection: sqlite3.Connection, contract_id: int, duration: float) -> None:
+    """Journalise un import : nombre de clauses par type. Un import sans
+    exclusion ni définition est suspect (découpage à contrôler)."""
+    counts = dict(connection.execute(
+        "SELECT type, count(*) FROM articles WHERE contrat_id = ? GROUP BY type", (contract_id,)))
+    total = sum(counts.values())
+    status = "ok" if counts.get("exclusion") and counts.get("definition") else "a_controler"
+    connection.execute(
+        "INSERT INTO imports (contrat_id, duree_secondes, clauses, definitions, exclusions,"
+        " conditions, garanties, statut) VALUES (?,?,?,?,?,?,?,?)",
+        (contract_id, round(duration, 2), total, counts.get("definition", 0),
+         counts.get("exclusion", 0), counts.get("condition", 0), counts.get("garantie", 0), status))
+
+
+def load_guarantees(connection: sqlite3.Connection, path: Path = GARANTIES) -> int:
+    """Charge le catalogue des garanties et relie chaque garantie à la clause
+    qui la fonde : la première clause de la bonne page contenant le fragment
+    cité (dans le titre ou le texte). Une garantie dont la clause est
+    introuvable est refusée : le catalogue doit rester vérifiable."""
+    contracts = dict(connection.execute("SELECT code, id FROM contrats"))
+    loaded = 0
+    with path.open(encoding="utf-8") as handle:
+        for row in csv.DictReader(handle):
+            contract_id = contracts.get(row["contrat"])
+            if contract_id is None:
+                continue
+            found = connection.execute(
+                "SELECT id FROM articles WHERE contrat_id = ? AND page = ?"
+                " AND (section || ' ' || replace(texte, char(10), ' ')) LIKE ? ORDER BY rang LIMIT 1",
+                (contract_id, int(row["page"]), f"%{row['fragment']}%")).fetchone()
+            if found is None:
+                raise ValueError(f"{row['contrat']} {row['code']} : fragment introuvable page {row['page']}")
+            connection.execute(
+                "INSERT INTO garanties (contrat_id, code, libelle, famille, statut, formules, option,"
+                " biens, plafond, page, article_id) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                (contract_id, row["code"], row["libelle"], row["famille"] or None, row["statut"],
+                 row["formules"] or None, row["option"] or None, row["biens"] or None,
+                 _float(row["plafond"]), int(row["page"]), found[0]))
+            loaded += 1
+    return loaded
+
+
+def load_demo(connection: sqlite3.Connection, policies: Path = POLICES_DEMO,
+              claims: Path = SINISTRES_DEMO) -> tuple[int, int]:
+    """Charge les polices et sinistres de démonstration (données fictives)."""
+    with policies.open(encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle))
+    for row in rows:
+        connection.execute(
+            "INSERT INTO polices (numero, gamme, formule, date_effet, date_fin, plafond_contenu,"
+            " franchise, origine) VALUES (?,?,?,?,?,?,?, 'demo')",
+            (row["numero"], row["gamme"], row["formule"], row["date_effet"], row["date_fin"] or None,
+             float(row["plafond_contenu"]), float(row["franchise"])))
+        connection.executemany(
+            "INSERT INTO police_options (numero, option) VALUES (?,?)",
+            [(row["numero"], option) for option in row["options"].split("|") if option])
+    with claims.open(encoding="utf-8") as handle:
+        claim_rows = list(csv.DictReader(handle))
+    for row in claim_rows:
+        connection.execute(
+            "INSERT INTO sinistres (id, numero_police, date_survenance, date_connaissance,"
+            " date_declaration, description, bien, montant_estime) VALUES (?,?,?,?,?,?,?,?)",
+            (row["id"], row["police"], row["date_survenance"], row["date_connaissance"] or None,
+             row["date_declaration"] or None, row["description"], row["bien"] or None,
+             _float(row["montant_estime"])))
+    return len(rows), len(claim_rows)
+
+
 def build_database(db_path: Path = DB_PATH, catalogue: Path = CATALOGUE) -> dict:
     """Reconstruit la base à partir du catalogue. Renvoie un résumé par contrat."""
+    import time
+
     import pdfplumber
 
     from src.pdf_parsing import parse_contract
@@ -225,13 +409,17 @@ def build_database(db_path: Path = DB_PATH, catalogue: Path = CATALOGUE) -> dict
     summary = {}
     try:
         for entry in read_catalogue(catalogue):
+            start = time.perf_counter()
             pdf_path = catalogue.parent / entry["fichier"]
             with pdfplumber.open(pdf_path) as pdf:
                 pages = len(pdf.pages)
             passages = parse_contract(pdf_path)
-            insert_contract(connection, entry, passages, pages, _sha256(pdf_path))
+            contract_id = insert_contract(connection, entry, passages, pages, _sha256(pdf_path))
+            record_import(connection, contract_id, time.perf_counter() - start)
             summary[entry["code"]] = len(passages)
         connection.execute("INSERT INTO articles_fts(articles_fts) VALUES ('rebuild')")
+        summary["garanties"] = load_guarantees(connection)
+        summary["polices"], summary["sinistres"] = load_demo(connection)
         connection.commit()
     finally:
         connection.close()
@@ -257,6 +445,6 @@ def connect(db_path: Path = DB_PATH) -> sqlite3.Connection:
 
 
 if __name__ == "__main__":
-    for code, count in build_database().items():
-        print(f"{code}: {count} passages")
+    for name, count in build_database().items():
+        print(f"{name} : {count}")
     print(f"Base écrite : {DB_PATH}")

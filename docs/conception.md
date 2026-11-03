@@ -91,7 +91,7 @@ contrats (conditions générales, une ligne par version)
   ├── articles ── article_familles          (clauses typées, index BM25)
   ├── definitions                           (termes définis)
   └── garanties                             (catalogue : garantie, base ou optionnelle, clauses d'en-tête)
-polices (conditions particulières, 100 000 lignes synthétiques)
+polices (conditions particulières : démonstration + portefeuille synthétique)
   ├── police_options                        (options et packs souscrits)
   └── sinistres                             (déclarations)
         └── analyses                        (une instruction : verdict, version utilisée)
@@ -118,6 +118,35 @@ conditions générales. Il est extrait une fois par contrat (proposé à partir
 des en-têtes de garantie, validé par un humain), puis réutilisé pour tous
 les sinistres. C'est ce qui permet de tenir des centaines de contrats sans
 relire leur texte à chaque question.
+
+### Réalisation (version 4)
+
+- **Catalogue des garanties** (`data/garanties/garanties.csv`, 18 garanties) :
+  pour chaque garantie, sa famille, son statut (base, incluse dans une
+  formule, option, extension pour un bien), la page et un fragment du texte
+  qui la fonde. À l'import, chaque garantie est reliée à sa clause ; une
+  garantie dont le fragment est introuvable fait échouer l'import. Le
+  catalogue est **proposé** à partir des conditions générales et doit être
+  **validé par un expert produit** avant mise en service (colonne
+  `validation`).
+- **Délais de déclaration** par contrat dans le catalogue des contrats :
+  Baloise 8 jours (p.39), Ethias 10 jours (p.20), Sogessur 5 jours ouvrés et
+  2 jours ouvrés pour le vol (p.31).
+- **Polices et sinistres de démonstration** : 7 polices et 11 sinistres
+  fictifs couvrant les deux cas du sujet sur les trois contrats, avec les
+  situations qui font varier le verdict (option non souscrite, contrat
+  résilié, déclaration tardive, pack jardin).
+- **Portefeuille synthétique** : `python -m src.portefeuille 100000`.
+  Test de charge : 100 000 polices, contrôles factuels en 0,1 ms par sinistre
+  (`evaluation/resultats_charge_instruction.md`).
+- **Contrôles factuels** (`src/instruction.py`) : contrôles 1, 2, 3, délai de
+  déclaration et montant ; règle de verdict non compensatoire. Les contrôles
+  4, 5 et 6 (conditions) sont marqués « à vérifier » en attendant
+  l'interprétation des clauses.
+
+Limites connues : jours fériés non déduits du calcul des jours ouvrés ;
+vétusté non appliquée (l'indemnité est estimée avant vétusté) ; catalogue
+limité aux garanties nécessaires aux cas étudiés.
 
 ## 5. Le rôle de chaque technique
 
