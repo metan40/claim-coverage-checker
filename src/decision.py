@@ -150,9 +150,13 @@ def build_prompt(description: str, contract_label: str, clauses: list[Clause]) -
             + f"\n\nSinistre déclaré : {description}\n\nRéponse JSON :")
 
 
-def call_ollama(prompt: str) -> str:
+def call_ollama(prompt: str, schema: dict | None = None) -> str:
+    """Appelle le modèle local ; la réponse doit suivre le schéma JSON fourni
+    (par défaut celui de l'analyse globale). Température nulle : la même
+    question donne la même réponse."""
     payload = json.dumps({
-        "model": OLLAMA_MODEL, "prompt": prompt, "stream": False, "format": RESPONSE_SCHEMA,
+        "model": OLLAMA_MODEL, "prompt": prompt, "stream": False,
+        "format": schema or RESPONSE_SCHEMA,
         "keep_alive": OLLAMA_KEEP_ALIVE,
         "options": {"temperature": 0, "num_ctx": OLLAMA_NUM_CTX, "num_predict": OLLAMA_NUM_PREDICT},
     }).encode("utf-8")

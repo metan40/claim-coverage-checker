@@ -1,2 +1,2 @@
 pytest>=8
--r requirements.txt
+-r requirements-app.txt

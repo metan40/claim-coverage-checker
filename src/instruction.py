@@ -13,8 +13,9 @@ catalogue des garanties :
 
 Les contrôles d'**interprétation** (4 : événement et bien garantis ;
 5 : exclusions ; 6 : conditions de garantie) lisent les clauses retrouvées
-par ``retrieval`` et relèvent du modèle de langage : ils sont présentés ici
-comme « à vérifier », avec les clauses à lire.
+par ``retrieval`` : une question fermée par contrôle au modèle de langage,
+réponse vérifiée par l'application (``interpretation.py``). Sans modèle,
+ils restent « à vérifier », avec les clauses à lire et leurs pages.
 
 Le verdict découle des contrôles par une règle **non compensatoire** :
 un contrôle bloquant suffit à écarter la garantie (rien ne rachète une
@@ -22,16 +23,21 @@ exclusion ou une garantie non souscrite) ; tous les contrôles satisfaits
 donnent « potentiellement couvert » ; sinon « indéterminé », avec la liste
 de ce qui manque.
 
-Usage : ``python -m src.instruction S-01`` (sinistre de démonstration).
+Usage : ``python -m src.instruction S-01`` (sinistre de démonstration) ;
+``--llm`` pour interroger le modèle de langage local (Ollama).
 """
 from __future__ import annotations
 
+import json
 import sqlite3
 import sys
 from dataclasses import dataclass, field
 from datetime import date, timedelta
+from typing import Callable
 
 from src.database import applicable_version, connect
+from src.interpretation import interpreter
+from src.retrieval import retrieve
 
 STATUTS = ("satisfait", "bloquant", "a_verifier", "sans_objet")
 NOMS = {1: "Contrat en vigueur", 2: "Version applicable", 3: "Garantie souscrite",
@@ -258,12 +264,24 @@ def controle_montant(police: dict, retenues: list[dict], montant: float | None) 
     return Controle(7, NOMS[7], statut, constat, f"Police {police['numero']} (franchise, plafond)"), montant_du
 
 
-def controles_a_interpreter() -> list[Controle]:
-    """Contrôles 4, 5 et 6 (conditions) : lecture des clauses retrouvées."""
-    a_lire = "Interprétation des clauses retrouvées (modèle de langage, puis gestionnaire)."
-    return [Controle(4, NOMS[4], "a_verifier", a_lire, "Conditions générales"),
-            Controle(5, NOMS[5], "a_verifier", a_lire, "Conditions générales"),
-            Controle(6, "Conditions de garantie", "a_verifier", a_lire, "Conditions générales")]
+def faits(sinistre: dict) -> str:
+    """Faits connus de la déclaration, transmis avec chaque question fermée."""
+    parties = [f"bien touché : {BIENS.get(sinistre['bien'], sinistre['bien'] or 'non précisé')}",
+               f"survenu le {sinistre['date_survenance']}"]
+    if sinistre["date_connaissance"] and sinistre["date_connaissance"] != sinistre["date_survenance"]:
+        parties.append(f"constaté le {sinistre['date_connaissance']}")
+    if sinistre["montant_estime"] is not None:
+        parties.append(f"montant estimé {euros(sinistre['montant_estime'])}")
+    return " ; ".join(parties)
+
+
+def controles_interpretation(connection: sqlite3.Connection, contrat: dict, sinistre: dict,
+                             familles: list[str], llm: Callable | None) -> list[Controle]:
+    """Contrôles 4, 5 et 6 (conditions) : clauses retrouvées dans le contrat
+    applicable, puis une question fermée par contrôle."""
+    clauses = retrieve(connection, contrat["code"], sinistre["description"], familles)
+    return [interpreter(numero, sinistre["description"], faits(sinistre), clauses, familles, llm)
+            for numero in (4, 5, 6)]
 
 
 # --- Verdict -----------------------------------------------------------------
@@ -280,8 +298,11 @@ def verdict(controles: list[Controle]) -> tuple[str, str | None]:
     return "indetermine", None
 
 
-def instruire(connection: sqlite3.Connection, sinistre_id: str, familles: list[str]) -> Instruction:
-    """Contrôles factuels d'un sinistre enregistré, puis verdict."""
+def instruire(connection: sqlite3.Connection, sinistre_id: str, familles: list[str],
+              llm: Callable | None = None) -> Instruction:
+    """Instruction complète d'un sinistre enregistré : contrôles factuels,
+    contrôles d'interprétation (avec le modèle ``llm`` s'il est fourni),
+    puis verdict."""
     connection.row_factory = sqlite3.Row
     sinistre = lire_sinistre(connection, sinistre_id)
     if sinistre is None:
@@ -298,13 +319,32 @@ def instruire(connection: sqlite3.Connection, sinistre_id: str, familles: list[s
             c3, retenues = controle_garantie(connection, contrat, police, options, familles,
                                              sinistre["bien"])
             controles.append(c3)
-            controles += controles_a_interpreter()
+            controles += controles_interpretation(connection, contrat, sinistre, familles, llm)
             controles.append(controle_delai(contrat, familles, sinistre))
             c7, instruction.indemnite = controle_montant(police, retenues, sinistre["montant_estime"])
             controles.append(c7)
     instruction.controles = sorted(controles, key=lambda c: c.numero)
     instruction.verdict, instruction.nature = verdict(instruction.controles)
     return instruction
+
+
+def enregistrer(connection: sqlite3.Connection, instruction: Instruction,
+                probabilites: dict | None = None, modele: str | None = None) -> int:
+    """Trace l'instruction dans les tables ``analyses`` et ``controles``."""
+    cursor = connection.execute(
+        "INSERT INTO analyses (sinistre_id, contrat_id, familles, verdict, nature, indemnite_estimee,"
+        " modele) VALUES (?,?,?,?,?,?,?)",
+        (instruction.sinistre["id"], instruction.contrat["id"] if instruction.contrat else None,
+         json.dumps(probabilites or {f: None for f in instruction.familles}), instruction.verdict,
+         instruction.nature, instruction.indemnite, modele))
+    analyse_id = cursor.lastrowid
+    connection.executemany(
+        "INSERT INTO controles (analyse_id, numero, nom, statut, constat, source, article_id, question)"
+        " VALUES (?,?,?,?,?,?,?,?)",
+        [(analyse_id, c.numero, c.nom, c.statut, c.constat, c.source, c.article_id, c.question)
+         for c in instruction.controles])
+    connection.commit()
+    return analyse_id
 
 
 def afficher(instruction: Instruction) -> str:
@@ -326,11 +366,14 @@ def afficher(instruction: Instruction) -> str:
 
 if __name__ == "__main__":
     from src.classifier import load_model, predict
+    from src.decision import call_ollama
 
+    arguments = [a for a in sys.argv[1:] if not a.startswith("--")]
+    llm = call_ollama if "--llm" in sys.argv else None
     connection = connect()
     model = load_model()
-    identifiants = sys.argv[1:] or [r[0] for r in connection.execute("SELECT id FROM sinistres ORDER BY id")]
+    identifiants = arguments or [r[0] for r in connection.execute("SELECT id FROM sinistres ORDER BY id")]
     for identifiant in identifiants:
         sinistre = lire_sinistre(connection, identifiant)
         familles = predict(model, sinistre["description"]).families
-        print(afficher(instruire(connection, identifiant, familles)), "\n")
+        print(afficher(instruire(connection, identifiant, familles, llm)), "\n")

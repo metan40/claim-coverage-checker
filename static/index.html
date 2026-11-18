@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claim Coverage Checker</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --card: #ffffff; --ink: #1d2430; --muted: #5b6574; --line: #dde2e8;
+    --accent: #1f5fa8; --ok-bg: #e2f3e7; --ok: #1d6b34; --ko-bg: #fde4e2; --ko: #9b2c2c;
+    --wait-bg: #fff2d9; --wait: #8a5a00; --na-bg: #eceff3; --na: #4a5563;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+         background: var(--bg); color: var(--ink); }
+  header { background: #12345a; color: #fff; padding: 18px 16px; }
+  header h1 { margin: 0; font-size: 20px; }
+  header p { margin: 4px 0 0; opacity: .85; font-size: 14px; }
+  main { max-width: 1000px; margin: 0 auto; padding: 16px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+  h2 { font-size: 16px; margin: 0 0 12px; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .tabs button { border: 1px solid var(--line); background: #fff; padding: 6px 12px; border-radius: 6px; cursor: pointer; font: inherit; }
+  .tabs button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  label { display: block; font-size: 13px; color: var(--muted); margin: 8px 0 4px; }
+  select, input, textarea { width: 100%; padding: 8px; border: 1px solid var(--line); border-radius: 6px; font: inherit; background: #fff; }
+  textarea { min-height: 80px; resize: vertical; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0 12px; }
+  .run { margin-top: 14px; background: var(--accent); color: #fff; border: 0; border-radius: 6px; padding: 10px 18px; font: inherit; cursor: pointer; }
+  .run:disabled { opacity: .6; cursor: wait; }
+  .hint { color: var(--muted); font-size: 13px; margin-top: 8px; }
+  .verdict { border-radius: 8px; padding: 14px 16px; font-weight: 600; font-size: 17px; }
+  .v-potentiellement_couvert { background: var(--ok-bg); color: var(--ok); }
+  .v-potentiellement_exclu { background: var(--ko-bg); color: var(--ko); }
+  .v-indetermine { background: var(--wait-bg); color: var(--wait); }
+  .meta { color: var(--muted); font-size: 14px; margin: 10px 0 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; vertical-align: top; padding: 8px 6px; border-bottom: 1px solid var(--line); }
+  th { color: var(--muted); font-weight: 600; font-size: 13px; }
+  .chip { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 12px; font-weight: 600; white-space: nowrap; }
+  .s-satisfait { background: var(--ok-bg); color: var(--ok); }
+  .s-bloquant { background: var(--ko-bg); color: var(--ko); }
+  .s-a_verifier { background: var(--wait-bg); color: var(--wait); }
+  .s-sans_objet { background: var(--na-bg); color: var(--na); }
+  .question { color: var(--wait); font-size: 13px; margin-top: 4px; }
+  .source { color: var(--muted); font-size: 12px; }
+  .warning { font-size: 13px; color: var(--muted); border-left: 3px solid var(--line); padding-left: 10px; margin-top: 14px; }
+  .error { color: var(--ko); }
+  .hidden { display: none; }
+  @media (max-width: 640px) { .col-source { display: none; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Claim Coverage Checker</h1>
+  <p>Instruction d'un sinistre habitation en 7 contrôles, à partir des conditions générales (LU, BE, FR). Aide à la décision : le gestionnaire décide.</p>
+</header>
+<main>
+  <section class="card">
+    <h2>Sinistre à instruire</h2>
+    <div class="tabs">
+      <button id="tab-demo" class="active" type="button">Sinistre de démonstration</button>
+      <button id="tab-new" type="button">Nouveau sinistre</button>
+    </div>
+    <div id="form-demo">
+      <label for="demo">Sinistre</label>
+      <select id="demo"></select>
+    </div>
+    <div id="form-new" class="hidden">
+      <label for="police">Police</label>
+      <select id="police"></select>
+      <label for="description">Description du sinistre</label>
+      <textarea id="description" placeholder="Décrivez ce qui s'est passé, avec vos mots."></textarea>
+      <div class="grid">
+        <div><label for="survenance">Date de survenance</label><input id="survenance" type="date"></div>
+        <div><label for="declaration">Date de déclaration</label><input id="declaration" type="date"></div>
+        <div><label for="bien">Bien touché</label>
+          <select id="bien"><option value="">autre</option><option value="velo">vélo</option><option value="mobilier_jardin">mobilier de jardin</option></select></div>
+        <div><label for="montant">Montant estimé (€)</label><input id="montant" type="number" min="0" step="10"></div>
+      </div>
+    </div>
+    <button id="run" class="run" type="button">Instruire</button>
+    <div class="hint">Le modèle de langage tourne sur un serveur sans GPU : l'instruction peut prendre une à trois minutes.</div>
+  </section>
+
+  <section id="result" class="card hidden">
+    <div id="verdict" class="verdict"></div>
+    <p id="meta" class="meta"></p>
+    <table>
+      <thead><tr><th>#</th><th>Contrôle</th><th>Statut</th><th>Constat</th><th class="col-source">Source</th></tr></thead>
+      <tbody id="controls"></tbody>
+    </table>
+    <p id="warning" class="warning"></p>
+  </section>
+  <p id="status" class="hint"></p>
+</main>
+<script>
+const $ = (id) => document.getElementById(id);
+const VERDICTS = { potentiellement_couvert: "Potentiellement couvert", potentiellement_exclu: "Potentiellement exclu",
+                   indetermine: "Indéterminé : informations ou lecture complémentaires nécessaires" };
+const STATUTS = { satisfait: "satisfait", bloquant: "bloquant", a_verifier: "à vérifier", sans_objet: "sans objet" };
+let mode = "demo";
+
+function esc(text) {
+  return String(text ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+function setMode(next) {
+  mode = next;
+  $("tab-demo").classList.toggle("active", mode === "demo");
+  $("tab-new").classList.toggle("active", mode === "new");
+  $("form-demo").classList.toggle("hidden", mode !== "demo");
+  $("form-new").classList.toggle("hidden", mode !== "new");
+}
+$("tab-demo").onclick = () => setMode("demo");
+$("tab-new").onclick = () => setMode("new");
+
+async function load() {
+  try {
+    const [claims, policies] = await Promise.all([fetch("/api/sinistres").then((r) => r.json()),
+                                                  fetch("/api/polices").then((r) => r.json())]);
+    $("demo").innerHTML = claims.map((c) =>
+      `<option value="${esc(c.id)}">${esc(c.id)} — ${esc(c.numero_police)} — ${esc(c.description.slice(0, 80))}</option>`).join("");
+    $("police").innerHTML = policies.map((p) =>
+      `<option value="${esc(p.numero)}">${esc(p.numero)} — ${esc(p.assureur)} (${esc(p.pays)}), formule ${esc(p.formule)}${p.options ? ", options " + esc(p.options) : ""}${p.date_fin ? ", fin " + esc(p.date_fin) : ""}</option>`).join("");
+    const today = new Date().toISOString().slice(0, 10);
+    $("survenance").value = today; $("declaration").value = today;
+  } catch (e) {
+    $("status").innerHTML = `<span class="error">Impossible de charger les données : ${esc(e.message)}</span>`;
+  }
+}
+
+function render(data) {
+  $("result").classList.remove("hidden");
+  const v = $("verdict");
+  v.className = `verdict v-${data.verdict}`;
+  v.textContent = VERDICTS[data.verdict] + (data.nature ? ` (${data.nature})` : "");
+  const contrat = data.contrat ? `${data.contrat.assureur} — ${data.contrat.produit} (${data.contrat.reference})` : "contrat inconnu";
+  const probas = Object.entries(data.probabilites || {}).map(([f, p]) => `${f} ${Math.round(p * 100)} %`).join(", ");
+  $("meta").innerHTML = `Sinistre ${esc(data.sinistre.id)} · police ${esc(data.sinistre.numero_police)} · ${esc(contrat)}<br>` +
+    `« ${esc(data.sinistre.description)} »<br>Garantie(s) examinée(s) : <b>${esc(data.familles.join(", "))}</b> (classifieur : ${esc(probas)})` +
+    (data.indemnite != null ? `<br>Indemnité estimée : ${esc(data.indemnite.toLocaleString("fr-FR"))} €` : "") +
+    (data.modele ? `<br>Modèle de langage : ${esc(data.modele)}` : "<br>Contrôles 4 à 6 sans modèle de langage : clauses à lire");
+  $("controls").innerHTML = data.controles.map((c) => `<tr>
+      <td>${c.numero}</td><td>${esc(c.nom)}</td>
+      <td><span class="chip s-${esc(c.statut)}">${esc(STATUTS[c.statut] || c.statut)}</span></td>
+      <td>${esc(c.constat)}${c.question ? `<div class="question">Question : ${esc(c.question)}</div>` : ""}</td>
+      <td class="col-source source">${esc(c.source)}</td></tr>`).join("");
+  $("warning").textContent = data.avertissement;
+}
+
+$("run").onclick = async () => {
+  const body = mode === "demo" ? { sinistre_id: $("demo").value } : {
+    police: $("police").value, description: $("description").value,
+    date_survenance: $("survenance").value || null, date_declaration: $("declaration").value || null,
+    bien: $("bien").value || null, montant_estime: $("montant").value ? Number($("montant").value) : null };
+  $("run").disabled = true;
+  $("status").textContent = "Instruction en cours…";
+  const start = performance.now();
+  try {
+    const response = await fetch("/api/instruire", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    const data = await response.json();
+    if (!response.ok) throw new Error(typeof data.detail === "string" ? data.detail : JSON.stringify(data.detail));
+    render(data);
+    $("status").textContent = `Instruction terminée en ${Math.round((performance.now() - start) / 1000)} s.`;
+  } catch (e) {
+    $("status").innerHTML = `<span class="error">Erreur : ${esc(e.message)}</span>`;
+  } finally {
+    $("run").disabled = false;
+  }
+};
+load();
+</script>
+</body>
+</html>

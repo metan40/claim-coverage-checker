@@ -1,0 +1,47 @@
+name: Tests et synchronisation Hugging Face
+
+# À chaque push : tests. Depuis main seulement, et seulement si les tests
+# réussissent : création du Space s'il n'existe pas, puis mise à jour.
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements-dev.txt
+      - run: python -m pytest -q
+
+  space:
+    needs: tests
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      SPACE: metan40/claim-coverage-checker
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install "huggingface_hub>=0.24"
+      - name: Créer le Space s'il n'existe pas, puis envoyer les fichiers
+        run: |
+          python - <<'PY'
+          import os
+          from huggingface_hub import HfApi
+          api = HfApi(token=os.environ["HF_TOKEN"])
+          space = os.environ["SPACE"]
+          api.create_repo(space, repo_type="space", space_sdk="docker", exist_ok=True)
+          api.upload_folder(repo_id=space, repo_type="space", folder_path=".",
+                            ignore_patterns=[".git/*", ".github/*", "tests/*", "evaluation/*",
+                                             "docs/*", "data/*", "**/__pycache__/*", "*.pyc"],
+                            commit_message=f"Synchronisation depuis GitHub {os.environ['GITHUB_SHA'][:7]}")
+          print("Space :", f"https://huggingface.co/spaces/{space}")
+          PY

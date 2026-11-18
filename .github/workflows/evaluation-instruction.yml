@@ -1,0 +1,51 @@
+name: Évaluation de bout en bout de l'instruction
+
+# Mesure avec le vrai modèle de langage (Ollama) sur cas_couverture.csv.
+# Ne déploie rien.
+on:
+  workflow_dispatch:
+    inputs:
+      modele:
+        description: "Modèle Ollama"
+        default: "llama3.2:3b"
+      repetitions:
+        description: "Passages par jugement"
+        default: "2"
+  push:
+    branches-ignore: [main]
+    paths:
+      - .github/workflows/evaluation-instruction.yml
+
+jobs:
+  mesurer:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    env:
+      OLLAMA_MODEL: ${{ inputs.modele || 'llama3.2:3b' }}
+      OLLAMA_TIMEOUT_SECONDS: "400"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Installer Ollama et le modèle
+        run: |
+          curl -fsSL https://ollama.com/install.sh | sh
+          (ollama serve > ollama.log 2>&1 &)
+          for i in $(seq 1 30); do curl -sf http://127.0.0.1:11434/api/tags >/dev/null && break; sleep 2; done
+          ollama pull "$OLLAMA_MODEL"
+      - name: Référence sans modèle
+        run: python evaluation/evaluer_instruction.py --sans-modele --rapport evaluation/resultats_instruction_reference.md
+      - name: Mesure avec le modèle
+        run: |
+          python evaluation/evaluer_instruction.py --repetitions "${{ inputs.repetitions || '2' }}" \
+            --sortie evaluation/enregistrements_instruction.jsonl
+          cat evaluation/resultats_instruction.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: evaluation-instruction
+          path: |
+            evaluation/resultats_instruction*.md
+            evaluation/enregistrements_instruction.jsonl

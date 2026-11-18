@@ -1,0 +1,24 @@
+name: Vérification locale (Docker)
+
+# Construit l'image et la lance sur une machine vierge, avec un volume pour le
+# modèle, puis instruit les sinistres de démonstration par l'API : preuve que
+# l'application fonctionne sans le serveur distant.
+on:
+  workflow_dispatch:
+  push:
+    branches-ignore: [main]
+    paths:
+      - .github/workflows/verification-locale.yml
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t claim-coverage-checker .
+      - run: docker volume create donnees
+      - run: docker run -d --name app -p 7860:7860 -v donnees:/data claim-coverage-checker
+      - run: python3 evaluation/verifier_application.py --url http://localhost:7860 --attente-minutes 40
+      - if: always()
+        run: docker logs app | tail -50
