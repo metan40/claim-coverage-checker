@@ -1,0 +1,653 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{DejaVu Serif}[Scale=0.92]
+\setsansfont{DejaVu Sans}[Scale=0.92]
+\setmonofont{DejaVu Sans Mono}[Scale=0.85]
+
+\usepackage{polyglossia}
+\setmainlanguage{french}
+\usepackage[margin=2.3cm]{geometry}
+\usepackage{amsmath,amssymb,amsfonts,bm}
+\usepackage{booktabs,array,longtable}
+\usepackage[ruled,vlined,linesnumbered,french,onelanguage]{algorithm2e}
+\SetKwInput{KwIn}{Entrées}\SetKwInput{KwOut}{Sortie}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\setlist{itemsep=2pt,topsep=4pt}
+
+\definecolor{bleu}{HTML}{1F5FA8}
+\newtcolorbox{exemple}[1][]{colback=blue!3,colframe=bleu!60,fonttitle=\bfseries,title={Exemple chiffré #1},breakable}
+\newtcolorbox{defbox}[1]{colback=gray!4,colframe=gray!50,fonttitle=\bfseries,title={#1},breakable}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\vect}[1]{\bm{#1}}
+\newcommand{\mat}[1]{\mathbf{#1}}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator{\softmax}{softmax}
+\DeclareMathOperator{\idf}{idf}
+\DeclareMathOperator{\tf}{tf}
+
+\title{\textbf{Fondements scientifiques et calculs}\\[4pt]
+\large claim-coverage-checker : instruction d'un sinistre habitation\\
+\normalsize avec rappels pour Insurance Claims Assistance}
+\date{Version 5 — novembre 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent Ce document décrit chaque calcul effectué par l'application, de la lecture des conditions
+générales au verdict, et la manière dont il est mesuré. Chaque formule est donnée avec tous ses
+paramètres, puis illustrée par un petit exemple calculé sur les données réelles du projet (base
+de 999 clauses, classifieur entraîné, polices de démonstration). Le fonctionnement du modèle de
+langage exécuté par Ollama est détaillé au niveau matriciel. Les algorithmes sont donnés en
+pseudo-code, et chaque section renvoie aux références qui permettent d'aller plus loin.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+%=====================================================================
+\section{Notations}
+
+Les indices sont fixés pour tout le document.
+
+\begin{center}
+\begin{tabular}{>{$}l<{$} p{11cm}}
+\toprule
+\text{Symbole} & Signification \\
+\midrule
+i = 1,\dots,m & indice des sinistres (ou des questions) $q_i$ ; $m$ = nombre de sinistres \\
+j = 1,\dots,n & indice des clauses (ou des documents) $d_j$ ; $n$ = nombre de clauses ($n = 999$ dans la base) \\
+k = 1,\dots,K & indice des familles de garanties (classes) ; $K = 6$ \\
+t & un terme (mot, groupe de mots ou n-gramme de caractères) ; $V$ = vocabulaire, $|V|$ sa taille \\
+\vect{x}_i \in \R^{|V|} & vecteur (colonne) qui représente le sinistre $q_i$ \\
+\mat{X} \in \R^{m\times |V|} & matrice dont la ligne $i$ est $\vect{x}_i^\top$ \\
+\mat{W} \in \R^{K\times |V|},\ \vect{b}\in\R^K & poids et biais du classifieur \\
+x_{i,t},\ w_{k,t} & coefficients scalaires (ligne $i$ ou $k$, colonne $t$) \\
+\mathbb{1}[A] & indicatrice : 1 si la condition $A$ est vraie, 0 sinon \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent Une \emph{matrice} est un tableau de nombres ; le produit $\mat{A}\mat{B}$ d'une matrice
+$p\times r$ par une matrice $r\times s$ donne une matrice $p\times s$ dont le coefficient
+$(u,v)$ vaut $\sum_{l=1}^{r} a_{u,l}\,b_{l,v}$. Presque tous les calculs de ce document sont des
+produits de ce type.
+
+%=====================================================================
+\section{Vue d'ensemble de la chaîne}
+
+L'instruction d'un sinistre $q_i$ sur un contrat suit cinq étapes ; chacune produit l'entrée de la
+suivante.
+
+\begin{center}
+\begin{tikzpicture}[node distance=5mm and 6mm, every node/.style={font=\small},
+  box/.style={draw, rounded corners, fill=blue!5, align=center, minimum height=10mm, text width=2.3cm}]
+\node[box] (a) {Description\\ du sinistre};
+\node[box, right=of a] (b) {Classifieur\\ (familles $k$)};
+\node[box, right=of b] (c) {Recherche\\ BM25 des clauses $d_j$};
+\node[box, right=of c] (d) {LLM : 3 questions\\ fermées};
+\node[box, below=of d] (e) {Verdict et\\ indemnité};
+\node[box, below=of b, text width=4.6cm] (f) {Contrôles factuels (SQL) :\\ contrat, version, garantie, délai, montant};
+\draw[-{Latex}] (a)--(b); \draw[-{Latex}] (b)--(c); \draw[-{Latex}] (c)--(d); \draw[-{Latex}] (d)--(e);
+\draw[-{Latex}] (b)--(f); \draw[-{Latex}] (f)--(e);
+\end{tikzpicture}
+\end{center}
+
+%=====================================================================
+\section{Préparation des textes}
+
+\begin{defbox}{Mots clés}
+\textbf{Normalisation} : mise sous une forme unique (minuscules, accents retirés).
+\textbf{Token} : unité de texte après découpage. \textbf{Mot vide} : mot très fréquent sans
+contenu (« le », « de »). \textbf{Racinisation} (\emph{stemming}) : réduction d'un mot à une racine
+commune à ses variantes.
+\end{defbox}
+
+\subsection{Normalisation}
+La fonction \texttt{normalize} applique la décomposition Unicode NFKD, supprime les signes
+diacritiques combinants, met en minuscules et réduit les espaces. Ainsi
+« Dégât » $\to$ « degat ».
+
+\subsection{Termes de recherche et synonymes}
+Les termes d'une description sont les tokens $[a\text{-}z]^+$ de plus de deux lettres qui ne sont pas
+des mots vides, puis, si une clé du dictionnaire métier figure dans le texte, ses synonymes :
+\[
+T(q_i) = \{\, t \in \mathrm{tokens}(q_i) : t \notin S,\ |t|>2 \,\} \ \cup \bigcup_{c\,\in\,\text{clés}(q_i)} \mathrm{syn}(c),
+\]
+où $S$ est la liste des mots vides et $\mathrm{syn}(c)$ les expressions associées à la clé $c$.
+
+\subsection{Racinisation}
+Une racine grossière retire le premier suffixe de la liste
+(\emph{ements, ement, ations, ation, euses, euse, ees, ee, es, e, s}) si au moins quatre lettres
+restent. La requête FTS5 met chaque mot en préfixe (\texttt{racine*}) et chaque expression entre
+guillemets, le tout relié par \texttt{OR}.
+
+\begin{exemple}[(vélo, données réelles)]
+Description : « Mon vélo a été volé dans le local commun de mon immeuble, qui n'était pas fermé à
+clé : suis-je couvert ? »
+
+Tokens retenus : \texttt{velo, vole, local, commun, immeuble, ferme, cle}.
+Synonymes ajoutés : \texttt{bicyclette, cycle, mobilite durable, engin de deplacement, vol, locaux
+a usage commun, parties communes, local collectif, usage commun, serrure, verrou, fermees a cle,
+cles}.
+
+Requête : \texttt{velo* OR vole* OR local* OR commun* OR immeubl* OR ferm* OR cle* OR \dots\ OR
+"locaux a usage commun" OR "parties communes" OR \dots}
+
+Le mot de l'assuré « local commun » n'apparaît pas dans les contrats ; c'est le synonyme
+« locaux à usage commun » qui retrouve l'exclusion décisive de Sogessur.
+\end{exemple}
+
+%=====================================================================
+\section{Découpage des conditions générales}
+
+\subsection{Détection de deux colonnes}
+Une page à deux colonnes lue ligne par ligne mélange les phrases. L'algorithme cherche une
+verticale $x$ entre 40\,\% et 60\,\% de la largeur $L$ de la page. Pour chaque ligne $r$ de la
+page ($R$ lignes au total), on note $\mathrm{traverse}(r,x)$ si un mot couvre $x$, $\mathrm{gauche}(r,x)$
+si tous les mots sont à gauche et $\mathrm{droite}(r,x)$ s'ils sont tous à droite. La verticale $x$ est
+une gouttière si
+\[
+\sum_r \mathbb{1}[\mathrm{traverse}(r,x)] \le 0{,}05\,R,\quad
+\sum_r \mathbb{1}[\mathrm{gauche}(r,x)] \ge 0{,}2\,R,\quad
+\sum_r \mathbb{1}[\mathrm{droite}(r,x)] \ge 0{,}2\,R,
+\]
+et l'on retient celle qui est traversée le moins souvent.
+
+\begin{algorithm}[h]
+\caption{Gouttière centrale d'une page}
+\KwIn{mots de la page (abscisses $x_0, x_1$), largeur $L$}
+\KwOut{abscisse de la gouttière ou \textsc{aucune}}
+\lIf{moins de 40 mots}{\Return \textsc{aucune}}
+regrouper les mots en lignes $r_1,\dots,r_R$ (même ordonnée)\;
+meilleur $\leftarrow$ \textsc{aucune}\;
+\For{$x = 0{,}4L$ \KwTo $0{,}6L$ par pas de 2}{
+  compter les lignes traversées, à gauche, à droite\;
+  \If{les trois conditions sont vraies et $x$ est moins traversée que meilleur}{meilleur $\leftarrow x$}
+}
+\Return meilleur\;
+\end{algorithm}
+
+\subsection{Niveaux de titres}
+La taille de police du corps est la plus fréquente : $s_0 = \argmax_s \#\{\text{lignes de taille } s\}$.
+Une taille $s$ est une taille de titre si $s \ge s_0 + 0{,}8$ pt, sur au moins deux lignes courtes.
+Les tailles triées par ordre décroissant forment un nouveau niveau dès qu'elles s'écartent d'au
+moins 1,5 pt du niveau précédent. Résultat : 323 clauses (Baloise), 232 (Ethias) et 444 (Sogessur),
+soit $n = 999$.
+
+%=====================================================================
+\section{Représentation vectorielle TF-IDF}
+
+\begin{defbox}{Mots clés}
+\textbf{TF} (\emph{term frequency}) : nombre d'occurrences d'un terme dans un texte.
+\textbf{IDF} (\emph{inverse document frequency}) : poids d'autant plus fort que le terme est rare
+dans la collection. \textbf{Norme $\ell_2$} : longueur euclidienne d'un vecteur,
+$\|\vect{x}\|_2=\sqrt{\sum_t x_t^2}$.
+\end{defbox}
+
+Pour une collection de $m$ textes, scikit-learn calcule, pour le texte $i$ et le terme $t$ :
+\[
+\tf'_{i,t} = 1 + \ln \tf_{i,t}\ \ (\text{si } \tf_{i,t}>0,\ \text{option \texttt{sublinear\_tf}}),\qquad
+\idf_t = \ln\frac{1+m}{1+\mathrm{df}_t} + 1,
+\]
+\[
+x_{i,t} = \frac{\tf'_{i,t}\,\idf_t}{\sqrt{\sum_{t'} \big(\tf'_{i,t'}\,\idf_{t'}\big)^2}},
+\]
+où $\tf_{i,t}$ est le nombre d'occurrences de $t$ dans le texte $i$ et $\mathrm{df}_t$ le nombre de
+textes qui contiennent $t$. Le « +1 » dans la fraction évite une division par zéro ; le « +1 » final
+garde un poids positif aux termes présents partout.
+
+\begin{exemple}[(trois phrases)]
+Collection ($m=3$) : $q_1$ « vol de vélo », $q_2$ « vélo dans la cave », $q_3$ « dégât des eaux dans la cave ».
+
+\smallskip
+\begin{tabular}{lcccc}
+\toprule
+terme $t$ & $\mathrm{df}_t$ & $\idf_t$ & $x_{1,t}$ & $x_{2,t}$ \\
+\midrule
+vol & 1 & $\ln(4/2)+1 = 1{,}6931$ & 0,6228 & 0 \\
+de  & 1 & 1,6931 & 0,6228 & 0 \\
+vélo & 2 & $\ln(4/3)+1 = 1{,}2877$ & 0,4736 & 0,5 \\
+cave, dans, la & 2 & 1,2877 & 0 & 0,5 chacun \\
+\bottomrule
+\end{tabular}
+
+\smallskip
+Ligne 1 : vecteur brut $(1{,}6931;\ 1{,}6931;\ 1{,}2877)$, de norme
+$\sqrt{2\times1{,}6931^2+1{,}2877^2}=\sqrt{7{,}391}=2{,}7187$ ; d'où
+$1{,}6931/2{,}7187=0{,}6228$ et $1{,}2877/2{,}7187=0{,}4736$. Ligne 2 : quatre termes de même idf,
+donc $1/\sqrt4=0{,}5$ chacun. Ces valeurs sont celles que produit \texttt{TfidfVectorizer}.
+\end{exemple}
+
+Le classifieur concatène deux représentations : les mots et groupes de deux mots (1-2 grammes), et
+les n-grammes de caractères de 2 à 5 lettres à l'intérieur des mots (\texttt{char\_wb}), qui
+rapprochent « brûlé », « brûlure », « brûlée » :
+$\vect{x}_i = \big[\vect{x}_i^{\text{mots}};\ \vect{x}_i^{\text{car.}}\big] \in \R^{6\,153}$.
+Ce vecteur est \emph{creux} : la description de l'incendie de cuisine n'a que 209 coefficients non
+nuls sur 6\,153.
+
+%=====================================================================
+\section{Classifieur des familles de garanties}
+
+\subsection{Régression logistique multinomiale}
+\begin{defbox}{Mots clés}
+\textbf{Logit} $z_k$ : score non borné de la classe $k$. \textbf{Softmax} : transformation de
+scores en probabilités positives de somme 1. \textbf{Entropie croisée} : perte qui pénalise une
+faible probabilité donnée à la bonne classe.
+\end{defbox}
+Pour le sinistre $q_i$ :
+\[
+\vect{z}_i = \mat{W}\vect{x}_i + \vect{b} \in \R^K,\qquad
+p_{i,k} = \softmax(\vect{z}_i)_k = \frac{e^{z_{i,k}}}{\sum_{k'=1}^{K} e^{z_{i,k'}}} .
+\]
+Les paramètres $(\mat{W},\vect{b})$ minimisent, sur les $m$ descriptions d'entraînement de classes
+$y_i$,
+\[
+\mathcal{L}(\mat{W},\vect{b}) = -\sum_{i=1}^{m} \ln p_{i,y_i} \;+\; \frac{1}{2C}\,\|\mat{W}\|_F^2 ,
+\qquad \|\mat{W}\|_F^2=\sum_{k,t} w_{k,t}^2,
+\]
+avec $C=10$ (plus $C$ est grand, plus la régularisation est faible). Le gradient a une forme
+matricielle simple :
+$\nabla_{\mat{W}}\mathcal{L} = (\mat{P}-\mat{Y})^\top\mat{X} + \mat{W}/C$, où $\mat{P}\in\R^{m\times K}$
+contient les $p_{i,k}$ et $\mat{Y}$ les indicatrices $\mathbb{1}[y_i=k]$ ; il est minimisé par
+l'algorithme quasi-Newton L-BFGS.
+
+\begin{exemple}[(incendie de cuisine, modèle réel)]
+« Une poêle a pris feu dans la cuisine ; les flammes ont abîmé les meubles et le plafond. »
+
+Logits calculés par le modèle : incendie $5{,}668$ ; dégâts des eaux $0{,}275$ ;
+RC $-1{,}288$ ; vol $-1{,}287$ ; événements naturels $-1{,}386$ ; bris de glace $-1{,}983$.
+
+Softmax : $e^{5{,}668} = 289{,}5$ ; somme des exponentielles $= 291{,}7$ ;
+$p_{\text{incendie}} = 289{,}5/291{,}7 = 0{,}992$.
+
+Explication : la contribution du terme $t$ à la classe $k$ vaut $x_{i,t}\,w_{k,t}$. Les plus fortes
+pour « incendie » : \emph{feu} (0,523), \emph{pris feu} (0,445), \emph{feu dans} (0,405),
+\emph{les} (0,346), \emph{flammes} (0,238). La présence de « les » montre une limite : un mot vide
+peut porter un poids appris sur les données générées.
+\end{exemple}
+
+\subsection{Règle de rejet}
+Si $\max_k p_{i,k} < 0{,}60$, le modèle hésite : on retient les deux familles les plus probables, et
+la recherche des clauses porte sur les deux.
+
+\subsection{Mesures}
+Sur le jeu de test indépendant ($m=60$ descriptions écrites à la main) :
+exactitude $54/60 = 90\,\%$ ; log-loss
+$-\frac1m\sum_i \ln p_{i,y_i} = 0{,}422$ ; score de Brier
+$\frac1m\sum_i\sum_k (p_{i,k}-\mathbb{1}[y_i=k])^2 = 0{,}191$ (0 = parfait).
+Le F1 macro moyenne, sur les classes, $F1_k = 2P_kR_k/(P_k+R_k)$, où $P_k$ est la précision et
+$R_k$ le rappel de la classe $k$.
+
+%=====================================================================
+\section{Recherche des clauses : BM25}
+
+\begin{defbox}{Mots clés}
+\textbf{BM25} (\emph{Best Matching 25}) : score de pertinence d'un document pour une requête, issu
+du modèle probabiliste de Robertson et Spärck Jones. \textbf{Saturation} : au-delà de quelques
+occurrences, un terme répété n'ajoute presque plus rien.
+\end{defbox}
+
+Pour une requête $q_i$ et une clause $d_j$ à deux colonnes $c$ (titre de section, texte) :
+\[
+\mathrm{BM25}(q_i,d_j) = \sum_{c}\ \sum_{t \in T(q_i)} \idf_t \cdot
+\frac{f_{t,j,c}\,(k_1+1)}{f_{t,j,c} + k_1\Big(1-b+b\,\dfrac{|d_{j,c}|}{\overline{|d_c|}}\Big)},
+\qquad
+\idf_t = \ln\frac{n-n_t+0{,}5}{n_t+0{,}5},
+\]
+où $f_{t,j,c}$ est le nombre d'occurrences de $t$ dans la colonne $c$ de la clause $j$, $|d_{j,c}|$
+sa longueur en tokens, $\overline{|d_c|}$ la longueur moyenne de la colonne, $n$ le nombre de clauses,
+$n_t$ le nombre de clauses qui contiennent $t$, $k_1=1{,}2$ (saturation) et $b=0{,}75$ (correction
+de longueur). SQLite FTS5 renvoie $-\mathrm{BM25}$ (plus petit = meilleur).
+
+\begin{exemple}[(terme « commun », base réelle)]
+$n = 999$ clauses ; $n_t = 9$ clauses contiennent « commun ».
+$\idf = \ln\frac{999-9+0{,}5}{9+0{,}5} = \ln 104{,}26 = 4{,}6469$.
+
+Meilleure clause : définition « Droit commun » (Sogessur, p.\,12) : $f=1$ dans le texte, longueur
+$|d|=45$ tokens, longueur moyenne $\overline{|d|} = 76\,202/999 = 76{,}28$.
+\[
+4{,}6469\times\frac{1\times2{,}2}{1+1{,}2\,(0{,}25+0{,}75\times45/76{,}28)} = 4{,}6469\times\frac{2{,}2}{1{,}8306} = 5{,}584 .
+\]
+SQLite donne 5,564 : l'écart de 0,4\,\% vient d'un détail interne de FTS5. Cet exemple montre
+aussi une limite : « commun » seul retrouve une définition sans rapport ; ce sont l'expression
+« locaux à usage commun » et les quotas qui ramènent l'exclusion utile.
+\end{exemple}
+
+\subsection{Composition du contexte}
+Le score est multiplié par $1{,}5$ pour les clauses des familles prédites. Le contexte transmis au
+modèle est ensuite composé par quotas, pour qu'une exclusion décisive ne soit jamais évincée par
+des garanties mieux classées : 2 en-têtes de garantie, 5 garanties ou conditions, 5 exclusions,
+4 définitions, soit 16 clauses au plus.
+
+\begin{algorithm}[h]
+\caption{Sélection des clauses d'un contrat}
+\KwIn{description $q_i$, contrat, familles prédites $F$}
+\KwOut{liste ordonnée de clauses}
+$T \leftarrow$ termes et synonymes de $q_i$ ; candidats $\leftarrow$ 80 meilleures clauses BM25 du contrat\;
+\ForEach{candidat $d_j$}{\lIf{une famille de $d_j$ est dans $F$}{score $\leftarrow 1{,}5\times$score}}
+trier les candidats par score décroissant\;
+ajouter les en-têtes de garantie des familles $F$, puis les définitions des termes de $T$\;
+\ForEach{type $\in$ \{garantie/condition, exclusion, définition\}}{
+  ajouter les meilleurs candidats de ce type jusqu'au quota}
+\Return clauses triées : définitions, garanties et conditions, exclusions\;
+\end{algorithm}
+
+%=====================================================================
+\section{Le modèle de langage dans Ollama}
+
+\begin{defbox}{Mots clés}
+\textbf{LLM} (\emph{large language model}) : réseau de neurones qui estime la probabilité du token
+suivant sachant les précédents. \textbf{Transformer} : architecture fondée sur l'attention.
+\textbf{Ollama} : serveur local qui télécharge, charge et exécute un modèle et expose une API HTTP
+(\texttt{/api/generate}) ; il s'appuie sur la bibliothèque llama.cpp et le format de fichier
+GGUF. \textbf{Quantification} : stockage des poids sur peu de bits.
+\end{defbox}
+
+\subsection{Le modèle utilisé : \texttt{llama3.2:3b}}
+Caractéristiques de Llama 3.2 3B (fichier de configuration publié) :
+
+\begin{center}
+\begin{tabular}{lr|lr}
+\toprule
+dimension cachée $d$ & 3\,072 & couches $L$ & 28 \\
+têtes d'attention (requêtes) $H$ & 24 & têtes clé/valeur $H_{kv}$ & 8 \\
+dimension d'une tête $d_h$ & 128 & dimension intermédiaire $d_{ff}$ & 8\,192 \\
+vocabulaire $|V|$ & 128\,256 & contexte maximal & 131\,072 tokens \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{exemple}[(nombre de paramètres)]
+Matrice d'embedding $\mat{E}\in\R^{|V|\times d}$ : $128\,256\times3\,072 = 394{,}0$ M.
+
+Une couche : attention $\mat{W}_Q,\mat{W}_O$ ($3\,072\times3\,072$ chacune) et $\mat{W}_K,\mat{W}_V$
+($3\,072\times1\,024$ chacune, car $H_{kv}d_h = 8\times128$) : $25{,}2$ M ; réseau
+\emph{feed-forward} (3 matrices $3\,072\times8\,192$) : $75{,}5$ M ; total 100,7 M.
+
+Total : $394{,}0 + 28\times100{,}7 = 3{,}21$ milliards (la matrice de sortie est partagée avec
+$\mat{E}$). Quantifiés à environ 4,85 bits par poids (format Q4\_K\_M), ils occupent
+$3{,}21\times10^9\times4{,}85/8 \approx 1{,}95$ Go : c'est la taille du fichier téléchargé.
+\end{exemple}
+
+\subsection{Tokenisation BPE}
+Le texte est découpé en tokens par un algorithme BPE (\emph{byte pair encoding}) : partant des
+octets, on fusionne de façon répétée la paire adjacente la plus fréquente du corpus
+d'entraînement, jusqu'à obtenir $|V|$ unités. Un mot courant est un seul token ; un mot rare est
+découpé en morceaux.
+
+\begin{exemple}[(fusions sur un mini-corpus)]
+Corpus : « vol » (5 fois), « volé » (3), « vélo » (2), découpés en lettres.
+Paire la plus fréquente : (v,o) dans « vol » et « volé » : $5+3=8$ $\Rightarrow$ token « vo ».
+Puis (vo,l) : 8 $\Rightarrow$ « vol ». Puis (vol,é) : 3 $\Rightarrow$ « volé ». « vélo » reste
+découpé en v, é, l, o. Chaque token reçoit un numéro, son \emph{identifiant}.
+\end{exemple}
+
+\subsection{De l'identifiant au vecteur}
+Une séquence de $N$ tokens d'identifiants $v_1,\dots,v_N$ devient la matrice
+$\mat{H}^{(0)}\in\R^{N\times d}$ dont la ligne $s$ est la ligne $v_s$ de $\mat{E}$.
+
+\subsection{Un bloc transformer}
+Chacune des $L=28$ couches transforme $\mat{H}^{(\ell-1)}$ en $\mat{H}^{(\ell)}$ :
+\[
+\mat{A} = \mat{H}^{(\ell-1)} + \mathrm{Attn}\big(\mathrm{RMSNorm}(\mat{H}^{(\ell-1)})\big),\qquad
+\mat{H}^{(\ell)} = \mat{A} + \mathrm{FFN}\big(\mathrm{RMSNorm}(\mat{A})\big).
+\]
+\textbf{RMSNorm} d'une ligne $\vect{h}\in\R^d$ :
+$\mathrm{RMSNorm}(\vect{h}) = \dfrac{\vect{h}}{\sqrt{\frac1d\sum_{u=1}^{d}h_u^2+\varepsilon}}\odot\vect{g}$,
+avec $\varepsilon=10^{-5}$ et $\vect{g}$ un vecteur de gains appris ($\odot$ : produit terme à terme).
+
+\textbf{Attention causale} (une tête) :
+\[
+\mat{Q}=\mat{H}\mat{W}_Q,\quad \mat{K}=\mat{H}\mat{W}_K,\quad \mat{V}=\mat{H}\mat{W}_V,\qquad
+\mathrm{Attn}(\mat{H}) = \softmax\!\Big(\frac{\mat{Q}\mat{K}^\top}{\sqrt{d_h}} + \mat{M}\Big)\mat{V},
+\]
+où le softmax est appliqué ligne par ligne et $\mat{M}$ est le masque causal : $M_{s,s'}=0$ si
+$s'\le s$ et $-\infty$ sinon (un token ne voit pas les suivants). Le coefficient $(s,s')$ de la
+matrice softmax est le poids que le token $s$ accorde au token $s'$.
+
+\begin{exemple}[(attention sur 3 tokens, $d_h = 2$)]
+$\mat{H}=\begin{pmatrix}1&0\\0&1\\1&1\end{pmatrix}$,
+$\mat{W}_Q=\begin{pmatrix}1&0\\0&1\end{pmatrix}$,
+$\mat{W}_K=\begin{pmatrix}1&1\\0&1\end{pmatrix}$,
+$\mat{W}_V=\begin{pmatrix}1&0\\1&1\end{pmatrix}$.
+
+$\mat{Q}=\begin{pmatrix}1&0\\0&1\\1&1\end{pmatrix}$,
+$\mat{K}=\begin{pmatrix}1&1\\0&1\\1&2\end{pmatrix}$,
+$\mat{V}=\begin{pmatrix}1&0\\1&1\\2&1\end{pmatrix}$,
+$\dfrac{\mat{Q}\mat{K}^\top}{\sqrt2}=\begin{pmatrix}0{,}707&0&0{,}707\\0{,}707&0{,}707&1{,}414\\1{,}414&0{,}707&2{,}121\end{pmatrix}$.
+
+Après masque et softmax par ligne :
+$\begin{pmatrix}1&0&0\\0{,}5&0{,}5&0\\0{,}284&0{,}140&0{,}576\end{pmatrix}$ ; ligne 3 :
+$e^{1{,}414},e^{0{,}707},e^{2{,}121}$ normalisés.
+Sortie : $\begin{pmatrix}1&0\\1&0{,}5\\1{,}576&0{,}716\end{pmatrix}$ : chaque token devient une
+moyenne pondérée des valeurs des tokens qu'il peut voir.
+\end{exemple}
+
+\textbf{Plusieurs têtes et GQA.} Les $H=24$ têtes calculent ces opérations en parallèle sur des
+projections de dimension $d_h=128$ ; leurs sorties sont concaténées ($24\times128=3\,072$) puis
+multipliées par $\mat{W}_O$. Avec l'attention à requêtes groupées (GQA), 3 têtes de requêtes
+partagent la même paire $(\mat{K},\mat{V})$ : seules 8 paires sont calculées et stockées.
+
+\textbf{Position (RoPE).} La position $s$ d'un token est introduite en faisant tourner chaque paire de
+coordonnées $(q_{2u},q_{2u+1})$ de $\vect{q}_s$ et $\vect{k}_s$ d'un angle $s\,\theta_u$, avec
+$\theta_u = 500\,000^{-2u/d_h}$ ; le produit scalaire $\vect{q}_s\cdot\vect{k}_{s'}$ ne dépend alors
+que de l'écart $s-s'$.
+
+\textbf{Réseau feed-forward SwiGLU :}
+$\mathrm{FFN}(\vect{h}) = \mat{W}_2\big(\mathrm{SiLU}(\mat{W}_1\vect{h})\odot \mat{W}_3\vect{h}\big)$, avec
+$\mat{W}_1,\mat{W}_3\in\R^{8\,192\times3\,072}$, $\mat{W}_2\in\R^{3\,072\times8\,192}$ et
+$\mathrm{SiLU}(a)=a/(1+e^{-a})$.
+
+\subsection{Génération et réponse JSON imposée}
+La dernière ligne $\vect{h}_N$ (après une RMSNorm) donne les logits du token suivant :
+$\vect{z} = \mat{E}\,\vect{h}_N \in \R^{|V|}$. Avec une température $\tau$,
+$P(v) = \softmax(\vect{z}/\tau)_v$. L'application fixe $\tau=0$ : on prend
+$v^\star = \argmax_v z_v$ (décodage glouton), donc la même question donne la même réponse.
+
+Le paramètre \texttt{format} d'Ollama reçoit un schéma JSON. Il est traduit en grammaire, et à chaque
+pas les tokens qui rendraient la sortie invalide reçoivent un logit $-\infty$ :
+$z'_v = z_v + m_v$, avec $m_v = 0$ si $v$ est autorisé et $-\infty$ sinon.
+
+\begin{exemple}[(masque de grammaire)]
+Après \texttt{\{"reponse": "}, seuls « oui », « non », « incertain » sont permis. Logits bruts :
+« peut-être » 3,1 ; « oui » 2,4 ; « non » 1,9. Sans masque, le modèle écrirait « peut-être » ;
+avec le masque, il écrit « oui ». La forme est garantie ; le fond reste à vérifier.
+\end{exemple}
+
+\begin{algorithm}[h]
+\caption{Boucle de génération (Ollama, $\tau=0$)}
+\KwIn{prompt tokenisé $v_1..v_N$, schéma JSON, \texttt{num\_predict}=400}
+calculer les couches sur $v_1..v_N$ et garder $\mat{K},\mat{V}$ de chaque couche (cache KV)\;
+\Repeat{token de fin, JSON complet ou 400 tokens}{
+  $\vect{z}\leftarrow$ logits du dernier token ; $\vect{z}\leftarrow\vect{z}+\vect{m}$ (masque de grammaire)\;
+  $v\leftarrow\argmax\vect{z}$ ; ajouter $v$ ; calculer sa ligne dans chaque couche en réutilisant le cache\;
+}
+\Return texte décodé\;
+\end{algorithm}
+
+\begin{exemple}[(mémoire du cache KV, \texttt{num\_ctx} = 4\,096)]
+$2\ (\mat{K}\text{ et }\mat{V})\times 28\ \text{couches}\times 8\ \text{têtes}\times128\times4\,096\ \text{positions}\times2\ \text{octets} = 469\,762\,048$ octets
+$= 448$ Mio. Avec les poids (1,95 Go), le modèle tient dans environ 2,5 Go, ce qui explique
+qu'il tourne sans GPU, mais lentement : chaque token demande environ $2\times3{,}2\times10^9$
+multiplications-additions.
+\end{exemple}
+
+\subsection{Les trois questions fermées et leur vérification}
+Pour les contrôles 4 (événement et bien garantis), 5 (exclusions) et 6 (conditions), le modèle
+reçoit les seules clauses du type utile et doit répondre « oui », « non » ou « incertain », en
+citant une clause $C_r$ et un extrait. L'application accepte la réponse seulement si l'extrait
+$e$ figure dans la clause $c$ : inclusion exacte après normalisation, ou recouvrement
+\[
+\rho(e,c) = \frac{1}{|e|}\sum_{w \in e}\mathbb{1}[w \in \mathrm{mots}(c)] \ \ge\ 0{,}8 ,
+\qquad |e|\ge 3 ,
+\]
+où $|e|$ est le nombre de mots de l'extrait. Sinon le contrôle reste « à vérifier ».
+
+\begin{exemple}[(exclusion Sogessur)]
+Clause : « \dots les vols commis dans les locaux à usage commun des occupants \dots »
+\begin{itemize}
+\item « les vols commis dans les locaux à usage commun des occupants » : inclusion exacte $\Rightarrow$ acceptée ;
+\item « vols dans les locaux communs des occupants de l immeuble » : 6 mots sur 10 dans la clause,
+$\rho=0{,}6<0{,}8$ $\Rightarrow$ refusée (« communs » et « immeuble » ne sont pas dans la clause).
+\end{itemize}
+\end{exemple}
+
+%=====================================================================
+\section{L'instruction en 7 contrôles et le verdict}
+
+Chaque contrôle $c=1,\dots,7$ reçoit un statut $\sigma_c\in\{\text{satisfait},\text{bloquant},
+\text{à vérifier},\text{sans objet}\}$. Les contrôles 1, 2, 3, 6 (délai) et 7 sont factuels
+(requêtes SQL et calculs) ; 4, 5 et 6 (conditions) sont interprétés par le modèle.
+
+\textbf{Agrégation non compensatoire :}
+\[
+\text{verdict} =
+\begin{cases}
+\text{potentiellement exclu} & \text{si } \exists\, c:\ \sigma_c = \text{bloquant},\\
+\text{potentiellement couvert} & \text{si } \forall\, c:\ \sigma_c \in\{\text{satisfait},\text{sans objet}\},\\
+\text{indéterminé} & \text{sinon.}
+\end{cases}
+\]
+Un contrôle favorable ne compense jamais un contrôle bloquant : c'est la logique d'un gestionnaire
+(une exclusion écarte la garantie quel que soit le reste).
+
+\textbf{Garantie acquise} (contrôle 3) : une garantie $g$ est acquise par la police $\pi$ si
+$g$ est de base, ou si la formule de $\pi$ figure parmi les formules de $g$, ou si l'option de
+$g$ fait partie des options de $\pi$ ; si le bien touché relève d'une extension (pack jardin), cette
+extension doit aussi être acquise.
+
+\textbf{Délai de déclaration} (contrôle 6) : en jours calendaires $\Delta = t_{\text{décl}}-t_{\text{conn}}$,
+ou en jours ouvrés $\Delta = \sum_{u=t_{\text{conn}}+1}^{t_{\text{décl}}}\mathbb{1}[u \text{ est un jour de lundi à vendredi}]$.
+Un retard n'est jamais bloquant seul : le droit luxembourgeois, belge et français exige un
+préjudice de l'assureur.
+
+\textbf{Montant} (contrôle 7) : $I = \min\big(\max(D - F,\,0),\ P\big)$, avec $D$ le dommage
+estimé, $F$ la franchise et $P$ le plus petit plafond applicable (avant vétusté).
+
+\begin{exemple}[(sinistres de démonstration)]
+S-02 (vélo, Ethias, option vol) : $D=900$, $F=300$, $P=45\,000$ :
+$I=\min(\max(600,0),45\,000)=600$ €. Déclaré 3 jours après la connaissance, délai 10 jours :
+satisfait.
+
+S-11 (bougie, Baloise, garanties de base) : la garantie incendie est acquise, mais le mobilier de
+jardin n'est couvert que par le « Pack jardin / piscine », non souscrit : contrôle 3 bloquant,
+donc verdict « potentiellement exclu (garantie non souscrite) », sans appel au modèle.
+\end{exemple}
+
+%=====================================================================
+\section{Mesurer : protocole et statistiques}
+
+\subsection{Protocole}
+Le jeu \texttt{cas\_couverture.csv} contient 13 sinistres $\times$ 3 contrats $=39$ jugements
+$(i,j)$, répartis à l'avance en dev (18) et test (21). Tout réglage se fait sur dev ; la mesure sur
+test est faite une seule fois. Chaque jugement indique le verdict attendu, les verdicts acceptables et
+un fragment de la clause décisive retrouvé mot pour mot. Mesures :
+verdict exact $\frac{1}{N}\sum \mathbb{1}[\hat v = v]$, fausse couverture (verdict « couvert » sur
+un cas non couvert), faux refus, et rappel de la clause décisive transmise au modèle.
+
+\textbf{Référence.} Sans modèle, les contrôles 4 à 6 restent « à vérifier » : 29\,\% de verdicts
+exacts sur test, aucune fausse couverture. Toute amélioration se mesure contre cette référence.
+
+\subsection{Intervalle de Wilson}
+Pour $k$ succès sur $N$ essais, $\hat p = k/N$, et $z=1{,}96$ pour 95\,\% :
+\[
+\frac{\hat p + \frac{z^2}{2N}}{1+\frac{z^2}{N}} \ \pm\
+\frac{z}{1+\frac{z^2}{N}}\sqrt{\frac{\hat p(1-\hat p)}{N}+\frac{z^2}{4N^2}} .
+\]
+Contrairement à l'intervalle « $\hat p\pm z\sqrt{\hat p(1-\hat p)/N}$ », il reste dans $[0,1]$ et
+reste fiable pour de petits $N$ ou des proportions proches de 0 ou 1.
+
+\begin{exemple}[($k=24$, $N=28$)]
+$\hat p = 0{,}857$ ; centre $=(0{,}857+0{,}0686)/(1+0{,}1372)=0{,}814$ ;
+demi-largeur $=1{,}96/1{,}1372\times\sqrt{0{,}00437+0{,}00122}=0{,}129$ ; intervalle
+$[68{,}5\,\% ;\ 94{,}3\,\%]$.
+\end{exemple}
+
+\subsection{Test de McNemar exact}
+Pour comparer deux versions A et B sur les mêmes cas, seuls comptent les cas discordants :
+$b$ (B réussit, A échoue) et $c$ (l'inverse). Sous l'hypothèse « aucune différence », chaque
+discordance tombe d'un côté ou de l'autre avec probabilité $\frac12$ :
+\[
+p = \min\Big(1,\ 2\sum_{u=0}^{\min(b,c)}\binom{b+c}{u}2^{-(b+c)}\Big).
+\]
+\begin{exemple}[(projet 1, 19.4.0 contre 19.5.0)]
+$b=8$, $c=2$ : $p = 2\,\big(\binom{10}{0}+\binom{10}{1}+\binom{10}{2}\big)/2^{10} = 2\times56/1\,024 = 0{,}109$.
+Le gain n'est pas significatif au seuil de 5\,\%.
+\end{exemple}
+
+\subsection{Bootstrap}
+Pour un indicateur sans formule d'intervalle (F1 macro), on tire 2\,000 fois, avec remise, $m$ cas
+parmi les $m$ cas de test, on recalcule l'indicateur, et l'on garde les quantiles 2,5\,\% et 97,5\,\%.
+
+%=====================================================================
+\section{Rappels : Insurance Claims Assistance}
+
+\textbf{Similarité cosinus (bge-m3).} Question $q_i$ et document $d_j$ sont encodés en
+$\vect{u}_i,\vect{v}_j\in\R^{1\,024}$ ; $\cos(\vect{u}_i,\vect{v}_j) = \dfrac{\vect{u}_i\cdot\vect{v}_j}{\|\vect{u}_i\|\,\|\vect{v}_j\|}$.
+Pour les 201 documents, c'est un produit matrice-vecteur : $\mat{D}\vect{u}_i$, avec $\mat{D}\in\R^{201\times1\,024}$
+dont les lignes sont normalisées. Exemple : $(0{,}2;0{,}1;0{,}9)$ et $(0{,}3;0;0{,}8)$ donnent $0{,}984$.
+
+\textbf{Fusion des rangs (RRF).} $\mathrm{RRF}(d_j)=\sum_{s}\frac{1}{k+\mathrm{rang}_s(d_j)}$, $k=60$.
+Un document 1\textsuperscript{er} et 3\textsuperscript{e} : $1/61+1/63=0{,}03227$ ; un document 2\textsuperscript{e}
+et 1\textsuperscript{er} : $0{,}03252$, classé devant.
+
+\textbf{Justification par inférence textuelle (essai non retenu).}
+$\mathrm{score} = \min_{h}\max_{p} P(\text{implication}\mid p,h)$, où $h$ parcourt les phrases de la
+réponse et $p$ les prémisses (extraits ou fenêtres de 3 phrases). Bloquer sous un seuil de 0,95
+faisait passer les refus corrects de 5/28 à 24/28, mais les réponses conformes de 15/30 à 8/30
+($c=7$, $b=0$, $p=0{,}016$) : contrôle non intégré.
+
+%=====================================================================
+\section{Limites connues}
+\begin{itemize}
+\item Le classifieur n'a pas de classe « hors habitation » : une question sur l'assurance décès est
+rangée dans une famille habitation (mesuré sur dev).
+\item La clause « dommages intentionnels » n'est pas transmise au modèle pour l'incendie volontaire
+(mesuré sur test, donc non corrigé dans cette version).
+\item Les jours fériés ne sont pas déduits des jours ouvrés.
+\item Les verdicts attendus sont établis par lecture des conditions générales ; ils doivent être
+revus par un second lecteur métier.
+\item Les intervalles supposent des passages indépendants ; les passages répétés d'un même cas ne
+le sont pas, ce qui rend les intervalles légèrement optimistes.
+\end{itemize}
+
+%=====================================================================
+\section*{Références}
+\addcontentsline{toc}{section}{Références}
+\small
+\begin{enumerate}[label={[\arabic*]}]
+\item Manning, C. D., Raghavan, P., Schütze, H. (2008). \emph{Introduction to Information Retrieval}. Cambridge University Press, chap. 6 (TF-IDF) et 11 (modèles probabilistes). En ligne : nlp.stanford.edu/IR-book.
+\item Robertson, S., Zaragoza, H. (2009). The Probabilistic Relevance Framework: BM25 and Beyond. \emph{Foundations and Trends in Information Retrieval}, 3(4), 333--389.
+\item Spärck Jones, K. (1972). A statistical interpretation of term specificity and its application in retrieval. \emph{Journal of Documentation}, 28(1), 11--21.
+\item SQLite. \emph{FTS5 Extension}, section « The bm25() function ». sqlite.org/fts5.html.
+\item Bishop, C. M. (2006). \emph{Pattern Recognition and Machine Learning}. Springer, chap. 4.3 (régression logistique multinomiale).
+\item Hastie, T., Tibshirani, R., Friedman, J. (2009). \emph{The Elements of Statistical Learning}, 2\textsuperscript{e} éd. Springer, chap. 4 et 7 (bootstrap).
+\item Liu, D. C., Nocedal, J. (1989). On the limited memory BFGS method for large scale optimization. \emph{Mathematical Programming}, 45, 503--528.
+\item Pedregosa, F. et al. (2011). Scikit-learn: Machine Learning in Python. \emph{JMLR}, 12, 2825--2830 ; documentation de \texttt{TfidfVectorizer}.
+\item Vaswani, A. et al. (2017). Attention Is All You Need. \emph{NeurIPS}. arXiv:1706.03762.
+\item Grattafiori, A. et al. (2024). The Llama 3 Herd of Models. arXiv:2407.21783.
+\item Meta (2024). Llama 3.2 : fiche du modèle et fichier \texttt{config.json} du modèle 3B (Hugging Face, meta-llama/Llama-3.2-3B-Instruct).
+\item Sennrich, R., Haddow, B., Birch, A. (2016). Neural Machine Translation of Rare Words with Subword Units. \emph{ACL}. arXiv:1508.07909.
+\item Zhang, B., Sennrich, R. (2019). Root Mean Square Layer Normalization. \emph{NeurIPS}. arXiv:1910.07467.
+\item Su, J. et al. (2021). RoFormer: Enhanced Transformer with Rotary Position Embedding. arXiv:2104.09864.
+\item Shazeer, N. (2020). GLU Variants Improve Transformer. arXiv:2002.05202.
+\item Ainslie, J. et al. (2023). GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints. \emph{EMNLP}. arXiv:2305.13245.
+\item Willard, B. T., Louf, R. (2023). Efficient Guided Generation for Large Language Models. arXiv:2307.09702.
+\item Gerganov, G. et al. \emph{llama.cpp} et format GGUF (quantification Q4\_K\_M). github.com/ggml-org/llama.cpp ; Ollama, documentation de l'API (\texttt{/api/generate}, paramètre \texttt{format}). github.com/ollama/ollama.
+\item Jurafsky, D., Martin, J. H. (2025). \emph{Speech and Language Processing}, 3\textsuperscript{e} éd. (brouillon en ligne), chap. 9 à 11 (transformers, LLM).
+\item Wilson, E. B. (1927). Probable Inference, the Law of Succession, and Statistical Inference. \emph{JASA}, 22(158), 209--212.
+\item Brown, L. D., Cai, T. T., DasGupta, A. (2001). Interval Estimation for a Binomial Proportion. \emph{Statistical Science}, 16(2), 101--133.
+\item McNemar, Q. (1947). Note on the sampling error of the difference between correlated proportions or percentages. \emph{Psychometrika}, 12(2), 153--157.
+\item Agresti, A. (2013). \emph{Categorical Data Analysis}, 3\textsuperscript{e} éd. Wiley (tests appariés, intervalles).
+\item Efron, B., Tibshirani, R. (1993). \emph{An Introduction to the Bootstrap}. Chapman \& Hall.
+\item Brier, G. W. (1950). Verification of forecasts expressed in terms of probability. \emph{Monthly Weather Review}, 78(1), 1--3.
+\item Chen, J. et al. (2024). BGE M3-Embedding. arXiv:2402.03216 ; Cormack, G. V., Clarke, C., Büttcher, S. (2009). Reciprocal Rank Fusion. \emph{SIGIR}.
+\item He, P. et al. (2021). DeBERTa: Decoding-enhanced BERT with Disentangled Attention. \emph{ICLR} ; Williams, A., Nangia, N., Bowman, S. (2018). A Broad-Coverage Challenge Corpus for Sentence Understanding through Inference (MNLI). \emph{NAACL}.
+\end{enumerate}
+\end{document}
