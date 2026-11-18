@@ -1,0 +1,37 @@
+concept,categorie,libelle,termes_assure,termes_contrat
+velo,bien,vélo,vélo|vélos|bécane|biclou|VTT|VAE|vélo électrique|trottinette|trottinette électrique|hoverboard|gyropode,bicyclette|cycle|mobilité durable|engin de déplacement|engins de déplacement motorisés|vélos à assistance électrique
+mobilier_jardin,bien,mobilier de jardin,table de jardin|chaise de jardin|salon de jardin|transat|parasol|barbecue|mobilier extérieur,mobilier de jardin|meubles de jardin
+objets_valeur,bien,objets de valeur,bijou|bijoux|bague|collier|montre|montre de luxe|tableau|œuvre d'art|argenterie,objets de valeur|objets précieux|bijoux|objets à risque de vol
+appareils_electriques,bien,appareils électriques,télé|télévision|TV|ordinateur|ordi|PC|portable|console|frigo|réfrigérateur|congélateur|lave-linge|machine à laver|lave-vaisselle|électroménager,appareils électriques|appareils électroniques|appareils ménagers
+vitrage,bien,vitrages,vitre|vitres|fenêtre|carreau|baie vitrée|véranda|miroir|plaque vitrocéramique,bris de glace|vitrage|vitrages|glaces|produits verriers
+toiture,bien,toiture,toit|tuile|tuiles|ardoise|gouttière|chéneau|cheminée,toiture|toitures|couverture|chéneaux
+vehicule,bien,véhicule à moteur,voiture|auto|bagnole|moto|scooter|pare-brise|camionnette,véhicules terrestres à moteur|véhicules automoteurs|véhicule terrestre à moteur
+local_commun,lieu,locaux communs,local commun|local vélo|local à vélos|cave commune|garage commun|parking commun|hall d'immeuble|cage d'escalier|communs,locaux à usage commun|parties communes|local collectif|usage commun
+dependances,lieu,dépendances,cave|garage|grenier|abri de jardin|cabanon|remise|box,dépendances|cave|garage
+residence_secondaire,lieu,résidence secondaire,maison de vacances|chalet|résidence secondaire|maison de campagne,résidence secondaire|inoccupation
+exterieur,lieu,extérieur,jardin|terrasse|balcon|cour|pelouse|dehors,extérieur|plein air|terrasse
+vol,evenement,vol,volé|volée|volés|vol|dérobé|disparu|plus là|piqué|chouré|cambriolage|cambriolé|cambrioleurs|voleur|larcin,vol|disparition|soustraction frauduleuse
+effraction,evenement,effraction,forcé|fracturé|pied de biche|serrure cassée|porte forcée|fenêtre forcée|crochetage,effraction|escalade|usage de fausses clés
+vandalisme,evenement,vandalisme,tag|tags|graffiti|dégradé|saccagé|vandale,vandalisme|actes de vandalisme|détériorations immobilières
+incendie,evenement,incendie,feu|flammes|pris feu|brûlé|cramé|incendie|départ de feu|embrasement,incendie|flamme|combustion|embrasement
+chaleur,evenement,action de la chaleur,fondu|fondre|fondue|ramolli|déformé par la chaleur|bougie|chaleur|soleil|brûlure|roussi,action de la chaleur|chaleur|brûlure|brûlures|combustion sans flamme|action subite de la chaleur
+fumee,evenement,fumée et suie,fumée|suie|noirci|odeur de brûlé,fumée|suie|dégagement de fumée
+foudre,evenement,foudre,foudre|orage|éclair|foudroyé,chute de la foudre|foudre
+electricite,evenement,dommages électriques,court-circuit|surtension|survoltage|coupure de courant|disjoncté|grillé,dommages électriques|action de l'électricité|surtension|courant électrique
+degats_eaux,evenement,dégât des eaux,dégât des eaux|DDE|fuite|fuite d'eau|tuyau percé|canalisation|inondé|débordement|baignoire qui déborde|machine à laver qui fuit|chasse d'eau|infiltration,dégâts des eaux|dégât des eaux|conduites|installations hydrauliques|appareils à effet d'eau|débordement|infiltration
+gel,evenement,gel,gel|gelé|tuyau gelé|canalisation gelée|éclatement,gel|dommages consécutifs au gel
+tempete,evenement,tempête et grêle,tempête|vent|rafale|rafales|bourrasque|grêle|grêlons|neige|poids de la neige,tempête|vent|grêle|poids de la neige
+inondation,evenement,inondation et catastrophe naturelle,inondation|crue|débordement de rivière|coulée de boue|glissement de terrain|tremblement de terre|séisme|catastrophe naturelle,inondation|catastrophes naturelles|débordement de cours d'eau|ruissellement
+bris_glace,evenement,bris de glace,vitre cassée|vitre brisée|carreau cassé|fissuré|fêlé|éclaté,bris de glace|bris des vitrages|fêlure
+heurt,evenement,choc et heurt,percuté|heurté|voiture dans le mur|chute d'arbre|branche tombée,heurt|choc d'un véhicule|chute d'arbre
+responsabilite_civile,evenement,responsabilité civile,voisin|chez le voisin|tiers|dégât chez le voisin|mon enfant a cassé|mon chien a mordu|j'ai abîmé,responsabilité civile|tiers|recours des voisins et des tiers
+intentionnel,exclusion,faute intentionnelle,volontairement|exprès|délibérément|j'ai mis le feu|par vengeance|intentionnellement,intentionnellement|faute intentionnelle|dommages intentionnels|avec votre complicité
+usure,exclusion,usure et défaut d'entretien,usé|usure|vieux|vétuste|jamais entretenu|mal entretenu|panne|en panne|rouillé|défaut d'entretien,usure|vétusté|défaut d'entretien|mauvais entretien|panne mécanique
+fermeture,condition,fermeture et protection,pas fermé à clé|porte ouverte|laissé ouvert|non verrouillé|fenêtre ouverte|antivol|cadenas|attaché,fermées à clé|serrure|verrou|point d'attache|point fixe|moyens de protection
+absence,condition,absence et inoccupation,vacances|absent|parti en voyage|logement vide|inoccupé|pendant mon absence,absence|inoccupation|inhabité
+plainte,condition,dépôt de plainte,plainte|police|commissariat|gendarmerie|procès-verbal|PV,dépôt de plainte|récépissé de plainte|autorités de police
+declaration,condition,déclaration de sinistre,déclarer|déclaration|prévenir l'assureur|délai de déclaration,déclaration du sinistre|délai|jours ouvrés
+franchise,montant,franchise,franchise|reste à charge|ce que je paie,franchise
+vetuste,montant,vétusté,vétusté|valeur à neuf|valeur d'usage|décote,vétusté|valeur à neuf|valeur d'usage
+locataire,personne,locataire,locataire|je loue|kot|colocation|colocataire,locataire|occupant|risques locatifs
+proprietaire,personne,propriétaire,propriétaire|bailleur|PNO|propriétaire non occupant|copropriétaire|syndic,propriétaire|propriétaire non occupant|copropriété
