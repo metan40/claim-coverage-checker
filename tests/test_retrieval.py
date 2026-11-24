@@ -1,3 +1,10 @@
+# ---------------------------------------------------------------------------
+# Projet  : Claim Coverage Checker (instruction d'un sinistre habitation)
+# Fichier : tests/test_retrieval.py
+# Auteur  : Thierry MBARGA
+# Rôle    : Tests de la recherche des clauses
+# Lancer  : python -m pytest tests/test_retrieval.py
+# ---------------------------------------------------------------------------
 """Tests de la recherche des clauses."""
 import sqlite3
 

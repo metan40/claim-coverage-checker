@@ -1,3 +1,11 @@
+# ---------------------------------------------------------------------------
+# Projet  : Claim Coverage Checker (instruction d'un sinistre habitation)
+# Fichier : tests/test_instruction.py
+# Auteur  : Thierry MBARGA
+# Rôle    : Tests de l'instruction factuelle d'un sinistre (contrôles 1, 2,
+#           3, 6, 7) et de la règle de verdict non compensatoire
+# Lancer  : python -m pytest tests/test_instruction.py
+# ---------------------------------------------------------------------------
 """Tests de l'instruction factuelle d'un sinistre (contrôles 1, 2, 3, 6, 7)
 et de la règle de verdict non compensatoire."""
 import sqlite3

@@ -1,3 +1,10 @@
+# ---------------------------------------------------------------------------
+# Projet  : Claim Coverage Checker (instruction d'un sinistre habitation)
+# Fichier : tests/test_decision.py
+# Auteur  : Thierry MBARGA
+# Rôle    : Tests de l'analyse de couverture, avec un faux LLM (sans Ollama)
+# Lancer  : python -m pytest tests/test_decision.py
+# ---------------------------------------------------------------------------
 """Tests de l'analyse de couverture, avec un faux LLM (sans Ollama)."""
 import json
 import sqlite3

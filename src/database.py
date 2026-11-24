@@ -1,4 +1,12 @@
-# Auteur : Thierry MBARGA
+# ---------------------------------------------------------------------------
+# Projet  : Claim Coverage Checker (instruction d'un sinistre habitation)
+# Fichier : src/database.py
+# Auteur  : Thierry MBARGA
+# Rôle    : construire la base SQLite : contrats découpés en clauses typées,
+#           garanties, polices et sinistres de démonstration, index plein texte.
+# Entrée  : PDF des conditions générales et fichiers CSV de data/.
+# Sortie  : db/contrats.sqlite (lue ensuite par l'application).
+# ---------------------------------------------------------------------------
 """Base SQLite des conditions générales.
 
 Chaque contrat est découpé en passages par ``pdf_parsing.parse_contract``,
@@ -44,6 +52,8 @@ DB_PATH = ROOT / "db" / "contrats.sqlite"
 
 ARTICLE_TYPES = ("definition", "exclusion", "condition", "garantie")
 
+# Schéma : une table par objet métier. Les commentaires SQL (--) décrivent les colonnes.
+# articles_fts : index plein texte FTS5, accents ignorés (remove_diacritics 2).
 SCHEMA = """
 CREATE TABLE contrats (
     id          INTEGER PRIMARY KEY,
@@ -192,6 +202,7 @@ CREATE VIRTUAL TABLE articles_fts USING fts5(
 
 def normalize(text: str) -> str:
     """Minuscules, sans accents, apostrophes et espaces uniformisés."""
+    # NFKD sépare la lettre de son accent (é → e + accent), puis on retire l'accent.
     text = unicodedata.normalize("NFKD", text)
     text = "".join(c for c in text if not unicodedata.combining(c))
     text = text.lower().replace("’", "'").replace("`", "'")
@@ -200,6 +211,7 @@ def normalize(text: str) -> str:
 
 # --- Typage des passages ---------------------------------------------------
 
+# Expressions régulières appliquées au texte normalisé (minuscules, sans accents).
 DEFINITION_HEADINGS = re.compile(r"definition|lexique|glossaire")
 EXCLUSION_HEADINGS = re.compile(
     r"exclu|qu'est-ce qui n'est pas|n'est pas (assure|garanti|couvert)|ne sont pas (assures|garantis|couverts)"
@@ -235,6 +247,7 @@ def article_type(section: str, text: str) -> str:
 
 # --- Familles de garanties -------------------------------------------------
 
+# Mots qui signalent chaque famille. jardin et mobilite servent aux extensions de biens.
 FAMILY_PATTERNS = {
     "vol": r"\bvols?\b|cambriol|effraction|vandalism|tentative de vol",
     "incendie": r"incendie|explosion|foudre|fumee|combustion|brulure|roussi"
@@ -257,6 +270,8 @@ def article_families(section: str, text: str) -> list[str]:
     heading, body = normalize(section), normalize(text)
     families = []
     for name, regex in FAMILY_REGEX.items():
+        # Famille retenue : citée dans le titre, ou au moins 2 fois dans le texte
+        # (une seule mention dans le texte est souvent un renvoi, pas le sujet).
         if regex.search(heading) or len(regex.findall(body)) >= 2:
             families.append(name)
     return families
@@ -264,25 +279,31 @@ def article_families(section: str, text: str) -> list[str]:
 
 # --- Ingestion ---------------------------------------------------------------
 
+# Empreinte SHA-256 du PDF : prouve quelle version exacte du fichier a été chargée.
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+# Catalogue des contrats : une ligne par PDF (assureur, pays, version, délais...).
 def read_catalogue(path: Path = CATALOGUE) -> list[dict]:
     with path.open(encoding="utf-8") as handle:
         return list(csv.DictReader(handle))
 
 
+# Base vide : l'ancienne est supprimée, la reconstruction repart toujours de zéro.
 def create_database(db_path: Path = DB_PATH) -> sqlite3.Connection:
     db_path.parent.mkdir(parents=True, exist_ok=True)
     if db_path.exists():
         db_path.unlink()
     connection = sqlite3.connect(db_path)
+    # foreign_keys : SQLite vérifie les références entre tables (désactivé par défaut).
     connection.execute("PRAGMA foreign_keys = ON")
     connection.executescript(SCHEMA)
     return connection
 
 
+# Insère un contrat, puis chacun de ses passages avec son type, ses familles
+# et, pour une définition, le terme défini.
 def insert_contract(connection: sqlite3.Connection, entry: dict, passages, pages: int,
                     sha256: str) -> int:
     cursor = connection.execute(
@@ -313,6 +334,7 @@ def insert_contract(connection: sqlite3.Connection, entry: dict, passages, pages
         connection.executemany(
             "INSERT INTO article_familles (article_id, famille) VALUES (?,?)",
             [(article_id, family) for family in article_families(section, passage.text)])
+        # Définition : le dernier titre est le terme défini (« Définitions > Effraction » → « Effraction »).
         if kind == "definition" and passage.heading_path and title != passage.heading_path[0]:
             connection.execute(
                 "INSERT INTO definitions (contrat_id, article_id, terme, terme_norm)"
@@ -322,6 +344,7 @@ def insert_contract(connection: sqlite3.Connection, entry: dict, passages, pages
     return contract_id
 
 
+# Conversion d'une cellule CSV : cellule vide → None.
 def _int(value) -> int | None:
     return int(value) if value not in (None, "") else None
 
@@ -356,6 +379,7 @@ def load_guarantees(connection: sqlite3.Connection, path: Path = GARANTIES) -> i
             contract_id = contracts.get(row["contrat"])
             if contract_id is None:
                 continue
+            # Fragment cherché dans le titre et le texte des clauses de la page indiquée.
             found = connection.execute(
                 "SELECT id FROM articles WHERE contrat_id = ? AND page = ?"
                 " AND (section || ' ' || replace(texte, char(10), ' ')) LIKE ? ORDER BY rang LIMIT 1",
@@ -400,6 +424,7 @@ def load_demo(connection: sqlite3.Connection, policies: Path = POLICES_DEMO,
 
 def build_database(db_path: Path = DB_PATH, catalogue: Path = CATALOGUE) -> dict:
     """Reconstruit la base à partir du catalogue. Renvoie un résumé par contrat."""
+    # Imports placés ici : pdfplumber et le découpage ne servent qu'à la reconstruction.
     import time
 
     import pdfplumber
@@ -418,6 +443,7 @@ def build_database(db_path: Path = DB_PATH, catalogue: Path = CATALOGUE) -> dict
             contract_id = insert_contract(connection, entry, passages, pages, _sha256(pdf_path))
             record_import(connection, contract_id, time.perf_counter() - start)
             summary[entry["code"]] = len(passages)
+        # Reconstruit l'index plein texte à partir de la table articles.
         connection.execute("INSERT INTO articles_fts(articles_fts) VALUES ('rebuild')")
         summary["garanties"] = load_guarantees(connection)
         summary["polices"], summary["sinistres"] = load_demo(connection)
@@ -434,12 +460,14 @@ def applicable_version(connection: sqlite3.Connection, gamme: str,
     antérieure au sinistre : None (l'analyse doit alors le signaler)."""
     connection.row_factory = sqlite3.Row
     return connection.execute(
+        # Dates au format AAAA-MM-JJ : l'ordre alphabétique est l'ordre chronologique.
         "SELECT * FROM contrats WHERE gamme = ? AND date_effet <= ?"
         " ORDER BY date_effet DESC LIMIT 1", (gamme, claim_date)).fetchone()
 
 
 def connect(db_path: Path = DB_PATH) -> sqlite3.Connection:
     """Connexion en lecture pour l'application."""
+    # mode=ro : lecture seule, l'application ne peut pas modifier la base.
     connection = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True, check_same_thread=False)
     connection.row_factory = sqlite3.Row
     return connection

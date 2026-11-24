@@ -1,3 +1,10 @@
+# ---------------------------------------------------------------------------
+# Projet  : Claim Coverage Checker (instruction d'un sinistre habitation)
+# Fichier : tests/test_database.py
+# Auteur  : Thierry MBARGA
+# Rôle    : Tests de la base des conditions générales
+# Lancer  : python -m pytest tests/test_database.py
+# ---------------------------------------------------------------------------
 """Tests de la base des conditions générales.
 
 Les tests unitaires portent sur les règles de typage et de familles. Les

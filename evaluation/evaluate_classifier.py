@@ -1,4 +1,10 @@
-# Auteur : Thierry MBARGA
+# ---------------------------------------------------------------------------
+# Projet  : Claim Coverage Checker (instruction d'un sinistre habitation)
+# Fichier : evaluation/evaluate_classifier.py
+# Auteur  : Thierry MBARGA
+# Rôle    : Comparaison des algorithmes de classification des sinistres
+# Lancer  : python evaluation/evaluate_classifier.py
+# ---------------------------------------------------------------------------
 """Comparaison des algorithmes de classification des sinistres.
 
 - Validation croisée stratifiée (5 plis) sur le jeu d'entraînement généré.

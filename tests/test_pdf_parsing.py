@@ -1,3 +1,11 @@
+# ---------------------------------------------------------------------------
+# Projet  : Claim Coverage Checker (instruction d'un sinistre habitation)
+# Fichier : tests/test_pdf_parsing.py
+# Auteur  : Thierry MBARGA
+# Rôle    : Tests du découpage des PDF, sur des données synthétiques (sans
+#           PDF)
+# Lancer  : python -m pytest tests/test_pdf_parsing.py
+# ---------------------------------------------------------------------------
 """Tests du découpage des PDF, sur des données synthétiques (sans PDF)."""
 from src.pdf_parsing import (Line, _continues_sentence, build_passages, column_gutter,
                              heading_level, remove_running_headers)

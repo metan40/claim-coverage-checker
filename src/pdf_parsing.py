@@ -1,4 +1,13 @@
-# Auteur : Thierry MBARGA
+# ---------------------------------------------------------------------------
+# Projet  : Claim Coverage Checker (instruction d'un sinistre habitation)
+# Fichier : src/pdf_parsing.py
+# Auteur  : Thierry MBARGA
+# Rôle    : découper un PDF de conditions générales en passages citables
+#           (texte, page, chemin des titres), pour tout assureur.
+# Méthode : pdfplumber (mots, police, taille), détection des colonnes,
+#           des titres par la typographie, nettoyage des en-têtes répétés.
+# Entrée  : chemin du PDF.  Sortie : liste de Passage.
+# ---------------------------------------------------------------------------
 """Découpage générique de conditions générales PDF en passages citables.
 
 Un seul code pour tous les contrats : c'est la condition pour « tenir des
@@ -33,6 +42,7 @@ from pathlib import Path
 
 import pdfplumber
 
+# Réglages du découpage (en points PDF ou en caractères).
 MAX_PASSAGE_CHARACTERS = 900
 MIN_PASSAGE_CHARACTERS = 120
 X_TOLERANCE_RATIO = 0.35   # écart entre lettres relatif à la taille de police
@@ -41,9 +51,11 @@ MIN_FONT_SIZE = 6.0        # en dessous : logos, texte vertical, mentions décor
 MARGIN_TOP = 0.09          # part de la page considérée comme en-tête
 MARGIN_BOTTOM = 0.94       # au-delà : pied de page
 MAX_HEADING_LEVELS = 4
+# Début de puce : symbole, « 1. », « 2) », « a) »...
 BULLET_PATTERN = re.compile(r"^\s*(?:[•■▪●◦\-–]|\d+[.)]|[a-z][.)])\s+")
 
 
+# Une ligne lue dans le PDF, avec sa taille de police et son gras.
 @dataclass
 class Line:
     page: int
@@ -98,6 +110,7 @@ def column_gutter(words, width: float) -> float | None:
         return None
     rows = _group_rows(words)
     best = None
+    # On teste chaque verticale x entre 40 % et 60 % de la largeur, tous les 2 points.
     for x in range(int(width * 0.4), int(width * 0.6), 2):
         crossed = left_only = right_only = 0
         for row in rows:
@@ -107,6 +120,8 @@ def column_gutter(words, width: float) -> float | None:
                 left_only += 1
             elif all(w["x0"] > x for w in row):
                 right_only += 1
+        # Gouttière : au plus 5 % des lignes la traversent, au moins 20 % de lignes
+        # entièrement à gauche et 20 % entièrement à droite.
         if (crossed <= 0.05 * len(rows) and left_only >= 0.2 * len(rows)
                 and right_only >= 0.2 * len(rows)):
             if best is None or crossed < best[0]:
@@ -114,6 +129,7 @@ def column_gutter(words, width: float) -> float | None:
     return None if best is None else float(best[1])
 
 
+# Transforme des mots en lignes : taille médiane et gras (plus de 60 % des mots en gras).
 def _words_to_lines(words, page_number: int, column: int, height: float) -> list[Line]:
     lines = []
     for row in _group_rows(words):
@@ -122,6 +138,7 @@ def _words_to_lines(words, page_number: int, column: int, height: float) -> list
         if not text:
             continue
         sizes = [w["size"] for w in row]
+        # Le gras se lit dans le nom de la police (« Arial-Bold », « Helvetica-Black »).
         bold_share = sum("bold" in w["fontname"].lower() or "black" in w["fontname"].lower()
                          for w in row) / len(row)
         top = row[0]["top"]
@@ -131,6 +148,7 @@ def _words_to_lines(words, page_number: int, column: int, height: float) -> list
     return lines
 
 
+# Lit toutes les pages du PDF et renvoie les lignes dans l'ordre de lecture.
 def read_lines(pdf_path: Path) -> list[Line]:
     lines: list[Line] = []
     with pdfplumber.open(pdf_path) as pdf:
@@ -138,9 +156,11 @@ def read_lines(pdf_path: Path) -> list[Line]:
             words = page.extract_words(x_tolerance_ratio=X_TOLERANCE_RATIO,
                                        y_tolerance=Y_TOLERANCE,
                                        extra_attrs=["fontname", "size"])
+            # Texte en police de moins de 6 points écarté (logos, mentions verticales).
             words = [w for w in words if w["size"] >= MIN_FONT_SIZE]
             height = page.height
             middle = column_gutter(words, page.width)
+            # Deux colonnes : la colonne de gauche est lue en entier avant celle de droite.
             if middle is not None:
                 left = [w for w in words if w["x0"] < middle]
                 right = [w for w in words if w["x0"] >= middle]
@@ -148,6 +168,7 @@ def read_lines(pdf_path: Path) -> list[Line]:
                               + _words_to_lines(right, number, 2, height))
             else:
                 page_lines = _words_to_lines(words, number, 1, height)
+            # Couverture : page 1 avec moins de 150 mots, ignorée.
             is_cover = number == 1 and len(words) < 150
             if not is_cover and not is_table_of_contents(page_lines):
                 lines += page_lines
@@ -159,6 +180,7 @@ def is_table_of_contents(page_lines: list[Line]) -> bool:
     body = [line for line in page_lines if not line.in_margin]
     if len(body) < 8:
         return False
+    # Ligne numérotée : se termine par un numéro (« Vol ....... 12 ») ou commence par un numéro.
     numbered = sum(bool(re.search(r"(\s|\.)\d{1,3}$|^\d{1,3}\s+\D", line.text)) for line in body)
     titled = any(re.search(r"(table des mati|sommaire)", line.text, re.I) for line in body)
     return numbered / len(body) > 0.45 or (titled and numbered / len(body) > 0.25)
@@ -168,6 +190,7 @@ def is_table_of_contents(page_lines: list[Line]) -> bool:
 # 2. Nettoyage : en-têtes et pieds de page répétés
 # ---------------------------------------------------------------------------
 
+# Chiffres remplacés par # : « Page 3 » et « Page 17 » deviennent la même ligne.
 def _normalize_repeated(text: str) -> str:
     return re.sub(r"\d+", "#", text.lower()).strip()
 
@@ -180,6 +203,7 @@ def remove_running_headers(lines: list[Line], page_count: int) -> list[Line]:
     # de la page : « CE QUI EST EXCLU », répété partout mais à des hauteurs
     # variables, est un vrai titre.
     all_counts = Counter((_normalize_repeated(l.text), round(l.top / 20)) for l in lines)
+    # Répétée sur au moins un quart des pages (3 au minimum) = en-tête ou pied de page.
     threshold = max(3, page_count // 4)
     kept = []
     for line in lines:
@@ -188,6 +212,7 @@ def remove_running_headers(lines: list[Line], page_count: int) -> list[Line]:
             continue
         if all_counts[(key, round(line.top / 20))] >= threshold and len(key) < 90:
             continue
+        # Numéro de page seul (« 17 », « Page 17 ») : supprimé.
         if re.fullmatch(r"(page\s*)?\d{1,3}\s*\|?", line.text.strip(), re.I):
             continue
         kept.append(line)
@@ -198,6 +223,7 @@ def remove_running_headers(lines: list[Line], page_count: int) -> list[Line]:
 # 3. Titres et passages
 # ---------------------------------------------------------------------------
 
+# Taille du corps de texte = taille de police la plus fréquente.
 def body_font_size(lines: list[Line]) -> float:
     return Counter(line.size for line in lines).most_common(1)[0][0]
 
@@ -209,6 +235,8 @@ def heading_sizes(lines: list[Line], body_size: float) -> list[float]:
     """Tailles de titres de la plus grande à la plus petite. Les tailles
     proches (moins de 1,5 pt d'écart) forment un même niveau."""
     counts = Counter(line.size for line in lines
+                     # Candidats titres : au moins 0,8 point de plus que le corps, 90 caractères au plus,
+                     # taille vue au moins 2 fois.
                      if line.size >= body_size + 0.8 and len(line.text) <= 90)
     sizes = sorted((s for s, n in counts.items() if n >= 2), reverse=True)
     levels: list[float] = []
@@ -218,6 +246,7 @@ def heading_sizes(lines: list[Line], body_size: float) -> list[float]:
     return levels
 
 
+# Niveau d'un titre d'après sa taille (1 = la plus grande).
 def _size_level(size: float, levels: list[float]) -> int:
     for rank, level_size in enumerate(levels, start=1):
         if size >= level_size - 0.75:
@@ -237,6 +266,7 @@ def heading_level(line: Line, body_size: float, sizes: list[float] | None = None
     """
     sizes = sizes or []
     text = line.text.strip()
+    # Trop long, trop court, finissant par une virgule ou une puce : pas un titre.
     if len(text) > 90 or len(text) < 3 or text.endswith((",", ";")) or SYMBOL_BULLET.match(text):
         return None
     if not re.search(r"[A-Za-zÀ-ÿ]{3}", text):
@@ -267,6 +297,8 @@ def _continues_sentence(previous: Line | None, line: Line) -> bool:
             and not previous.text.rstrip().endswith((".", ":", "?", "!", ")")))
 
 
+# Parcourt les lignes : un titre ferme le passage en cours et met à jour
+# le chemin des titres ; une ligne de corps s'ajoute au passage en cours.
 def build_passages(lines: list[Line]) -> list[Passage]:
     body = body_font_size(lines)
     sizes = heading_sizes(lines, body)
@@ -277,6 +309,7 @@ def build_passages(lines: list[Line]) -> list[Passage]:
     previous_was_heading = False
     previous_heading: Line | None = None
 
+    # Termine le passage en cours (redécoupé s'il est trop long).
     def flush():
         nonlocal buffer
         text = " ".join(buffer).strip()
@@ -310,6 +343,7 @@ def build_passages(lines: list[Line]) -> list[Passage]:
                 if (previous_was_heading and previous_heading is not None and path
                         and level <= len(path) and path[-1]):
                     passages.append(Passage(previous_heading.page, list(path), path[-1]))
+                # Le chemin garde les titres des niveaux supérieurs et remplace ceux du même niveau.
                 path = path[: level - 1] + [title]
                 while len(path) < level:     # niveau intermédiaire absent
                     path.insert(len(path) - 1, "")
@@ -330,12 +364,14 @@ def build_passages(lines: list[Line]) -> list[Passage]:
     return _merge_small(passages)
 
 
+# Nettoyage du texte : césures, espaces multiples, retours à la ligne.
 def _clean(text: str) -> str:
     text = re.sub(r"-\s+(?=[a-zà-ÿ])", "", text)        # césures de fin de ligne
     text = re.sub(r"[ \t]+", " ", text)
     return re.sub(r"\s*\n\s*", "\n", text).strip()
 
 
+# Passage de plus de 900 caractères : coupé aux puces ou aux fins de phrase.
 def _split_long(passage: Passage) -> list[Passage]:
     text = _clean(passage.text)
     if len(text) <= MAX_PASSAGE_CHARACTERS:
@@ -352,6 +388,7 @@ def _split_long(passage: Passage) -> list[Passage]:
     return [Passage(passage.page, passage.heading_path, piece) for piece in pieces]
 
 
+# Passage de moins de 120 caractères : fusionné avec le précédent s'il a le même titre.
 def _merge_small(passages: list[Passage]) -> list[Passage]:
     merged: list[Passage] = []
     for passage in passages:
@@ -364,6 +401,7 @@ def _merge_small(passages: list[Passage]) -> list[Passage]:
     return merged
 
 
+# Point d'entrée : lecture, nettoyage, puis construction des passages.
 def parse_contract(pdf_path: Path) -> list[Passage]:
     lines = read_lines(pdf_path)
     with pdfplumber.open(pdf_path) as pdf:

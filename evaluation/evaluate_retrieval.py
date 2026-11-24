@@ -1,4 +1,10 @@
-# Auteur : Thierry MBARGA
+# ---------------------------------------------------------------------------
+# Projet  : Claim Coverage Checker (instruction d'un sinistre habitation)
+# Fichier : evaluation/evaluate_retrieval.py
+# Auteur  : Thierry MBARGA
+# Rôle    : Évaluation de la recherche des clauses sur les deux cas du sujet
+# Lancer  : python evaluation/evaluate_retrieval.py
+# ---------------------------------------------------------------------------
 """Évaluation de la recherche des clauses sur les deux cas du sujet.
 
 Pour chaque cas et chaque contrat, on vérifie que les clauses décisives

@@ -1,4 +1,14 @@
-# Auteur : Thierry MBARGA
+# ---------------------------------------------------------------------------
+# Projet  : Claim Coverage Checker (instruction d'un sinistre habitation)
+# Fichier : src/decision.py
+# Auteur  : Thierry MBARGA
+# Rôle    : appel au modèle de langage local (Ollama) et vérification
+#           de ses extraits. L'application en utilise : call_ollama, WARNING,
+#           CHECKLIST, extract_is_in_clause (via interpretation.py).
+#           analyse() et verify() : analyse globale en un seul appel (version
+#           précédente), gardée et testée (tests/test_decision.py) ; l'application
+#           utilise les 3 questions fermées de interpretation.py.
+# ---------------------------------------------------------------------------
 """Analyse de couverture : réponse typée du LLM, vérifiée par l'application.
 
 Le LLM (local, via Ollama) lit la description du sinistre et les clauses
@@ -35,6 +45,9 @@ from typing import Callable
 from src.database import normalize
 from src.retrieval import Clause
 
+# Réglages lus dans les variables d'environnement (Dockerfile, script Windows).
+# num_ctx : taille de la fenêtre lue par le modèle ; num_predict : longueur maximale de réponse ;
+# keep_alive : le modèle reste chargé 30 min (pas de rechargement à chaque question).
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://127.0.0.1:11434/api/generate")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3.2:1b")
 OLLAMA_TIMEOUT = float(os.getenv("OLLAMA_TIMEOUT_SECONDS", "180"))
@@ -48,9 +61,12 @@ NATURES = ("garantie", "garantie_optionnelle", "condition", "exclusion", "defini
 WARNING = ("Aide à la décision : cette analyse ne constitue pas une décision contractuelle. "
            "Seuls les conditions particulières, les pièces du dossier et le gestionnaire "
            "permettent de conclure.")
+# 650 caractères par clause : assez pour la phrase utile, assez court pour un CPU.
 CLAUSE_CHARACTERS = 650      # texte de clause transmis au modèle
 EXTRACT_MIN_OVERLAP = 0.8    # part des mots de l'extrait présents dans la clause
 
+# Schéma JSON imposé au modèle par Ollama (paramètre format) :
+# le modèle ne peut produire que ces champs, avec ces valeurs.
 RESPONSE_SCHEMA = {
     "type": "object",
     "properties": {
@@ -72,6 +88,7 @@ RESPONSE_SCHEMA = {
                  "informations_manquantes"],
 }
 
+# Consignes données au modèle avant les clauses (prompt système).
 SYSTEM = """Tu es un assistant de gestionnaire de sinistres en assurance habitation.
 Tu dis si le sinistre est potentiellement couvert par le contrat, en t'appuyant UNIQUEMENT
 sur les clauses fournies, numérotées C1, C2...
@@ -100,11 +117,13 @@ CHECKLIST = {
     "responsabilite_civile": ["Qui est la victime et quel est son lien avec l'assuré ?",
                               "La victime a-t-elle formulé une réclamation ?"],
 }
+# Formulations qui signalent une garantie optionnelle (à vérifier dans les conditions particulières).
 OPTIONAL_PATTERN = re.compile(
     r"uniquement si mention|si vous avez souscrit|garanties? optionnelle|option\b|"
     r"ne sont acquises que si|mentionnees? (sur|dans) vos conditions particulieres")
 
 
+# Une clause citée par le modèle, avec le résultat de la vérification de son extrait.
 @dataclass
 class CitedClause:
     ref: str
@@ -118,6 +137,7 @@ class CitedClause:
     extrait_verifie: bool
 
 
+# Résultat d'une analyse : verdict final, verdict du modèle, et liste des corrections.
 @dataclass
 class Decision:
     verdict: str
@@ -138,10 +158,12 @@ class Decision:
 
 # --- Prompt ------------------------------------------------------------------
 
+# Numérote les clauses C1, C2... : le modèle les cite par ce numéro.
 def references(clauses: list[Clause]) -> dict[str, Clause]:
     return {f"C{i}": clause for i, clause in enumerate(clauses, start=1)}
 
 
+# Prompt = consignes + contrat + clauses numérotées (type, page, titre, texte) + sinistre.
 def build_prompt(description: str, contract_label: str, clauses: list[Clause]) -> str:
     blocks = []
     for ref, clause in references(clauses).items():
@@ -155,6 +177,7 @@ def call_ollama(prompt: str, schema: dict | None = None) -> str:
     """Appelle le modèle local ; la réponse doit suivre le schéma JSON fourni
     (par défaut celui de l'analyse globale). Température nulle : la même
     question donne la même réponse."""
+    # temperature=0 : le modèle choisit toujours le mot le plus probable (réponse reproductible).
     payload = json.dumps({
         "model": OLLAMA_MODEL, "prompt": prompt, "stream": False,
         "format": schema or RESPONSE_SCHEMA,
@@ -169,6 +192,7 @@ def call_ollama(prompt: str, schema: dict | None = None) -> str:
 
 # --- Vérification --------------------------------------------------------------
 
+# Mots d'un texte, normalisés (minuscules, sans accents).
 def _words(text: str) -> list[str]:
     return re.findall(r"[a-z0-9]+", normalize(text))
 
@@ -178,14 +202,18 @@ def extract_is_in_clause(extract: str, clause_text: str) -> bool:
     normalisation, ou au moins 80 % de ses mots présents dans la clause
     (le modèle recopie parfois avec un mot de plus ou de moins)."""
     words = _words(extract)
+    # Moins de 3 mots : trop court pour prouver quoi que ce soit.
     if len(words) < 3:
         return False
+    # Cas 1 : l'extrait est une suite exacte de mots de la clause.
     if " ".join(words) in " ".join(_words(clause_text)):
         return True
+    # Cas 2 : taux de recouvrement = (mots de l'extrait présents dans la clause) / (mots de l'extrait) >= 0,8.
     vocabulary = set(_words(clause_text))
     return sum(w in vocabulary for w in words) / len(words) >= EXTRACT_MIN_OVERLAP
 
 
+# Lit le JSON du modèle ; refuse tout ce qui n'est pas un objet.
 def _parse(raw: str) -> dict:
     data = json.loads(raw)
     if not isinstance(data, dict):
@@ -193,6 +221,7 @@ def _parse(raw: str) -> dict:
     return data
 
 
+# Supprime vides et doublons en gardant l'ordre.
 def _unique(items) -> list[str]:
     return list(dict.fromkeys(item.strip() for item in items if item and item.strip()))
 
@@ -202,11 +231,13 @@ def verify(raw: dict, clauses: list[Clause], families: list[str]) -> Decision:
     refs = references(clauses)
     adjustments: list[str] = []
     verdict_model = raw.get("verdict")
+    # Règle 1 : un verdict hors liste devient « indéterminé ».
     verdict = verdict_model if verdict_model in VERDICTS else "indetermine"
     if verdict != verdict_model:
         adjustments.append(f"Verdict du modèle invalide ({verdict_model!r}) : indéterminé.")
 
     cited: list[CitedClause] = []
+    # Règle 2 : chaque clause citée doit exister et son extrait doit s'y trouver.
     for item in raw.get("clauses") or []:
         ref = str(item.get("ref", "")).strip().upper()
         clause = refs.get(ref)
@@ -222,6 +253,7 @@ def verify(raw: dict, clauses: list[Clause], families: list[str]) -> Decision:
         cited.append(CitedClause(ref, clause.id, clause.page, clause.section, clause.type, nature,
                                  extract, str(item.get("effet", "")).strip(), verified))
 
+    # Règle 3 : cohérence entre le verdict et les clauses vérifiées.
     verified_clauses = [c for c in cited if c.extrait_verifie]
     exclusions = [c for c in verified_clauses if c.type == "exclusion" or c.nature == "exclusion"]
     limiting = [c for c in verified_clauses
@@ -241,6 +273,7 @@ def verify(raw: dict, clauses: list[Clause], families: list[str]) -> Decision:
 
     missing = list(raw.get("informations_manquantes") or [])
     conditions = list(raw.get("conditions_a_verifier") or [])
+    # Règle 4 : questions ajoutées par l'application, pas par le modèle.
     optional = [c for c in clauses if c.reason.startswith("en-tête")
                 and OPTIONAL_PATTERN.search(normalize(c.text))]
     for clause in optional:
@@ -265,6 +298,7 @@ def analyse(description: str, contract_label: str, clauses: list[Clause], famili
     """Analyse complète. Si le modèle est indisponible ou répond hors format,
     l'analyse reste utile : verdict indéterminé, clauses à lire, questions."""
     start = time.perf_counter()
+    # Pas de clause : pas d'appel au modèle.
     if not clauses:
         decision = verify({"verdict": "indetermine", "justification":
                            "Aucune clause pertinente trouvée dans ce contrat."}, [], families)
@@ -272,6 +306,7 @@ def analyse(description: str, contract_label: str, clauses: list[Clause], famili
         try:
             decision = verify(_parse(llm(build_prompt(description, contract_label, clauses))),
                               clauses, families)
+        # Toute erreur (modèle arrêté, délai dépassé, JSON invalide) donne une analyse prudente.
         except Exception as error:  # modèle indisponible, délai dépassé, JSON invalide
             decision = verify({"verdict": "indetermine", "justification":
                                "Analyse automatique indisponible : lire les clauses proposées."},
@@ -282,6 +317,7 @@ def analyse(description: str, contract_label: str, clauses: list[Clause], famili
     return decision
 
 
+# Trace l'analyse en base : qui a dit quoi, avec quel modèle, en combien de temps.
 def record(connection: sqlite3.Connection, contract_id: int, description: str,
            probabilities: dict, decision: Decision) -> int:
     """Trace l'analyse dans la table ``decisions``."""

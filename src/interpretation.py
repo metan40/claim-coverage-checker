@@ -1,4 +1,12 @@
-# Auteur : Thierry MBARGA
+# ---------------------------------------------------------------------------
+# Projet  : Claim Coverage Checker (instruction d'un sinistre habitation)
+# Fichier : src/interpretation.py
+# Auteur  : Thierry MBARGA
+# Rôle    : contrôles 4, 5 et 6. Une question fermée au modèle de langage
+#           par contrôle ; l'application vérifie la citation et fixe le statut.
+# Entrée  : numéro du contrôle, description, faits, clauses retrouvées.
+# Sortie  : un Controle (statut, constat, source, question).
+# ---------------------------------------------------------------------------
 """Contrôles d'interprétation (4, 5 et 6) : une question fermée par contrôle.
 
 Les contrôles factuels (``instruction.py``) disent si la police couvre la
@@ -31,6 +39,7 @@ from typing import Callable
 from src.decision import CHECKLIST, CLAUSE_CHARACTERS, call_ollama, extract_is_in_clause
 from src.retrieval import Clause
 
+# Le modèle ne peut répondre que oui, non ou incertain (schéma JSON imposé).
 REPONSES = ("oui", "non", "incertain")
 SCHEMA = {
     "type": "object",
@@ -53,9 +62,13 @@ CONTROLES = {
         "Les conditions de garantie fournies (fermeture, protection, prévention) sont-elles remplies ?"),
 }
 # Statut selon la réponse vérifiée : (oui, non)
+# Lecture : contrôle 5, « oui » (une exclusion s'applique) = bloquant ;
+# contrôle 6, « non » (condition non remplie) = à vérifier, jamais bloquant.
 STATUTS = {4: ("satisfait", "bloquant"), 5: ("bloquant", "satisfait"), 6: ("satisfait", "a_verifier")}
+# Au plus 6 clauses par question : un prompt court reste rapide sur CPU.
 MAX_CLAUSES = 6
 
+# Consignes données au modèle avant chaque question.
 CONSIGNES = """Tu es un assistant de gestionnaire de sinistres en assurance habitation.
 Réponds à UNE question fermée, en t'appuyant uniquement sur les clauses fournies (C1, C2...).
 - Réponds « oui » ou « non » seulement si une clause le permet ; recopie alors mot pour mot
@@ -70,6 +83,7 @@ def selection(clauses: list[Clause], numero: int) -> list[Clause]:
     return [c for c in clauses if c.type in types][:MAX_CLAUSES]
 
 
+# Prompt = consignes + clauses numérotées + sinistre + faits + question fermée.
 def prompt(numero: int, description: str, faits: str, clauses: list[Clause]) -> str:
     blocs = []
     for i, clause in enumerate(clauses, start=1):
@@ -80,6 +94,7 @@ def prompt(numero: int, description: str, faits: str, clauses: list[Clause]) -> 
             + f"\n\nQuestion : {CONTROLES[numero][2]}\nRéponse JSON :")
 
 
+# Pages des clauses, sans doublon, en ordre croissant (« p.4, p.12 »).
 def _pages(clauses: list[Clause]) -> str:
     return ", ".join(sorted({f"p.{c.page}" for c in clauses}, key=lambda p: int(p[2:])))
 
@@ -91,14 +106,17 @@ def interpreter(numero: int, description: str, faits: str, clauses: list[Clause]
 
     nom = CONTROLES[numero][0]
     utiles = selection(clauses, numero)
+    # Question de gestionnaire liée à la famille (pas pour les exclusions).
     questions = [q for f in familles for q in CHECKLIST.get(f, [])] if numero != 5 else []
     question = questions[0] if questions else None
+    # Aucune clause utile : pas d'appel au modèle.
     if not utiles:
         statut = "satisfait" if numero == 5 else "a_verifier"
         constat = ("Aucune exclusion pertinente retrouvée dans ce contrat." if numero == 5
                    else "Aucune clause de ce type retrouvée pour ce sinistre.")
         return Controle(numero, nom, statut, constat, "Conditions générales", question)
     source = f"Conditions générales {_pages(utiles)}"
+    # Sans modèle de langage : le gestionnaire lit les clauses indiquées.
     if llm is None:
         return Controle(numero, nom, "a_verifier",
                         f"{len(utiles)} clause(s) à lire ({_pages(utiles)}).", source, question)
@@ -108,7 +126,9 @@ def interpreter(numero: int, description: str, faits: str, clauses: list[Clause]
         return Controle(numero, nom, "a_verifier",
                         f"Modèle indisponible ({type(erreur).__name__}) : {len(utiles)} clause(s) à lire "
                         f"({_pages(utiles)}).", source, question)
+    # Réponse hors liste : traitée comme « incertain ».
     reponse = brut.get("reponse") if brut.get("reponse") in REPONSES else "incertain"
+    # Le modèle cite C1, C2... : on retrouve la vraie clause.
     refs = {f"C{i}": c for i, c in enumerate(utiles, start=1)}
     clause = refs.get(str(brut.get("ref", "")).strip().upper())
     extrait = str(brut.get("extrait", "")).strip()
@@ -117,10 +137,12 @@ def interpreter(numero: int, description: str, faits: str, clauses: list[Clause]
     if reponse == "incertain":
         return Controle(numero, nom, "a_verifier", f"Le modèle ne peut pas conclure. {explication}".strip(),
                         source, manque)
+    # Une réponse tranchée sans extrait vérifié dans la clause citée est écartée.
     if clause is None or not extract_is_in_clause(extrait, clause.text):
         return Controle(numero, nom, "a_verifier",
                         f"Réponse « {reponse} » sans citation vérifiable : écartée. Clauses à lire "
                         f"({_pages(utiles)}).", source, manque)
+    # Réponse vérifiée : le statut suit la table STATUTS.
     statut = STATUTS[numero][0 if reponse == "oui" else 1]
     constat = f"« {extrait} » — {explication}".rstrip(" —")
     return Controle(numero, nom, statut, constat, f"Conditions générales p.{clause.page}",

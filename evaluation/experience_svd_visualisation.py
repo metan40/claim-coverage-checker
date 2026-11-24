@@ -1,4 +1,11 @@
-# Auteur : Thierry MBARGA
+# ---------------------------------------------------------------------------
+# Projet  : Claim Coverage Checker (instruction d'un sinistre habitation)
+# Fichier : evaluation/experience_svd_visualisation.py
+# Auteur  : Thierry MBARGA
+# Rôle    : Expérience : réduire la matrice TF-IDF par SVD pour visualiser
+#           et regrouper
+# Lancer  : python evaluation/experience_svd_visualisation.py
+# ---------------------------------------------------------------------------
 """Expérience : réduire la matrice TF-IDF par SVD pour visualiser et regrouper.
 
 1. Descriptions de sinistres (entraînement généré et test écrit à la main)

@@ -1,4 +1,14 @@
-# Auteur : Thierry MBARGA
+# ---------------------------------------------------------------------------
+# Projet  : Claim Coverage Checker (instruction d'un sinistre habitation)
+# Fichier : src/retrieval.py
+# Auteur  : Thierry MBARGA
+# Rôle    : choisir dans un contrat les clauses utiles à un sinistre
+#           (définitions, garanties, conditions, exclusions).
+# Méthode : synonymes métier, recherche BM25 (SQLite FTS5), bonus de famille,
+#           composition par quotas.
+# Entrée  : code du contrat, description, familles prédites.
+# Sortie  : liste ordonnée de Clause, chacune avec la raison de son choix.
+# ---------------------------------------------------------------------------
 """Recherche des clauses pertinentes pour un sinistre, dans un seul contrat.
 
 Le contrat n'est jamais transmis en entier au LLM : on lui donne un petit
@@ -26,6 +36,7 @@ from dataclasses import dataclass, field
 
 from src.database import FAMILY_REGEX, normalize
 
+# Mots vides : trop fréquents pour aider à trouver une clause.
 STOP_WORDS = set("""
 a afin ai aie aient ainsi alors au aucun aussi autre aux avais avait avant avec avez avoir
 avons c ca car ce cela celle celui ces cet cette chez comme d dans de des deja depuis donc
@@ -66,9 +77,11 @@ SYNONYMS = {
     "voisin": ["tiers", "responsabilite civile"],
 }
 
+# Suffixes retirés pour obtenir une racine (« fermées » → « ferm »).
 SUFFIXES = ("ements", "ement", "ations", "ation", "euses", "euse", "ees", "ee", "es", "e", "s")
 
 # Quotas du contexte transmis au LLM.
+# Nombre maximal de clauses par catégorie dans le contexte du modèle.
 QUOTAS = {"entete": 2, "garantie_condition": 5, "exclusion": 5, "definition": 4}
 FAMILY_BOOST = 1.5          # multiplicateur de score pour les familles prédites
 CANDIDATES = 80             # nombre de clauses lues dans l'index avant tri
@@ -77,6 +90,7 @@ CANDIDATES = 80             # nombre de clauses lues dans l'index avant tri
 def stem(token: str) -> str:
     """Racine grossière : on retire un suffixe courant si le mot reste assez long."""
     for suffix in SUFFIXES:
+        # Le suffixe n'est retiré que s'il reste au moins 4 lettres (racines trop courtes = ambiguës).
         if token.endswith(suffix) and len(token) - len(suffix) >= 4:
             return token[: -len(suffix)]
     return token
@@ -86,10 +100,12 @@ def query_terms(description: str, use_synonyms: bool = True) -> list[str]:
     """Termes de recherche : mots significatifs de la description, puis
     synonymes métier (y compris pour les expressions de plusieurs mots)."""
     text = normalize(description)
+    # Mots de plus de 2 lettres, hors mots vides ; dict.fromkeys supprime les doublons.
     tokens = [t for t in re.findall(r"[a-z]+", text) if t not in STOP_WORDS and len(t) > 2]
     terms = list(dict.fromkeys(tokens))
     if use_synonyms:
         for key, values in SYNONYMS.items():
+            # \b : la clé doit être un mot entier (« cave » ne trouve pas « caveau »).
             if re.search(rf"\b{re.escape(key)}\b", text):
                 terms.extend(values)
     return list(dict.fromkeys(terms))
@@ -102,12 +118,15 @@ def fts_query(terms: list[str]) -> str:
     for term in terms:
         words = term.split()
         if len(words) == 1:
+            # « vol* » trouve vol, vols, volé... (recherche par préfixe).
             parts.append(f"{stem(words[0])}*")
         else:
+            # Expression de plusieurs mots : recherche de la phrase exacte.
             parts.append('"' + " ".join(words) + '"')
     return " OR ".join(dict.fromkeys(parts))
 
 
+# Une clause candidate : texte, familles, score et raison de sa sélection.
 @dataclass
 class Clause:
     id: int
@@ -123,6 +142,8 @@ class Clause:
         return f"[{self.id}] p.{self.page} — {self.section}"
 
 
+# BM25 de FTS5 est négatif (plus petit = meilleur) : on prend -bm25 comme score.
+# BM25(q, j) = Σ_t idf(t) · tf(t,j)·(k1+1) / (tf(t,j) + k1·(1 − b + b·|j|/moy|j|)), k1 = 1,2, b = 0,75.
 def _candidates(connection: sqlite3.Connection, contract_code: str, query: str) -> list[Clause]:
     rows = connection.execute(
         """SELECT a.id, a.page, a.section, a.type, a.texte, -bm25(articles_fts) AS score,
@@ -151,6 +172,7 @@ def _definitions_for_terms(connection, contract_code: str, terms: list[str]) -> 
         stems = [stem(w) for w in re.findall(r"[a-z]+", term) if w not in STOP_WORDS and len(w) > 2]
         if not stems:
             continue
+        # Nombre de racines du terme défini retrouvées dans la description.
         matched = sum(s in query_stems for s in stems)
         needed = len(stems) if len(stems) < 3 else len(stems) - 1
         if matched >= needed:
@@ -174,6 +196,7 @@ def _guarantee_headers(connection, contract_code: str, families: list[str]) -> l
                WHERE c.code = ? AND a.type IN ('garantie', 'condition') ORDER BY a.rang""",
             (contract_code,)).fetchall()
         matching = [(article, title) for *article, title in rows
+                    # Titre court (60 caractères au plus) qui nomme la famille : c'est un en-tête de garantie.
                     if len(title) <= 60 and regex.search(normalize(title))]
         # On préfère une section placée sous un titre de garanties (« Les
         # événements garantis », « Garanties optionnelles ») à un conseil
@@ -196,6 +219,7 @@ def retrieve(connection: sqlite3.Connection, contract_code: str, description: st
         return []
     candidates = _candidates(connection, contract_code, fts_query(terms))
     families = families or []
+    # Bonus : score × 1,5 pour une clause de la famille prédite par le classifieur.
     for clause in candidates:
         matched = [f for f in clause.families if f in families]
         if use_families and matched:
@@ -205,6 +229,8 @@ def retrieve(connection: sqlite3.Connection, contract_code: str, description: st
             clause.reason = "recherche plein texte"
     candidates.sort(key=lambda c: -c.score)
 
+    # Composition du contexte : en-têtes, définitions, puis remplissage par quotas
+    # en prenant les meilleurs scores de chaque catégorie.
     selected: list[Clause] = []
     if use_families:
         selected += _guarantee_headers(connection, contract_code, families)[: quotas.get("entete", 0)]
@@ -222,5 +248,6 @@ def retrieve(connection: sqlite3.Connection, contract_code: str, description: st
                 selected.append(clause)
                 seen.add(clause.id)
                 already += 1
+    # Ordre final : définitions, puis garanties et conditions, puis exclusions.
     order = {"definition": 0, "garantie": 1, "condition": 1, "exclusion": 2}
     return sorted(selected, key=lambda c: (order[c.type], -c.score))

@@ -1,4 +1,12 @@
-# Auteur : Thierry MBARGA
+# ---------------------------------------------------------------------------
+# Projet  : Claim Coverage Checker (instruction d'un sinistre habitation)
+# Fichier : src/concepts.py
+# Auteur  : Thierry MBARGA
+# Rôle    : dictionnaire des mots métier et du jargon (data/concepts/concepts.csv) :
+#           relie les mots de l'assuré aux mots du contrat.
+# État    : module prêt et autonome, pas encore branché sur la recherche ni
+#           sur le prompt (amélioration prévue).
+# ---------------------------------------------------------------------------
 """Dictionnaire des concepts métier : mots de l'assuré, jargon, mots du contrat.
 
 Fichier : ``data/concepts/concepts.csv``. Un **concept** est une notion du
@@ -36,6 +44,7 @@ from src.database import normalize
 CONCEPTS_PATH = Path(__file__).resolve().parent.parent / "data" / "concepts" / "concepts.csv"
 
 
+# Un concept : code, catégorie, libellé, mots de l'assuré, mots du contrat.
 @dataclass(frozen=True)
 class Concept:
     code: str
@@ -45,10 +54,12 @@ class Concept:
     termes_contrat: tuple[str, ...]
 
 
+# Cellule CSV « a|b|c » → ('a', 'b', 'c').
 def _split(cell: str) -> tuple[str, ...]:
     return tuple(t.strip() for t in (cell or "").split("|") if t.strip())
 
 
+# lru_cache : le fichier n'est lu qu'une fois.
 @lru_cache(maxsize=4)
 def load(path: Path = CONCEPTS_PATH) -> tuple[Concept, ...]:
     with path.open(encoding="utf-8") as handle:
@@ -57,6 +68,8 @@ def load(path: Path = CONCEPTS_PATH) -> tuple[Concept, ...]:
                      for r in csv.DictReader(handle))
 
 
+# Expression régulière d'un terme : mots entiers, séparés par n'importe quel
+# espace ou ponctuation (« dégât des eaux » trouve « dégât-des-eaux »).
 def _pattern(term: str) -> re.Pattern:
     words = [re.escape(w) for w in re.findall(r"[a-z0-9]+", normalize(term))]
     return re.compile(r"\b" + r"\W+".join(words) + r"\b")
@@ -73,6 +86,7 @@ def detect(description: str, path: Path = CONCEPTS_PATH) -> list[tuple[Concept, 
     text = normalize(description)
     found = []
     for concept, patterns in _compiled(path):
+        # Un concept est reconnu dès qu'un de ses termes est trouvé (on s'arrête au premier).
         for term, pattern in patterns:
             if pattern.search(text):
                 found.append((concept, term))

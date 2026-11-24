@@ -1,3 +1,11 @@
+# ---------------------------------------------------------------------------
+# Projet  : Claim Coverage Checker (instruction d'un sinistre habitation)
+# Fichier : tests/test_classifier.py
+# Auteur  : Thierry MBARGA
+# Rôle    : Tests du classifieur de sinistres (modèle entraîné à la volée,
+#           en mémoire)
+# Lancer  : python -m pytest tests/test_classifier.py
+# ---------------------------------------------------------------------------
 """Tests du classifieur de sinistres (modèle entraîné à la volée, en mémoire)."""
 import pytest
 

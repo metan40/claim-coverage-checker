@@ -1,3 +1,11 @@
+# ---------------------------------------------------------------------------
+# Projet  : Claim Coverage Checker (instruction d'un sinistre habitation)
+# Fichier : tests/test_app.py
+# Auteur  : Thierry MBARGA
+# Rôle    : API : routes appelées directement, sans serveur ni modèle de
+#           langage
+# Lancer  : python -m pytest tests/test_app.py
+# ---------------------------------------------------------------------------
 """API : routes appelées directement, sans serveur ni modèle de langage."""
 import json
 

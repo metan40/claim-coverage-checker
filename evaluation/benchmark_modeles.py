@@ -1,4 +1,11 @@
-# Auteur : Thierry MBARGA
+# ---------------------------------------------------------------------------
+# Projet  : Claim Coverage Checker (instruction d'un sinistre habitation)
+# Fichier : evaluation/benchmark_modeles.py
+# Auteur  : Thierry MBARGA
+# Rôle    : Banc d'essai des classifieurs de sinistres : du TF-IDF aux
+#           transformeurs
+# Lancer  : python evaluation/benchmark_modeles.py  (options : --help)
+# ---------------------------------------------------------------------------
 """Banc d'essai des classifieurs de sinistres : du TF-IDF aux transformeurs.
 
 Tous les modèles apprennent sur le même jeu généré

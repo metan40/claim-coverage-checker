@@ -1,4 +1,12 @@
-# Auteur : Thierry MBARGA
+# ---------------------------------------------------------------------------
+# Projet  : Claim Coverage Checker (instruction d'un sinistre habitation)
+# Fichier : src/instruction.py
+# Auteur  : Thierry MBARGA
+# Rôle    : instruire un sinistre en 7 contrôles, comme un gestionnaire,
+#           puis en déduire un verdict non compensatoire.
+# Entrée  : identifiant du sinistre, familles prédites, modèle de langage (optionnel).
+# Sortie  : objet Instruction (contrôles, verdict, nature, indemnité estimée).
+# ---------------------------------------------------------------------------
 """Instruction d'un sinistre en sept contrôles.
 
 Un gestionnaire instruit un sinistre selon une suite de contrôles, du plus
@@ -40,6 +48,7 @@ from src.database import applicable_version, connect
 from src.interpretation import interpreter
 from src.retrieval import retrieve
 
+# Statuts possibles d'un contrôle et noms des 7 contrôles.
 STATUTS = ("satisfait", "bloquant", "a_verifier", "sans_objet")
 NOMS = {1: "Contrat en vigueur", 2: "Version applicable", 3: "Garantie souscrite",
         4: "Événement et bien garantis", 5: "Exclusions", 6: "Conditions et obligations",
@@ -48,6 +57,7 @@ NOMS = {1: "Contrat en vigueur", 2: "Version applicable", 3: "Garantie souscrite
 NATURES = {1: "contrat non en vigueur", 2: "version inconnue", 3: "garantie non souscrite",
            4: "hors du champ de la garantie", 5: "exclusion", 6: "déchéance ou condition non remplie",
            7: "sous la franchise"}
+# Biens qui peuvent relever d'une extension (pack jardin, pack mobilité...).
 BIENS = {"velo": "vélo", "mobilier_jardin": "mobilier de jardin"}
 # Règle légale sur la déclaration tardive (voir docs/conception.md, contrôle 6).
 REGLE_DELAI = {
@@ -62,6 +72,7 @@ REGLE_DELAI = {
 }
 
 
+# Un contrôle : statut, constat en une phrase, source vérifiable, question éventuelle.
 @dataclass
 class Controle:
     numero: int
@@ -74,6 +85,7 @@ class Controle:
     page: int | None = None
 
 
+# Résultat complet de l'instruction, renvoyé à l'interface.
 @dataclass
 class Instruction:
     sinistre: dict
@@ -88,6 +100,7 @@ class Instruction:
 
 # --- Outils ----------------------------------------------------------------
 
+# Texte AAAA-MM-JJ → date (None si absent).
 def _date(value: str | None) -> date | None:
     return date.fromisoformat(value) if value else None
 
@@ -96,6 +109,7 @@ def jours_ouvres(debut: date, fin: date) -> int:
     """Jours ouvrés (lundi à vendredi) écoulés après ``debut`` jusqu'à ``fin``
     inclus. Les jours fériés ne sont pas déduits : le résultat peut
     surestimer le délai d'un ou deux jours (limite connue)."""
+    # On avance jour par jour ; weekday() < 5 : du lundi (0) au vendredi (4).
     jours, courant = 0, debut
     while courant < fin:
         courant += timedelta(days=1)
@@ -114,11 +128,13 @@ def indemnite(dommage: float, franchise: float, plafond: float) -> float:
     return round(min(max(dommage - franchise, 0.0), plafond), 2)
 
 
+# Lecture d'une déclaration de sinistre en base.
 def lire_sinistre(connection: sqlite3.Connection, sinistre_id: str) -> dict | None:
     row = connection.execute("SELECT * FROM sinistres WHERE id = ?", (sinistre_id,)).fetchone()
     return dict(row) if row else None
 
 
+# Lecture d'une police et de l'ensemble de ses options souscrites.
 def lire_police(connection: sqlite3.Connection, numero: str) -> tuple[dict | None, set[str]]:
     row = connection.execute("SELECT * FROM polices WHERE numero = ?", (numero,)).fetchone()
     options = {r[0] for r in connection.execute(
@@ -134,6 +150,7 @@ def controle_contrat(police: dict | None, survenance: date) -> Controle:
         return Controle(1, NOMS[1], "bloquant", "Police introuvable dans le portefeuille.", "Portefeuille")
     debut, fin = _date(police["date_effet"]), _date(police["date_fin"])
     source = f"Police {police['numero']}"
+    # Couvert si début <= survenance < fin ; sinon le contrat ne couvre pas la date.
     if survenance < debut:
         return Controle(1, NOMS[1], "bloquant",
                         f"Sinistre du {survenance} antérieur à la prise d'effet ({debut}).", source)
@@ -161,6 +178,7 @@ def controle_version(connection: sqlite3.Connection, gamme: str,
                      f"Catalogue des contrats ({contrat['reference']})"), contrat)
 
 
+# Une garantie est acquise si elle est de base, comprise dans la formule, ou ajoutée par une option.
 def _acquise(garantie: dict, police: dict, options: set[str]) -> bool:
     if garantie["statut"] == "base":
         return True
@@ -168,6 +186,7 @@ def _acquise(garantie: dict, police: dict, options: set[str]) -> bool:
     return police["formule"] in formules or (garantie["option"] or "") in options
 
 
+# Texte lisible de ce qu'exige une garantie (« formule Confort ou option Vélo »).
 def _condition(garantie: dict) -> str:
     parts = []
     if garantie["formules"]:
@@ -187,6 +206,7 @@ def controle_garantie(connection: sqlite3.Connection, contrat: dict, police: dic
     connection.row_factory = sqlite3.Row
     catalogue = [dict(r) for r in connection.execute(
         "SELECT * FROM garanties WHERE contrat_id = ? ORDER BY id", (contrat["id"],))]
+    # Garanties du contrat qui correspondent aux familles prédites.
     concernees = [g for g in catalogue if g["famille"] in familles]
     if not concernees:
         return (Controle(3, NOMS[3], "a_verifier",
@@ -196,6 +216,8 @@ def controle_garantie(connection: sqlite3.Connection, contrat: dict, police: dic
     acquises = [g for g in concernees if _acquise(g, police, options)]
     if not acquises:
         g = concernees[0]
+        # Une seule famille prédite : non souscrite = bloquant. Deux familles : le classifieur
+        # hésite, on demande au gestionnaire plutôt que de bloquer.
         statut = "bloquant" if len(familles) == 1 else "a_verifier"
         question = None if statut == "bloquant" else (
             "Le classifieur hésite entre deux garanties : laquelle correspond au sinistre ?")
@@ -208,6 +230,7 @@ def controle_garantie(connection: sqlite3.Connection, contrat: dict, police: dic
     retenues = acquises[:1]
     g = retenues[0]
     constat = f"« {g['libelle']} » acquise ({_condition(g)})."
+    # Extension de bien : un vélo volé exige aussi l'extension qui couvre les vélos.
     extensions = [e for e in catalogue if e["statut"] == "extension_bien" and bien
                   and bien in (e["biens"] or "").split("|")]
     for extension in extensions:
@@ -233,17 +256,20 @@ def controle_delai(contrat: dict, familles: list[str], sinistre: dict) -> Contro
     if declaration is None:
         return Controle(6, "Délai de déclaration", "a_verifier", "Date de déclaration inconnue.",
                         "Déclaration", "À quelle date le sinistre a-t-il été déclaré ?")
+    # Le vol a son propre délai dans le contrat (colonne delai_vol du catalogue).
     limite = contrat["delai_vol"] if "vol" in familles else contrat["delai_declaration"]
     if limite is None:
         return Controle(6, "Délai de déclaration", "a_verifier", "Délai contractuel non renseigné.",
                         source, "Quel est le délai de déclaration prévu au contrat ?")
     ouvres = contrat["unite_delai"] == "jours_ouvres"
+    # Délai écoulé en jours ouvrés ou en jours calendaires, selon le contrat.
     ecoules = jours_ouvres(connaissance, declaration) if ouvres else (declaration - connaissance).days
     def duree(n: int) -> str:
         mot = "jour ouvré" if ouvres else "jour"
         return f"{n} {mot}" if n <= 1 else f"{n} {mot.replace('jour', 'jours').replace('ouvré', 'ouvrés')}"
     constat = (f"Déclaré {duree(ecoules)} après la connaissance du sinistre ({connaissance}) ; "
                f"délai du contrat : {duree(limite)}.")
+    # Dans le délai : satisfait. Hors délai : à vérifier, jamais bloquant (règle légale du pays).
     if ecoules <= limite:
         return Controle(6, "Délai de déclaration", "satisfait", constat, source)
     regle = REGLE_DELAI.get(contrat["pays"], "")
@@ -256,11 +282,13 @@ def controle_montant(police: dict, retenues: list[dict], montant: float | None) 
     if montant is None:
         return (Controle(7, NOMS[7], "a_verifier", "Montant du dommage non chiffré.", "Déclaration",
                          "Quel est le montant du dommage (facture, devis) ?"), None)
+    # Plafond retenu : le plus petit entre celui de la police et ceux des garanties retenues.
     plafonds = [police["plafond_contenu"]] + [g["plafond"] for g in retenues if g.get("plafond")]
     plafond, franchise = min(plafonds), police["franchise"]
     montant_du = indemnite(montant, franchise, plafond)
     constat = (f"Indemnité estimée {euros(montant_du)} = min(max({euros(montant)} − "
                f"{euros(franchise)}, 0), {euros(plafond)}), avant vétusté.")
+    # Indemnité nulle (dommage sous la franchise) : bloquant.
     statut = "satisfait" if montant_du > 0 else "bloquant"
     return Controle(7, NOMS[7], statut, constat, f"Police {police['numero']} (franchise, plafond)"), montant_du
 
@@ -280,6 +308,7 @@ def controles_interpretation(connection: sqlite3.Connection, contrat: dict, sini
                              familles: list[str], llm: Callable | None) -> list[Controle]:
     """Contrôles 4, 5 et 6 (conditions) : clauses retrouvées dans le contrat
     applicable, puis une question fermée par contrôle."""
+    # Recherche des clauses (retrieval.py), puis une question fermée par contrôle (interpretation.py).
     clauses = retrieve(connection, contrat["code"], sinistre["description"], familles)
     return [interpreter(numero, sinistre["description"], faits(sinistre), clauses, familles, llm)
             for numero in (4, 5, 6)]
@@ -291,6 +320,7 @@ def verdict(controles: list[Controle]) -> tuple[str, str | None]:
     """Agrégation non compensatoire : un contrôle bloquant écarte la garantie,
     quel que soit le résultat des autres ; tous satisfaits (ou sans objet)
     donnent « potentiellement couvert » ; sinon « indéterminé »."""
+    # Le premier contrôle bloquant donne la nature du refus (exclusion, garantie non souscrite...).
     bloquants = [c for c in controles if c.statut == "bloquant"]
     if bloquants:
         return "potentiellement_exclu", NATURES[bloquants[0].numero]
@@ -311,6 +341,8 @@ def instruire(connection: sqlite3.Connection, sinistre_id: str, familles: list[s
     survenance = _date(sinistre["date_survenance"])
     police, options = lire_police(connection, sinistre["numero_police"])
     instruction = Instruction(sinistre, police, None, familles)
+    # Chaque contrôle dépend du précédent : pas de police → pas de version ;
+    # pas de version → pas de catalogue de garanties ni de clauses.
     controles = [controle_contrat(police, survenance)]
     if police is not None:
         c2, contrat = controle_version(connection, police["gamme"], survenance)
@@ -324,11 +356,13 @@ def instruire(connection: sqlite3.Connection, sinistre_id: str, familles: list[s
             controles.append(controle_delai(contrat, familles, sinistre))
             c7, instruction.indemnite = controle_montant(police, retenues, sinistre["montant_estime"])
             controles.append(c7)
+    # Les contrôles sont rangés par numéro (le délai, n° 6, est calculé après 4 et 5).
     instruction.controles = sorted(controles, key=lambda c: c.numero)
     instruction.verdict, instruction.nature = verdict(instruction.controles)
     return instruction
 
 
+# Trace l'instruction et chacun de ses contrôles (audit).
 def enregistrer(connection: sqlite3.Connection, instruction: Instruction,
                 probabilites: dict | None = None, modele: str | None = None) -> int:
     """Trace l'instruction dans les tables ``analyses`` et ``controles``."""
@@ -365,6 +399,7 @@ def afficher(instruction: Instruction) -> str:
     return "\n".join(lignes)
 
 
+# Lancement en ligne de commande : python -m src.instruction S-01 [--llm]
 if __name__ == "__main__":
     from src.classifier import load_model, predict
     from src.decision import call_ollama

@@ -1,4 +1,11 @@
-# Auteur : Thierry MBARGA
+# ---------------------------------------------------------------------------
+# Projet  : Claim Coverage Checker (instruction d'un sinistre habitation)
+# Fichier : evaluation/test_charge_instruction.py
+# Auteur  : Thierry MBARGA
+# Rôle    : Test de charge des contrôles factuels sur un portefeuille de
+#           grande taille
+# Lancer  : python evaluation/test_charge_instruction.py
+# ---------------------------------------------------------------------------
 """Test de charge des contrôles factuels sur un portefeuille de grande taille.
 
 Sur une copie de la base : ajout de 100 000 polices synthétiques et de

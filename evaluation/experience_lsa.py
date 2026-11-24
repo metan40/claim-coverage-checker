@@ -1,4 +1,11 @@
-# Auteur : Thierry MBARGA
+# ---------------------------------------------------------------------------
+# Projet  : Claim Coverage Checker (instruction d'un sinistre habitation)
+# Fichier : evaluation/experience_lsa.py
+# Auteur  : Thierry MBARGA
+# Rôle    : Expérience : l'analyse sémantique latente (SVD) améliore-t-elle
+#           la recherche ?
+# Lancer  : python evaluation/experience_lsa.py
+# ---------------------------------------------------------------------------
 """Expérience : l'analyse sémantique latente (SVD) améliore-t-elle la recherche ?
 
 On compare, sur les clauses décisives des deux cas du sujet

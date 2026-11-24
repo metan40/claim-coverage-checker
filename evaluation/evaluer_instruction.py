@@ -1,4 +1,11 @@
-# Auteur : Thierry MBARGA
+# ---------------------------------------------------------------------------
+# Projet  : Claim Coverage Checker (instruction d'un sinistre habitation)
+# Fichier : evaluation/evaluer_instruction.py
+# Auteur  : Thierry MBARGA
+# Rôle    : Évaluation de bout en bout de l'instruction d'un sinistre (7
+#           contrôles)
+# Lancer  : python evaluation/evaluer_instruction.py  (options : --help)
+# ---------------------------------------------------------------------------
 """Évaluation de bout en bout de l'instruction d'un sinistre (7 contrôles).
 
 Jeu : ``evaluation/cas_couverture.csv``. Chaque ligne est un jugement (cas i,
