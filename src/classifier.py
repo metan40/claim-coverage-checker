@@ -1,3 +1,4 @@
+# Auteur : Thierry MBARGA
 """Classification des descriptions de sinistres en familles de garanties.
 
 Le modèle retenu est entraîné sur ``data/sinistres/sinistres_entrainement.csv``

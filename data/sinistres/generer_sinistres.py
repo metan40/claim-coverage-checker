@@ -1,3 +1,4 @@
+# Auteur : Thierry MBARGA
 """Génère le jeu d'entraînement de descriptions de sinistres (fictives).
 
 Chaque description combine une formule d'ouverture, un événement, un lieu,

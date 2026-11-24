@@ -1,3 +1,4 @@
+# Auteur : Thierry MBARGA
 """Découpage générique de conditions générales PDF en passages citables.
 
 Un seul code pour tous les contrats : c'est la condition pour « tenir des

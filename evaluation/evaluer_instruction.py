@@ -1,3 +1,4 @@
+# Auteur : Thierry MBARGA
 """Évaluation de bout en bout de l'instruction d'un sinistre (7 contrôles).
 
 Jeu : ``evaluation/cas_couverture.csv``. Chaque ligne est un jugement (cas i,

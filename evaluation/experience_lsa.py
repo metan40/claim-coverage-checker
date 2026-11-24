@@ -1,3 +1,4 @@
+# Auteur : Thierry MBARGA
 """Expérience : l'analyse sémantique latente (SVD) améliore-t-elle la recherche ?
 
 On compare, sur les clauses décisives des deux cas du sujet

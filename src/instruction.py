@@ -1,3 +1,4 @@
+# Auteur : Thierry MBARGA
 """Instruction d'un sinistre en sept contrôles.
 
 Un gestionnaire instruit un sinistre selon une suite de contrôles, du plus

@@ -1,3 +1,4 @@
+# Auteur : Thierry MBARGA
 """Test de charge des contrôles factuels sur un portefeuille de grande taille.
 
 Sur une copie de la base : ajout de 100 000 polices synthétiques et de

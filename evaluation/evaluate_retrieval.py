@@ -1,3 +1,4 @@
+# Auteur : Thierry MBARGA
 """Évaluation de la recherche des clauses sur les deux cas du sujet.
 
 Pour chaque cas et chaque contrat, on vérifie que les clauses décisives

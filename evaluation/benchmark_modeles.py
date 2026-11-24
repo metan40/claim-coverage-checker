@@ -1,3 +1,4 @@
+# Auteur : Thierry MBARGA
 """Banc d'essai des classifieurs de sinistres : du TF-IDF aux transformeurs.
 
 Tous les modèles apprennent sur le même jeu généré

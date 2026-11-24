@@ -1,3 +1,4 @@
+# Auteur : Thierry MBARGA
 """Portefeuille synthétique de polices, pour tester l'instruction à l'échelle.
 
 Les polices sont générées de façon reproductible (graine fixe) et marquées

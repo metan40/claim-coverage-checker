@@ -1,3 +1,4 @@
+# Auteur : Thierry MBARGA
 """API et interface web de l'instruction d'un sinistre.
 
 Routes :

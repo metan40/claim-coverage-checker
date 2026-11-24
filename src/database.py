@@ -1,3 +1,4 @@
+# Auteur : Thierry MBARGA
 """Base SQLite des conditions générales.
 
 Chaque contrat est découpé en passages par ``pdf_parsing.parse_contract``,

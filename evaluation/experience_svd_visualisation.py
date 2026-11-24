@@ -1,3 +1,4 @@
+# Auteur : Thierry MBARGA
 """Expérience : réduire la matrice TF-IDF par SVD pour visualiser et regrouper.
 
 1. Descriptions de sinistres (entraînement généré et test écrit à la main)

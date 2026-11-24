@@ -1,3 +1,4 @@
+# Auteur : Thierry MBARGA
 """Analyse de couverture : réponse typée du LLM, vérifiée par l'application.
 
 Le LLM (local, via Ollama) lit la description du sinistre et les clauses

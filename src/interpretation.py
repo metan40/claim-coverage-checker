@@ -1,3 +1,4 @@
+# Auteur : Thierry MBARGA
 """Contrôles d'interprétation (4, 5 et 6) : une question fermée par contrôle.
 
 Les contrôles factuels (``instruction.py``) disent si la police couvre la

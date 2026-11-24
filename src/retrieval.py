@@ -1,3 +1,4 @@
+# Auteur : Thierry MBARGA
 """Recherche des clauses pertinentes pour un sinistre, dans un seul contrat.
 
 Le contrat n'est jamais transmis en entier au LLM : on lui donne un petit

@@ -1,3 +1,4 @@
+# Auteur : Thierry MBARGA
 """Comparaison des algorithmes de classification des sinistres.
 
 - Validation croisée stratifiée (5 plis) sur le jeu d'entraînement généré.

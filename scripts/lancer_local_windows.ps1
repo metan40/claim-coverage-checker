@@ -1,3 +1,4 @@
+# Auteur : Thierry MBARGA
 # Lance claim-coverage-checker en local sous Windows, sans Docker, avec les
 # mêmes réglages que le Space : modèle llama3.2:3b exécuté par Ollama.
 # Prérequis : Python 3.10 ou plus récent, Ollama pour Windows installé et lancé.

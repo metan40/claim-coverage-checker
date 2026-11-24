@@ -1,3 +1,4 @@
+# Auteur : Thierry MBARGA
 """Dictionnaire des concepts métier : mots de l'assuré, jargon, mots du contrat.
 
 Fichier : ``data/concepts/concepts.csv``. Un **concept** est une notion du

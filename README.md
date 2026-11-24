@@ -10,6 +10,8 @@ pinned: false
 
 # claim-coverage-checker
 
+Auteur : Thierry MBARGA
+
 Aide à l'instruction des sinistres habitation : dire si un sinistre est
 couvert, sur quelles clauses, et ce qu'il manque pour conclure.
 

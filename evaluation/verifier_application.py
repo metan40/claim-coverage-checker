@@ -1,3 +1,4 @@
+# Auteur : Thierry MBARGA
 """Vérifie une application en marche (locale ou distante) par son API HTTP.
 
 Attend que ``/ready`` réponde « ready », puis instruit les sinistres de
