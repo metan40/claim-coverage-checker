@@ -81,6 +81,12 @@ ollama pull llama3.2:3b
 OLLAMA_MODEL=llama3.2:3b uvicorn src.app:app --port 7860
 ```
 
+Sous Windows (PowerShell, Ollama pour Windows lancé) :
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts\lancer_local_windows.ps1
+```
+
 `USE_LLM=0` lance l'application sans modèle : les contrôles 4 à 6 restent
 « à vérifier » avec les clauses à lire.
 
