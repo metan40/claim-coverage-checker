@@ -1,0 +1,28 @@
+name: Vérification du Space en ligne
+
+# Interroge l'application publiée, sans la redémarrer : attend que /ready
+# réponde « ready » avec la version du dépôt, puis instruit les sinistres de
+# démonstration par l'API.
+on:
+  workflow_dispatch:
+
+jobs:
+  verifier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      URL: https://metan40-claim-coverage-checker.hf.space
+    steps:
+      - uses: actions/checkout@v4
+      - name: Attendre la version publiée
+        run: |
+          attendue=$(cat VERSION)
+          for i in $(seq 1 90); do
+            r=$(curl -s -m 30 "$URL/ready" || true)
+            echo "$(date +%H:%M:%S) $r" | cut -c1-300
+            if echo "$r" | grep -q "\"app_version\":\"$attendue\"" && echo "$r" | grep -q '"status":"ready"'; then exit 0; fi
+            sleep 60
+          done
+          exit 1
+      - name: Sinistres de démonstration
+        run: python3 evaluation/verifier_application.py --url "$URL" --sinistres S-01 S-04 S-06 S-08 S-09 S-10 S-11
