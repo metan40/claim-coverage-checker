@@ -1,0 +1,33 @@
+name: Matériel du Space
+
+# Passe le Space sur le matériel indiqué et désactive la mise en veille, pour
+# qu'il reste disponible et réponde plus vite. Lancement manuel uniquement.
+on:
+  workflow_dispatch:
+    inputs:
+      materiel:
+        description: "cpu-basic (gratuit) ou cpu-upgrade (8 vCPU, payant)"
+        default: "cpu-upgrade"
+
+jobs:
+  materiel:
+    runs-on: ubuntu-latest
+    env:
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+      SPACE: metan40/claim-coverage-checker
+      MATERIEL: ${{ inputs.materiel }}
+    steps:
+      - run: pip install "huggingface_hub>=0.24"
+      - name: Changer le matériel
+        run: |
+          python - <<'PY'
+          import os
+          from huggingface_hub import HfApi
+          api = HfApi(token=os.environ["HF_TOKEN"])
+          space, hw = os.environ["SPACE"], os.environ["MATERIEL"]
+          print("avant :", api.get_space_runtime(space))
+          api.request_space_hardware(space, hardware=hw)
+          if hw != "cpu-basic":
+              api.set_space_sleep_time(space, sleep_time=-1)
+          print("après :", api.get_space_runtime(space))
+          PY
